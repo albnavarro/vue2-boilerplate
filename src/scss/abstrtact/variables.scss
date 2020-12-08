@@ -1,0 +1,17 @@
+$breakpoints: (
+  'x-small': 320px,
+  'small':   360px,
+  'medium':  600px,
+  'tablet':  768px,
+  'desktop': 992px,
+  'large':   1200px,
+  'x-large':   1400px
+);
+
+$susy: (
+  'columns': susy-repeat(12),
+  'gutters': 25/50, //25px gutter per col di 50px = .5
+  'spread': 'narrow',
+  'container-spread': 'narrow',
+  'svg-grid-colors': hsl(180, 50%, 80%),
+);

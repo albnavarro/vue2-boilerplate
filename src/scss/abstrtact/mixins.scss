@@ -1,0 +1,75 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+
+/// Event wrapper
+/// @author Harry Roberts
+/// @param {Bool} $self [false] - Whether or not to include current selector
+/// @link https://twitter.com/csswizardry/status/478938530342006784 Original tweet from Harry Roberts
+@mixin on-event($self: false) {
+  @if $self {
+    &.active,
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  } @else {
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  }
+}
+
+/// Make a context based selector a little more friendly
+/// @author Hugo Giraudel
+/// @param {String} $context
+@mixin when-inside($context) {
+  #{$context} & {
+    @content;
+  }
+}
+
+/// Make media queries smarter
+@include breakpoint-set('to ems', true);
+
+@mixin _mq($min, $max: '') {
+  @if $max == '' {
+    @include breakpoint(map-get($breakpoints, $min)) {
+      @content;
+    }
+  } @else {
+    @if $min == 'max' {
+      @include breakpoint('max-width' (map-get($breakpoints, $max) - 1)) {
+        @content;
+      }
+    } @else {
+      @include breakpoint(
+        ((map-get($breakpoints, $min))
+        (map-get($breakpoints, $max) - 1))) {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin susy-use(
+  $config
+) {
+  //  parse and normalize any shorthand arguments
+  $config: susy-compile($config);
+
+  // record the global settings -
+  // and update the global variable with our new settings
+  $global: $susy;
+  $susy: map-merge($susy, $config) !global;
+
+  // any content inside this mixin
+  // will use the local settings
+  @content;
+
+  // return the global variable to its initial value
+  $susy: $global !global;
+}
