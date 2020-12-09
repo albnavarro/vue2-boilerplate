@@ -113,6 +113,7 @@ export default {
                 context.commit('setWidth', width)
                 context.commit('setHeight', height)
                 context.commit('setScroll', scroll)
+                context.commit('setScrollThrottle', scroll)
                 context.commit('setDocumentHeight', documentHeight)
             };
 
