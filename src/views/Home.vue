@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <img class="logo" alt="Vue logo" src="../assets/logo.png">
     <TestBrowser/>
   </div>
 </template>
@@ -16,3 +16,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+    .logo {
+        margin: auto;
+        display: block;
+    }
+</style>

@@ -1,15 +1,17 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+<div id="app">
+    <Navigation />
+    <router-view />
+</div>
 </template>
 
 <script>
+import Navigation from '@/components/layout/Navigation.vue'
+
 export default {
+    components: {
+        Navigation
+    },
     mounted() {
         this.$store.dispatch('browser/inizialize')
     }
@@ -17,5 +19,5 @@ export default {
 </script>
 
 <style lang="scss">
-    @import '@/scss/main.scss';
+@import '@/scss/main.scss';
 </style>

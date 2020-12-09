@@ -76,6 +76,9 @@ export default {
 </script>
 
 
-<style scoped>
-
+<style lang="scss" scoped>
+    .testBrowser {
+        text-align: center;
+        height: 2000px;
+    }
 </style>
