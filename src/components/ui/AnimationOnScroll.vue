@@ -65,6 +65,10 @@ export default {
         getWidth() {
             this.setOffset()
             this.setVisibility()
+        },
+        parentRef() {
+            this.setOffset();
+            this.setVisibility()
         }
     },
     methods: {
@@ -101,10 +105,8 @@ export default {
         const vm = this;
 
         // use $nextTick for intercept the parentRefs on mounted
-        this.$nextTick(() => {
-            vm.setOffset();
-            vm.setVisibility();
-		})
+        vm.setOffset();
+        vm.setVisibility();
     }
 }
 
