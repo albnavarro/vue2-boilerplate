@@ -149,10 +149,7 @@ export default {
             if (images.length) {
                 const imageLoader = new loadImages(images);
                 imageLoader.init().then(() => {
-
-                    // Refresh document height after image is loaded
-                    const documentHeight = document.documentElement.scrollHeight
-                    context.commit('setDocumentHeight', documentHeight)
+                    refreshBasicSate(context)
                 })
             }
         }
