@@ -15,5 +15,13 @@ export default {
     #nav {
         text-align: center;
         margin-bottom: 40px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        border-bottom: 1px $grey solid;
+    }
+
+    a {
+        color: $black;
+        text-decoration: none;
     }
 </style>

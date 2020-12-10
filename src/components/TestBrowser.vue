@@ -27,6 +27,9 @@
         <p>
             scrollEnd: {{ getScrollEnd }}
         </p>
+        <p>
+            check desktop: {{ breackpoint }}
+        </p>
         <svg v-svg
             symbol="arrowup"
             size="0 0 24 24"
@@ -38,12 +41,14 @@
 
 <script>
 import myData from '@/locales/data.json'
+import { mq } from '@/utils/mq.js'
 
 export default {
     name: 'TestBrowser',
     data() {
         return {
-            title: myData.testBrowser.title
+            title: myData.testBrowser.title,
+            breackpoint: ''
         }
     },
     computed: {
@@ -71,7 +76,21 @@ export default {
         getScrollEnd() {
             return this.$store.state.browser.scrollEnd;
         }
+    },
+    watch: {
+        getWidth() {
+            this.checkBreakPoint();
+        }
+    },
+    methods: {
+        checkBreakPoint() {
+            mq.min('desktop') ? this.breackpoint = 'desktop' : this.breackpoint = 'mobile'
+        }
+    },
+    mounted() {
+        this.checkBreakPoint();
     }
+
 }
 </script>
 

@@ -13,7 +13,7 @@ export default {
 
 <style lang="scss" scoped>
     .test-component {
-        background-color: red;
+        background-color: $grey;
         width: 200px;
         height: 200px;
     }

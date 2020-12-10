@@ -1,5 +1,6 @@
 import throttle from '@/utils/throttle.js'
 import debounce from '@/utils/debounce.js'
+import {loadImages} from '@/utils/loadImages.js'
 
 // Add linstener once
 let init = false
@@ -8,6 +9,20 @@ let init = false
 let ticking = false;
 let lastScrollTop = 0;
 let isScrolling = false;
+
+const refreshBasicSate = (_contenxt) => {
+    const context = _contenxt
+    const width = window.innerWidth
+    const height = window.innerHeight
+    const scroll =  window.pageYOffset
+    const documentHeight = document.documentElement.scrollHeight
+
+    context.commit('setWidth', width)
+    context.commit('setHeight', height)
+    context.commit('setScroll', scroll)
+    context.commit('setScrollThrottle', scroll)
+    context.commit('setDocumentHeight', documentHeight)
+}
 
 export default {
     namespaced: true,
@@ -105,16 +120,7 @@ export default {
             }
 
             const onResize = () => {
-                const width = window.innerWidth
-                const height = window.innerHeight
-                const scroll =  window.pageYOffset
-                const documentHeight = document.documentElement.scrollHeight
-
-                context.commit('setWidth', width)
-                context.commit('setHeight', height)
-                context.commit('setScroll', scroll)
-                context.commit('setScrollThrottle', scroll)
-                context.commit('setDocumentHeight', documentHeight)
+                refreshBasicSate(context)
             };
 
             window.addEventListener('scroll', onScroll, false);
@@ -122,6 +128,33 @@ export default {
             window.addEventListener('scroll', throttle(onScrollThrottle, 200), false);
             window.addEventListener('scroll', debounce(onScrollEnd, 200), false);
 
+            document.onreadystatechange = () => {
+                if (document.readyState === "complete") {
+                    refreshBasicSate(context)
+                }
+            }
+
+            // First value check,
+            // At the momenti si not necessay ( use document.onreadystatechange )
+            // refreshBasicSate(context)
+        },
+        refreshOnRouteChange(context) {
+            refreshBasicSate(context)
+
+            const imagesEl = document.querySelectorAll('img');
+            const images = [ ... imagesEl].map(el => {
+                return el.getAttribute('src')
+            });
+
+            if (images.length) {
+                const imageLoader = new loadImages(images);
+                imageLoader.init().then(() => {
+
+                    // Refresh document height after image is loaded
+                    const documentHeight = document.documentElement.scrollHeight
+                    context.commit('setDocumentHeight', documentHeight)
+                })
+            }
         }
     },
 

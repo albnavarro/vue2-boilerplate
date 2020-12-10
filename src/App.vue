@@ -12,7 +12,16 @@ export default {
     components: {
         Navigation
     },
+    watch:{
+        $route (){
+            this.$nextTick(() => {
+                // Refresh browser module
+                this.$store.dispatch('browser/refreshOnRouteChange')
+            });
+        }
+    } ,
     mounted() {
+        // Inizialize browser module
         this.$store.dispatch('browser/inizialize')
     }
 }

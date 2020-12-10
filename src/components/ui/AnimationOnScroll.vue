@@ -15,17 +15,23 @@ export default {
             offsetTop: 0,
             firstActive: false,
             hide: true,
-            isVisible: false
+            isVisible: false,
+            classMap: {
+                "fromBottom": {
+                    "on": "fromBottom--on",
+                    "off": "fromBottom",
+                },
+                "fromleft": {
+                    "on": "fromleft--on",
+                    "off": "fromleft",
+                }
+            }
         }
     },
     props: {
-        hiddenClass: {
+        type: {
             type: String,
             default: "fromBottom"
-        },
-        activeClass: {
-            type: String,
-            default: "fromBottom--visible"
         },
         once: {
             type: Boolean,
@@ -34,6 +40,10 @@ export default {
         gap: {
             type: Number,
             default: 20
+        },
+        parentRef: {
+            type: HTMLDivElement,
+            default: null
         }
     },
     computed: {
@@ -45,7 +55,7 @@ export default {
         },
         visibleClass() {
             const vm = this;
-            return vm.isVisible ? vm.activeClass : vm.hiddenClass
+            return vm.isVisible ? vm.classMap[vm.type].on : vm.classMap[vm.type].off
         }
     },
     watch: {
@@ -60,24 +70,28 @@ export default {
     methods: {
         setOffset() {
             const vm = this;
-            vm.offsetTop = offset(vm.$refs.item).top;
+            if (this.parentRef === null) {
+                vm.offsetTop = offset(vm.$refs.item).top;
+            } else {
+                vm.offsetTop = offset(vm.parentRef).top;
+            }
         },
         setVisibility() {
             const vm = this;
 
-            let isAble = true;
-            if (vm.once && vm.firstActive) isAble = false;
+            let isDisabled = true;
+            if (vm.once && vm.firstActive) isDisabled = false;
 
             const windowsOffsetTop = this.$store.state.browser.scrollThrottle
             const windowsheight = this.$store.state.browser.height
             const postion = this.offsetTop - windowsheight + this.gap
 
-            if (postion < windowsOffsetTop && vm.hide && isAble) {
+            if (postion < windowsOffsetTop && vm.hide && isDisabled) {
                 vm.isVisible = true;
                 vm.hide = false;
                 vm.firstActive = true;
 
-            } else if (postion >= windowsOffsetTop && !vm.hide && isAble) {
+            } else if (postion >= windowsOffsetTop && !vm.hide && isDisabled) {
                 vm.isVisible = false;
                 vm.hide = true
             }
@@ -85,8 +99,12 @@ export default {
     },
     mounted() {
         const vm = this;
-        vm.setOffset();
-        vm.setVisibility();
+
+        // use $nextTick for intercept the parentRefs on mounted
+        this.$nextTick(() => {
+            vm.setOffset();
+            vm.setVisibility();
+		})
     }
 }
 
@@ -101,7 +119,7 @@ export default {
         transform: translateY(20%);
         opacity: 0;
 
-        &--visible {
+        &--on {
             transform: translateY(0);
             opacity: 1;
         }
@@ -111,7 +129,7 @@ export default {
         transform: translateX(20%);
         opacity: 0;
 
-        &--visible {
+        &--on {
             transform: translateY(0);
             opacity: 1;
         }
