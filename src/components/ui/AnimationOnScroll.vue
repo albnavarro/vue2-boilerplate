@@ -1,12 +1,12 @@
 <template>
-    <div class="animation-on-scroll" :class="visibleClass" ref="item">
-        <slot></slot>
-    </div>
+<div class="animation-on-scroll" :class="visibleClass" ref="item">
+    <slot></slot>
+</div>
 </template>
 
 <script>
-
 import { offset } from '@/utils/vanillaFunction.js'
+import { mapGetters } from 'vuex'
 
 export default {
     name: 'AnimationOnScroll',
@@ -47,22 +47,20 @@ export default {
         }
     },
     computed: {
-        getThrottleScroll() {
-            return this.$store.state.browser.scrollThrottle;
-        },
-        getWidth() {
-            return this.$store.state.browser.width;
-        },
+        ...mapGetters({
+            scrollTop: 'browser/getScrollThrottle',
+            wWidth: 'browser/getWidth'
+        }),
         visibleClass() {
             const vm = this;
             return vm.isVisible ? vm.classMap[vm.type].on : vm.classMap[vm.type].off
         }
     },
     watch: {
-        getThrottleScroll() {
+        scrollTop() {
             this.setVisibility()
         },
-        getWidth() {
+        wWidth() {
             this.setOffset()
             this.setVisibility()
         },
@@ -86,16 +84,15 @@ export default {
             let isDisabled = true;
             if (vm.once && vm.firstActive) isDisabled = false;
 
-            const windowsOffsetTop = this.$store.state.browser.scrollThrottle
-            const windowsheight = this.$store.state.browser.height
-            const postion = this.offsetTop - windowsheight + this.gap
+            const wheight = this.$store.state.browser.height;
+            const postion = this.offsetTop - wheight + this.gap
 
-            if (postion < windowsOffsetTop && vm.hide && isDisabled) {
+            if (postion < vm.scrollTop && vm.hide && isDisabled) {
                 vm.isVisible = true;
                 vm.hide = false;
                 vm.firstActive = true;
 
-            } else if (postion >= windowsOffsetTop && !vm.hide && isDisabled) {
+            } else if (postion >= vm.scrollTop && !vm.hide && isDisabled) {
                 vm.isVisible = false;
                 vm.hide = true
             }
@@ -103,37 +100,34 @@ export default {
     },
     mounted() {
         const vm = this;
-
-        // use $nextTick for intercept the parentRefs on mounted
         vm.setOffset();
         vm.setVisibility();
     }
 }
-
 </script>
 
 <style lang="scss" scoped>
-    .animation-on-scroll {
-        transition: transform .35s, opacity .35s;
+.animation-on-scroll {
+    transition: transform 0.35s, opacity 0.35s;
+}
+
+.fromBottom {
+    transform: translateY(20%);
+    opacity: 0;
+
+    &--on {
+        transform: translateY(0);
+        opacity: 1;
     }
+}
 
-    .fromBottom {
-        transform: translateY(20%);
-        opacity: 0;
+.fromleft {
+    transform: translateX(20%);
+    opacity: 0;
 
-        &--on {
-            transform: translateY(0);
-            opacity: 1;
-        }
+    &--on {
+        transform: translateY(0);
+        opacity: 1;
     }
-
-    .fromleft {
-        transform: translateX(20%);
-        opacity: 0;
-
-        &--on {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
+}
 </style>

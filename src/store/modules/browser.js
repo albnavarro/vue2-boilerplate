@@ -10,8 +10,8 @@ let ticking = false;
 let lastScrollTop = 0;
 let isScrolling = false;
 
-const refreshBasicSate = (_contenxt) => {
-    const context = _contenxt
+const refreshBasicSate = (_context) => {
+    const context = _context
     const width = window.innerWidth
     const height = window.innerHeight
     const scroll =  window.pageYOffset
@@ -138,9 +138,7 @@ export default {
             // At the momenti si not necessay ( use document.onreadystatechange )
             // refreshBasicSate(context)
         },
-        refreshOnRouteChange(context) {
-            refreshBasicSate(context)
-
+        onRouteChange(context) {
             const imagesEl = document.querySelectorAll('img');
             const images = [ ... imagesEl].map(el => {
                 return el.getAttribute('src')
@@ -151,11 +149,20 @@ export default {
                 imageLoader.init().then(() => {
                     refreshBasicSate(context)
                 })
+            } else {
+                refreshBasicSate(context)
             }
         }
     },
 
     getters: {
-
+        getHeight: state => state.height,
+        getWidth: state => state.width,
+        getDocumentHeight: state => state.documentHeight,
+        getScroll: state => state.scroll,
+        getScrollThrottle: state => state.scrollThrottle,
+        getScrollDirection: state => state.scrollDirection,
+        getScrollStart: state => state.scrollStart,
+        getScrollEnd: state => state.scrollEnd
     }
 }

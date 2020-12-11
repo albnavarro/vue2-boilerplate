@@ -4,28 +4,28 @@
             {{ title }}
         </h1>
         <p>
-            window width: {{ getWidth }}
+            window width: {{ width }}
         </p>
         <p>
-            window height: {{ getHeight }}
+            window height: {{ height }}
         </p>
         <p>
-            documentHeight: {{ getDocumentHeight }}
+            documentHeight: {{ documentHeight }}
         </p>
         <p>
-            scroll: {{ getScroll }}
+            scroll: {{ scroll }}
         </p>
         <p>
-            throttleScroll: {{ getThrottleScroll }}
+            throttleScroll: {{ scrollThrottle }}
         </p>
         <p>
-            scrollDirection: {{ getScrollDirection }}
+            scrollDirection: {{ scrollDirection }}
         </p>
         <p>
-            scrollStart: {{ getScrollStart }}
+            scrollStart: {{ scrollStart }}
         </p>
         <p>
-            scrollEnd: {{ getScrollEnd }}
+            scrollEnd: {{ scrollEnd }}
         </p>
         <p>
             check desktop: {{ breackpoint }}
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import myData from '@/locales/data.json'
 import { mq } from '@/utils/mq.js'
 
@@ -52,33 +53,19 @@ export default {
         }
     },
     computed: {
-        getWidth() {
-            return this.$store.state.browser.width;
-        },
-        getHeight() {
-            return this.$store.state.browser.height;
-        },
-        getDocumentHeight() {
-            return this.$store.state.browser.documentHeight;
-        },
-        getScroll() {
-            return this.$store.state.browser.scroll;
-        },
-        getThrottleScroll() {
-            return this.$store.state.browser.scrollThrottle;
-        },
-        getScrollDirection() {
-            return this.$store.state.browser.scrollDirection;
-        },
-        getScrollStart() {
-            return this.$store.state.browser.scrollStart;
-        },
-        getScrollEnd() {
-            return this.$store.state.browser.scrollEnd;
-        }
+        ...mapGetters({
+            height: 'browser/getHeight',
+            width: 'browser/getWidth',
+            documentHeight: 'browser/getDocumentHeight',
+            scroll: 'browser/getScroll',
+            scrollThrottle: 'browser/getScrollThrottle',
+            scrollDirection: 'browser/getScrollDirection',
+            scrollStart: 'browser/getScrollStart',
+            scrollEnd: 'browser/getScrollEnd'
+        }),
     },
     watch: {
-        getWidth() {
+        width() {
             this.checkBreakPoint();
         }
     },

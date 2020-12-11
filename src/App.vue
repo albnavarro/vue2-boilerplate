@@ -16,7 +16,7 @@ export default {
         $route (){
             this.$nextTick(() => {
                 // Refresh browser module
-                this.$store.dispatch('browser/refreshOnRouteChange')
+                this.$store.dispatch('browser/onRouteChange')
             });
         }
     } ,
