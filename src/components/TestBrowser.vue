@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 import myData from '@/locales/data.json'
 import { mq } from '@/utils/mq.js'
 
@@ -53,19 +53,19 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            height: 'browser/getHeight',
-            width: 'browser/getWidth',
-            documentHeight: 'browser/getDocumentHeight',
-            scroll: 'browser/getScroll',
-            scrollThrottle: 'browser/getScrollThrottle',
-            scrollDirection: 'browser/getScrollDirection',
-            scrollStart: 'browser/getScrollStart',
-            scrollEnd: 'browser/getScrollEnd'
+        ...mapState('browser', {
+            height: 'height',
+            width: 'width',
+            documentHeight: 'documentHeight',
+            scroll: 'scroll',
+            scrollThrottle: 'scrollThrottle',
+            scrollDirection: 'scrollDirection',
+            scrollStart: 'scrollStart',
+            scrollEnd: 'scrollEnd'
         }),
     },
     watch: {
-        width() {
+        getWidth() {
             this.checkBreakPoint();
         }
     },

@@ -6,26 +6,13 @@
 
 <script>
 import { offset } from '@/utils/vanillaFunction.js'
-import { mapGetters } from 'vuex'
+import { mapState } from 'vuex'
 
 export default {
     name: 'AnimationOnScroll',
     data() {
         return {
-            offsetTop: 0,
-            firstActive: false,
-            hide: true,
-            isVisible: false,
-            classMap: {
-                "fromBottom": {
-                    "on": "fromBottom--on",
-                    "off": "fromBottom",
-                },
-                "fromleft": {
-                    "on": "fromleft--on",
-                    "off": "fromleft",
-                }
-            }
+            isVisible: false
         }
     },
     props: {
@@ -47,9 +34,9 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            scrollTop: 'browser/getScrollThrottle',
-            wWidth: 'browser/getWidth'
+        ...mapState('browser', {
+            scrollTop: 'scrollThrottle',
+            wWidth: 'width'
         }),
         visibleClass() {
             const vm = this;
@@ -98,10 +85,31 @@ export default {
             }
         }
     },
+    created() {
+        const vm = this;
+
+        // Non reactive data
+        vm.offsetTop = 0
+        vm.firstActive = false
+        vm.hide = true
+        vm.classMap = {
+            "fromBottom": {
+                "on": "fromBottom--on",
+                "off": "fromBottom",
+            },
+            "fromleft": {
+                "on": "fromleft--on",
+                "off": "fromleft",
+            }
+        }
+    },
     mounted() {
         const vm = this;
-        vm.setOffset();
-        vm.setVisibility();
+
+        this.$nextTick(() => {
+            vm.setOffset();
+            vm.setVisibility();
+        });
     }
 }
 </script>

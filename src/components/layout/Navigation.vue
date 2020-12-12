@@ -1,7 +1,9 @@
 <template>
     <div id="nav">
       <router-link to="/">Home</router-link> |
-      <router-link to="/Animation">Animation</router-link>
+      <router-link to="/Animation">Scroll animation</router-link> |
+      <router-link to="/ParallaxDefault">Parrallax</router-link> |
+       <router-link to="/ParallaxFixed">Parrallax Fixed</router-link>
     </div>
 </template>
 
