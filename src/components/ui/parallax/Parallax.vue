@@ -144,14 +144,12 @@ export default {
             return 10 - n
         },
 
-
         normalizeVelocity(n) {
             if (n < 1) n = 1
             if (n >= 10) n = 9.9
 
             return (10 - n) * 10
         },
-
 
         calcSizes() {
             const vm = this;
@@ -170,15 +168,19 @@ export default {
             }
         },
 
-
         isInViewport() {
             const vm = this;
-            const secureGap = 20
 
-            return vm.offset + vm.height + secureGap > vm.scroll &&
-                vm.offset < vm.scroll + vm.wheight + secureGap
+            if(vm.firstTime) {
+                // first time set postion of element outside monitor
+                vm.firstTime = false
+                return true
+            } else {
+                return vm.offset + vm.height > vm.scroll &&
+                vm.offset < vm.scroll + vm.wheight
+            }
+
         },
-
 
         smoothParallaxJs() {
             const vm = this;
@@ -187,7 +189,6 @@ export default {
             if (vm.raf) cancelAnimationFrame(vm.raf);
             vm.raf = requestAnimationFrame(vm.onReuqestAnim.bind(vm))
         },
-
 
         onReuqestAnim() {
             const draw = () => {
@@ -228,116 +229,33 @@ export default {
             draw()
         },
 
-
         executeParallax(applyStyle = true) {
             const vm = this;
 
             if (!mq[vm.breackpointType](vm.breackpoint) ||
                 !vm.isInViewport() && !vm.renderAlways) return;
 
-            let partials = 0
-            let endPos = 0
-            let inMotion = 0
-            let percent = 0
-            let vhLimit = 0
-            let vhStart = 0
-            let opacityVal = 0
+            let fixedResult = {}
             const alignToNumber = parseInt(vm.defaulAlign)
-            const fixfedEntryOffset = ((vm.wheight / 100) * vm.fixedOffset)
 
             switch (vm.computationType) {
                 case 'fixed':
-                    partials = -((vm.scroll + vm.wheight - fixfedEntryOffset) - ( vm.offset + vm.height));
-                    endPos = (vm.height / 100) * vm.fixedDistance;
-                    inMotion = (partials / 100) * vm.fixedDistance;
-
-                    if (vm.scroll + vm.wheight - fixfedEntryOffset <  vm.offset) {
-                        vm.endValue = (vm.fixedStartFromEnd) ? endPos : 0;
-                        if (vm.fixedStopBeforeStart) applyStyle = false;
-
-                    } else if (vm.scroll + vm.wheight - fixfedEntryOffset >  vm.offset + vm.height) {
-                        vm.endValue = (vm.fixedStartFromEnd) ? 0 : -endPos;
-                        if (vm.fixedStopAfterEnd) applyStyle = false;
-
-                    } else {
-                        vm.endValue = (vm.fixedStartFromEnd) ? inMotion : inMotion - endPos;
-                    }
-
-                    if(vm.fixedDistanceImmutable)  {
-                        vm.endValue = endPos;
-                    }
-
-                    percent = (Math.abs(vm.endValue) * 100) / vm.height;
-
-                    switch (vm.propierties) {
-                        case 'horizontal':
-                            vm.endValue = -((vm.width / 100) * percent);
-                            break;
-
-                        case 'scale':
-                            vm.endValue = percent * 10;
-                            break;
-
-                        case 'opacity':
-                            vm.endValue = percent / 100;
-                            break;
-
-                        case 'rotate':
-                        case 'border-width':
-                            vm.endValue = percent;
-                            break;
-                    }
+                    fixedResult = this.getFixedValue(applyStyle)
+                    vm.endValue = fixedResult.endvalue
+                    applyStyle = fixedResult.applyStyle
                     break;
 
                 case 'default':
                     switch (vm.propierties) {
                         case 'opacity':
-                            vhLimit = (vm.wheight / 100 * vm.defaultOpacityEnd);
-                            vhStart = vm.wheight - (vm.wheight / 100 * vm.defaultOpacityStart);
-
-                            opacityVal = 0;
-                            if (vm.defaulAlign == 'start') {
-                                opacityVal = -vm.scroll;
-                            } else {
-                                opacityVal = (vm.scroll + vhLimit - vm.offset);
-                            }
-
-                            opacityVal = opacityVal * -1;
-
-                            if (vm.defaulAlign == 'start') {
-                                opacityVal = 1 - opacityVal / vm.offset;
-                            } else {
-                                opacityVal = 1 - opacityVal / (vm.wheight - vhStart - vhLimit);
-                            }
-
-                            vm.endValue = opacityVal.toFixed(2);
+                            vm.endValue = this.getDefaultOpacity()
                             break;
 
                         default:
                             if (isNaN(alignToNumber)) {
-                                switch (vm.defaulAlign) {
-                                    case 'start':
-                                        vm.endValue = (vm.scroll / vm.distance);
-                                        break;
-
-                                    case 'top':
-                                        vm.endValue = (((vm.scroll - vm.offset) / vm.distance));
-                                        break;
-
-                                    case 'center':
-                                        vm.endValue = ((((vm.scroll + (vm.wheight / 2 - vm.height / 2)) - vm.offset) / vm.distance));
-                                        break;
-
-                                    case 'bottom':
-                                        vm.endValue = ((((vm.scroll + (vm.wheight - vm.height)) - vm.offset) / vm.distance));
-                                        break;
-
-                                    case 'end':
-                                        vm.endValue = -((vm.documentHeight - (vm.scroll + vm.wheight)) / vm.distance);
-                                        break;
-                                }
+                                vm.endValue = this.getDefaultAlignIsNaN()
                             } else {
-                                vm.endValue = ((((vm.scroll + (vm.wheight / 100 * alignToNumber)) - vm.offset) / vm.distance));
+                                vm.endValue = this.getDefaultAlignIsNumber(alignToNumber)
                             }
 
                             vm.endValue = vm.endValue.toFixed(1) / 2;
@@ -355,6 +273,116 @@ export default {
             }
         },
 
+        getFixedValue(_applyStyle) {
+            const vm = this
+            let val = 0
+
+            const fixfedEntryOffset = ((vm.wheight / 100) * vm.fixedOffset)
+            const partials = -((vm.scroll + vm.wheight - fixfedEntryOffset)
+                             - ( vm.offset + vm.height));
+            const endPos = (vm.height / 100) * vm.fixedDistance;
+            const inMotion = (partials / 100) * vm.fixedDistance;
+
+
+            if (vm.scroll + vm.wheight - fixfedEntryOffset <  vm.offset) {
+                val = (vm.fixedStartFromEnd) ? endPos : 0;
+                if (vm.fixedStopBeforeStart) _applyStyle = false;
+
+            } else if (vm.scroll + vm.wheight - fixfedEntryOffset >  vm.offset + vm.height) {
+                val = (vm.fixedStartFromEnd) ? 0 : -endPos;
+                if (vm.fixedStopAfterEnd) _applyStyle = false;
+
+            } else {
+                val = (vm.fixedStartFromEnd) ? inMotion : inMotion - endPos;
+            }
+
+            if(vm.fixedDistanceImmutable)  {
+                val = endPos;
+            }
+
+            const percent = (Math.abs(val) * 100) / vm.height;
+            switch (vm.propierties) {
+                case 'horizontal':
+                    val = -((vm.width / 100) * percent);
+                    break;
+
+                case 'scale':
+                    val = percent * 10;
+                    break;
+
+                case 'opacity':
+                    val = percent / 100;
+                    break;
+
+                case 'rotate':
+                case 'border-width':
+                    val = percent;
+                    break;
+            }
+
+            return {
+                endvalue: val,
+                applyStyle: _applyStyle
+            }
+        },
+
+        getDefaultOpacity() {
+            const vm = this;
+            const vhLimit = (vm.wheight / 100 * vm.defaultOpacityEnd);
+            const vhStart = vm.wheight - (vm.wheight / 100 * vm.defaultOpacityStart);
+
+            let  opacityVal = 0;
+            if (vm.defaulAlign == 'start') {
+                opacityVal = -vm.scroll;
+            } else {
+                opacityVal = (vm.scroll + vhLimit - vm.offset);
+            }
+
+            opacityVal = opacityVal * -1;
+
+            if (vm.defaulAlign == 'start') {
+                opacityVal = 1 - opacityVal / vm.offset;
+            } else {
+                opacityVal = 1 - opacityVal / (vm.wheight - vhStart - vhLimit);
+            }
+
+            return opacityVal.toFixed(2);
+        },
+
+        getDefaultAlignIsNaN() {
+            const vm = this
+            let val = 0
+
+            switch (vm.defaulAlign) {
+                case 'start':
+                    val = (vm.scroll / vm.distance);
+                    break;
+
+                case 'top':
+                    val = (((vm.scroll - vm.offset) / vm.distance));
+                    break;
+
+                case 'center':
+                    val = ((((vm.scroll + (vm.wheight / 2 - vm.height / 2)) - vm.offset) / vm.distance));
+                    break;
+
+                case 'bottom':
+                    val = ((((vm.scroll + (vm.wheight - vm.height)) - vm.offset) / vm.distance));
+                    break;
+
+                case 'end':
+                    val = -((vm.documentHeight - (vm.scroll + vm.wheight)) / vm.distance);
+                    break;
+            }
+
+            return val
+        },
+
+        getDefaultAlignIsNumber(alignVal) {
+            const vm = this
+            return ((vm.scroll + (vm.wheight / 100 * alignVal))
+                    - vm.offset) / vm.distance;
+        },
 
         setStyle(val) {
             const vm = this;
@@ -474,6 +502,7 @@ export default {
         vm.documentHeight = 0
         vm.distance = 0
         vm.jsVelocity = 0
+        vm.firstTime = true
         vm.raf = null
     },
 
