@@ -7,7 +7,7 @@
 ```
 computationType = "fixed"
 ```
-### fixed:
+# fixed:
 
 Il componente calcola il valore finale in base alla sua larghezza o altezza.<br/>
 Di default il valore viene calcolato da quando l'elemento entra nella viewport fino a quando è completamante visibile.<br/>
@@ -50,9 +50,9 @@ Nella rotta `/ParallaxDefault` e possibile vederne un esempio
 
 Nella rotta `/ParallaxFixed` epossibile vedere come innestare piu componenti per creare una timeline di animazione su un oggetto in `position:sticky`
 
+<br/><br/>
 
-
-### default:
+# default:
 
 Prioprietà di default della prop `computationType`
 
@@ -93,7 +93,7 @@ Usando `defaultStopBack = "toBack"` un funzionamento corretto si ha solo imposta
 <br/><br/>
 
 
-### Prop comuni a fixed e default:
+# Prop comuni a fixed e default:
 
 
 #### parentRef
