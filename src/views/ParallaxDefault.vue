@@ -41,8 +41,8 @@
             <div class="parallax-default__item">
                 <Parallax
                     propierties = "scale"
-                    defaulAlign="center"
-                    :defaultDistance="9"
+                    defaulAlign="40"
+                    :defaultDistance="9.2"
                     defaultStopBack="toBack">
                     <TestComponent/>
                 </Parallax>

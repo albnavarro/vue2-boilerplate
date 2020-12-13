@@ -242,7 +242,7 @@ export default {
             let vhLimit = 0
             let vhStart = 0
             let opacityVal = 0
-            const isNumber = parseInt(vm.defaulAlign)
+            const alignToNumber = parseInt(vm.defaulAlign)
             const fixfedEntryOffset = ((vm.wheight / 100) * vm.fixedOffset)
 
             switch (vm.computationType) {
@@ -314,7 +314,7 @@ export default {
                             break;
 
                         default:
-                            if (isNaN(isNumber)) {
+                            if (isNaN(alignToNumber)) {
                                 switch (vm.defaulAlign) {
                                     case 'start':
                                         vm.endValue = (vm.scroll / vm.distance);
@@ -337,7 +337,7 @@ export default {
                                         break;
                                 }
                             } else {
-                                vm.endValue = ((((vm.scroll + (vm.wheight / 100 * vm.defaulAlign)) - vm.offset) / vm.distance));
+                                vm.endValue = ((((vm.scroll + (vm.wheight / 100 * alignToNumber)) - vm.offset) / vm.distance));
                             }
 
                             vm.endValue = vm.endValue.toFixed(1) / 2;
