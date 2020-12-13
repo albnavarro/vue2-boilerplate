@@ -17,7 +17,7 @@ In questo spazio il componente andrà dal punto 0 alla distanza massima che può
 
 Si può definire un numero da 1 a x.
 il valore verrà calcolato in base alla proprietà definita nella prop `propierties`
-Il valore nel caso di spostamento `verticale o orizzontale` sarà la percentuale dell 'altezza/larghezza dell'elemento stesso.<br/><br/>
+Il valore nel caso di spostamento `verticale o orizzontale` definisce una percentuale in rapporto all 'altezza/larghezza dell'elemento stesso.<br/><br/>
 Nel caso di `rotate/border-width` il valore massimo sarà quello indicato nella proprietà, es con un valore pari a  `90` e una propieta `rotate` il componente ruoterà di **90deg**<br/><br/>
 Nel caso di `opacity` il valore tra **0 e 100** corrisponderà al corrispettivo di opacita tra **0 e 1**<br/><br/>
 Nel caso di `scale` il valore **100** corrisponderà ad uno sale di **2**, il valore **200** a uno scale di **3**, e cosi via
@@ -41,8 +41,16 @@ Il primo vale applicato non sarà il minimo ma il massimo
 Di default al di sopra o al di sotto dello spazio attivo di calcolo vengono applicati i valori minimi e massimo.<br/>
 E' possibile non applicarli con queste due prop.<br/>
 nell'esempio **/ParallaxDefault** vengono usati per avere un flow di parallassi sulla proprietà border-width.
+<br/>
 
-<br/><br/>
+##### TIPS:
+`computationType = "fixed"` è pensato principalmente abbinato con la pros `:parentRef` che fara da guida sia che l'elemento si trovi in  `position: fixed/sticky` sia che segua il flow normale.<br/>
+Se il componente segue il flow normale della pagina è' possibile pensare ad un elemento html fittizio ( maagri in `postion:abolute` ) che semplicemente imposterà il valore di spostamento e durata della transizione, questo `trucco`, ci impedirà di dover aggiungere inutili pros.<br/>
+Nella rotta `/ParallaxDefault` e possibile vederne un esempio
+
+Nella rotta `/ParallaxFixed` epossibile vedere come innestare piu componenti per creare una timeline di animazione su un oggetto in `position:sticky`
+
+
 
 ### default:
 

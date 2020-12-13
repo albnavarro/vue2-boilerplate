@@ -50,14 +50,15 @@
         </div>
         <div>
             <div class="parallax-default__item">
+                <div class="dummy-item" ref="dummy"/>
                 <Parallax
                     computationType = "fixed"
-                    :fixedDistance = "200"
-                    :fixedOffset = "30"
-                    :reverse = "true"
                     propierties = "horizontal"
-                    :fixedStartFromEnd = "true"
-                    defaulAlign="start" >
+                    defaulAlign="start"
+                    :fixedDistance = "50"
+                    :parentRef = "dummy"
+                    :reverse = "true"
+                    :fixedStartFromEnd = "true">
                     <TestComponent/>
                 </Parallax>
             </div>
@@ -67,7 +68,7 @@
                 <Parallax
                     computationType = "fixed"
                     :fixedDistance = "90"
-                    :fixedOffset = "20"
+                    :fixedOffset = "40"
                     propierties = "rotate"
                     :fixedStartFromEnd = "true" >
                     <TestComponent/>
@@ -109,9 +110,17 @@ import TestComponent from '@/components/TestComponent.vue'
 
 export default {
     name: 'ParallaxDefault',
+    data() {
+        return {
+            dummy: null
+        }
+    },
     components: {
         Parallax,
         TestComponent
+    },
+    mounted() {
+        this.dummy = this.$refs.dummy
     }
 }
 </script>
@@ -123,10 +132,17 @@ export default {
         &__item {
             margin-bottom: 40px;
             display: inline-block;
+            position: relative;
         }
     }
 
     .dummy-item {
-        transform-origin: center center;
+        width: 50vw;
+        height: 50vh;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        border: 1px $grey solid;
     }
 </style>
