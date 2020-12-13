@@ -22,93 +22,97 @@ export default {
             type: String,
             default: "default"
         },
-        fixedRange: {
+        fixedDistance: {
             type: Number,
             default: null
         },
-        fixedRangeStatic: {
+        fixedDistanceImmutable: {
             type: Boolean,
             default: false
         },
-        scalable: {
+        fixedOffset: {
+            type: Number,
+            default: 0
+        },
+        fixedStartFromEnd: {
             type: Boolean,
             default: false
         },
-        scalableBreackpoint: {
+        fixedStopAfterEnd: {
+            type: Boolean,
+            default: false
+        },
+        fixedStopBeforeStart: {
+            type: Boolean,
+            default: false
+        },
+        defaultDistance: {
+            type: Number,
+            default: 8
+        },
+        defaulAlign: {
             type: String,
-            default: "x-large"
+            default: "center"
         },
-        fromCalculatedValue: {
-            type: Boolean,
-            default: false
-        },
-        targetRef: {
-            type: HTMLDivElement,
-            default: null
-        },
-        applyEndOff: {
-            type: Boolean,
-            default: false
-        },
-        applyStartOff: {
-            type: Boolean,
-            default: false
-        },
-        breackpoint: {
+        defaultStopBack: {
             type: String,
-            default: "desktop"
+            default: ""
         },
-        queryType: {
-            type: String,
-            default: "min"
+        defaultOpacityStart: {
+            type: Number,
+            default: 100
+        },
+        defaultOpacityEnd: {
+            type: Number,
+            default: 0
         },
         parentRef: {
             type: HTMLDivElement,
             default: null
         },
-        limiterOff: {
+        targetRef: {
+            type: HTMLDivElement,
+            default: null
+        },
+        breackpoint: {
+            type: String,
+            default: "desktop"
+        },
+        breackpointType: {
+            type: String,
+            default: "min"
+        },
+        renderAlways: {
             type: Boolean,
             default: false
         },
-        distanceValue: {
-            type: Number,
-            default: 8
+        responsive: {
+            type: Boolean,
+            default: false
         },
-        jsVelocityValue: {
-            type: Number,
-            default: 8
+        responsiveBreackpoint: {
+            type: String,
+            default: "xLarge"
         },
         reverse: {
             type: Boolean,
             default: false
         },
-        oneDirection: {
-            type: String,
-            default: ""
-        },
-        align: {
-            type: String,
-            default: "center"
-        },
-        opacityStart: {
-            type: Number,
-            default: 100
-        },
-        opacityEnd: {
-            type: Number,
-            default: 0
-        },
         ease: {
             type: String,
             default: "linear"
         },
-        propierties: {
-            type: String,
-            default: "vertical"
-        },
         smoothType: {
             type: String,
             default: "js"
+        },
+        jsDelta: {
+            type: Number,
+            default: 8
+        },
+        propierties: {
+            type: String,
+            default: "vertical"
         }
     },
     computed: {
@@ -169,9 +173,10 @@ export default {
 
         isInViewport() {
             const vm = this;
+            const secureGap = 20
 
-            return vm.offset + vm.height > vm.scroll &&
-                vm.offset < vm.scroll + vm.wheight
+            return vm.offset + vm.height + secureGap > vm.scroll &&
+                vm.offset < vm.scroll + vm.wheight + secureGap
         },
 
 
@@ -227,8 +232,8 @@ export default {
         executeParallax(applyStyle = true) {
             const vm = this;
 
-            if (!mq[vm.queryType](vm.breackpoint) ||
-                !vm.isInViewport() && !vm.limiterOff) return;
+            if (!mq[vm.breackpointType](vm.breackpoint) ||
+                !vm.isInViewport() && !vm.renderAlways) return;
 
             let partials = 0
             let endPos = 0
@@ -237,27 +242,28 @@ export default {
             let vhLimit = 0
             let vhStart = 0
             let opacityVal = 0
-            const isNumber = parseInt(vm.align)
+            const isNumber = parseInt(vm.defaulAlign)
+            const fixfedEntryOffset = ((vm.wheight / 100) * vm.fixedOffset)
 
             switch (vm.computationType) {
                 case 'fixed':
-                    partials = -((vm.scroll + vm.wheight) - (vm.offset + vm.height));
-                    endPos = ((vm.height / 100) * vm.fixedRange);
-                    inMotion = (partials / 100) * vm.fixedRange;
+                    partials = -((vm.scroll + vm.wheight - fixfedEntryOffset) - ( vm.offset + vm.height));
+                    endPos = (vm.height / 100) * vm.fixedDistance;
+                    inMotion = (partials / 100) * vm.fixedDistance;
 
-                    if (vm.scroll + vm.wheight < vm.offset) {
-                        vm.endValue = (vm.fromCalculatedValue) ? endPos : 0;
-                        if (vm.applyStartOff) applyStyle = false;
+                    if (vm.scroll + vm.wheight - fixfedEntryOffset <  vm.offset) {
+                        vm.endValue = (vm.fixedStartFromEnd) ? endPos : 0;
+                        if (vm.fixedStopBeforeStart) applyStyle = false;
 
-                    } else if (vm.scroll + vm.wheight > vm.offset + vm.height) {
-                        vm.endValue = (vm.fromCalculatedValue) ? 0 : -endPos;
-                        if (vm.applyEndOff) applyStyle = false;
+                    } else if (vm.scroll + vm.wheight - fixfedEntryOffset >  vm.offset + vm.height) {
+                        vm.endValue = (vm.fixedStartFromEnd) ? 0 : -endPos;
+                        if (vm.fixedStopAfterEnd) applyStyle = false;
 
                     } else {
-                        vm.endValue = (vm.fromCalculatedValue) ? inMotion : inMotion - endPos;
+                        vm.endValue = (vm.fixedStartFromEnd) ? inMotion : inMotion - endPos;
                     }
 
-                    if(vm.fixedRangeStatic)  {
+                    if(vm.fixedDistanceImmutable)  {
                         vm.endValue = endPos;
                     }
 
@@ -286,11 +292,11 @@ export default {
                 case 'default':
                     switch (vm.propierties) {
                         case 'opacity':
-                            vhLimit = (vm.wheight / 100 * vm.opacityEnd);
-                            vhStart = vm.wheight - (vm.wheight / 100 * vm.opacityStart);
+                            vhLimit = (vm.wheight / 100 * vm.defaultOpacityEnd);
+                            vhStart = vm.wheight - (vm.wheight / 100 * vm.defaultOpacityStart);
 
                             opacityVal = 0;
-                            if (vm.align == 'start') {
+                            if (vm.defaulAlign == 'start') {
                                 opacityVal = -vm.scroll;
                             } else {
                                 opacityVal = (vm.scroll + vhLimit - vm.offset);
@@ -298,7 +304,7 @@ export default {
 
                             opacityVal = opacityVal * -1;
 
-                            if (vm.align == 'start') {
+                            if (vm.defaulAlign == 'start') {
                                 opacityVal = 1 - opacityVal / vm.offset;
                             } else {
                                 opacityVal = 1 - opacityVal / (vm.wheight - vhStart - vhLimit);
@@ -309,7 +315,7 @@ export default {
 
                         default:
                             if (isNaN(isNumber)) {
-                                switch (vm.align) {
+                                switch (vm.defaulAlign) {
                                     case 'start':
                                         vm.endValue = (vm.scroll / vm.distance);
                                         break;
@@ -331,7 +337,7 @@ export default {
                                         break;
                                 }
                             } else {
-                                vm.endValue = ((((vm.scroll + (vm.wheight / 100 * vm.align)) - vm.offset) / vm.distance));
+                                vm.endValue = ((((vm.scroll + (vm.wheight / 100 * vm.defaulAlign)) - vm.offset) / vm.distance));
                             }
 
                             vm.endValue = vm.endValue.toFixed(1) / 2;
@@ -354,7 +360,6 @@ export default {
             const vm = this;
             let style = {};
 
-            // CHECK Reverse
             if (vm.reverse) {
                 switch (vm.propierties) {
                     case 'opacity':
@@ -366,10 +371,9 @@ export default {
                 }
             }
 
-            // CHECK ONE DIRECTION ToStop/ToBack
-            if (vm.fixedRange == null) {
+            if (vm.fixedDistance == null) {
                 if (vm.propierties != 'opacity') {
-                    switch (vm.oneDirection) {
+                    switch (vm.defaultStopBack) {
                         case 'toStop':
                             if (!vm.reverse && val > 0 ||
                                 vm.reverse && val < 0) {
@@ -385,7 +389,7 @@ export default {
                             break;
                     }
                 } else {
-                    if (vm.oneDirection == 'toBack') {
+                    if (vm.defaultStopBack == 'toBack') {
                         if (val > 1.999) val = 1.999
                         if (val < 0) val = -val;
                         if (val > 1) val = 1 - (val % 1);
@@ -396,7 +400,7 @@ export default {
             let scaleVal = 0
             switch (vm.propierties) {
                 case 'vertical':
-                    if (vm.scalable && vm.fixedRange != null && !mq.min(vm.scalableBreackpoint)) {
+                    if (vm.responsive && !mq.min(vm.responsiveBreackpoint)) {
                         const value = (val * 100) / vm.height;
                         style['transform'] = `translate3d(0,0,0) translateY(${value}vh)`;
                     } else {
@@ -405,7 +409,7 @@ export default {
                     break;
 
                 case 'horizontal':
-                    if (vm.scalable && vm.fixedRange != null && !mq.min(vm.scalableBreackpoint)) {
+                    if (vm.responsive && !mq.min(vm.responsiveBreackpoint)) {
                         const value = (val * 100) / vm.width;
                         style['transform'] = `translate3d(0,0,0) translateX(${value}vw)`;
                     } else {
@@ -477,8 +481,8 @@ export default {
         const vm = this;
 
         vm.$nextTick(() => {
-            vm.distance = vm.normalizeDistance(vm.distanceValue)
-            vm.jsVelocity = vm.normalizeVelocity(vm.jsVelocityValue)
+            vm.distance = vm.normalizeDistance(vm.defaultDistance)
+            vm.jsVelocity = vm.normalizeVelocity(vm.jsDelta)
 
             // if rerefer to other element computed function calc value
             if (vm.parentRef == null) vm.calcSizes()

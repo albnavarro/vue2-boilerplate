@@ -2,15 +2,18 @@
 <div id="app">
     <Navigation />
     <router-view />
+    <Footer/>
 </div>
 </template>
 
 <script>
 import Navigation from '@/components/layout/Navigation.vue'
+import Footer from '@/components/layout/Footer.vue'
 
 export default {
     components: {
-        Navigation
+        Navigation,
+        Footer
     },
     watch:{
         $route (){
@@ -28,6 +31,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import '@/scss/vendor/_normalize.scss';
-@import '@/scss/main.scss';
+@import '@/scss/common.scss';
+@import '@/scss/abstrtact.scss';
 </style>

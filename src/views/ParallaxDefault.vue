@@ -3,9 +3,13 @@
         <div>
             <div class="parallax-default__item">
                 <Parallax
+                    :defaultDistance = "3"
+                    :responsive = "true"
+                    breackpointType="min"
+                    breackpoint="x-small"
+                    responsiveBreackpoint = "infinite"
                     propierties = "horizontal"
-                    :distanceValue="9"
-                    align="start" >
+                    defaulAlign="start" >
                     <TestComponent/>
                 </Parallax>
             </div>
@@ -14,9 +18,9 @@
             <div class="parallax-default__item">
                 <Parallax
                     propierties = "rotate"
-                    queryType="min"
+                    breackpointType="min"
                     breackpoint="x-small"
-                    align="start"
+                    defaulAlign="start"
                     ease="smooth"
                     smoothType="css">
                     <TestComponent/>
@@ -27,7 +31,7 @@
             <div class="parallax-default__item">
                 <Parallax
                     propierties = "rotate"
-                    align="start"
+                    defaulAlign="start"
                     :reverse="true">
                     <TestComponent/>
                 </Parallax>
@@ -37,9 +41,9 @@
             <div class="parallax-default__item">
                 <Parallax
                     propierties = "scale"
-                    align="center"
-                    :distanceValue="9"
-                    oneDirection="toBack">
+                    defaulAlign="center"
+                    :defaultDistance="9"
+                    defaultStopBack="toBack">
                     <TestComponent/>
                 </Parallax>
             </div>
@@ -47,11 +51,37 @@
         <div>
             <div class="parallax-default__item">
                 <Parallax
-                    align="center"
+                    computationType = "fixed"
+                    :fixedDistance = "200"
+                    :fixedOffset = "30"
+                    :reverse = "true"
+                    propierties = "horizontal"
+                    :fixedStartFromEnd = "true"
+                    defaulAlign="start" >
+                    <TestComponent/>
+                </Parallax>
+            </div>
+        </div>
+        <div>
+            <div class="parallax-default__item">
+                <Parallax
+                    computationType = "fixed"
+                    :fixedDistance = "90"
+                    :fixedOffset = "20"
+                    propierties = "rotate"
+                    :fixedStartFromEnd = "true" >
+                    <TestComponent/>
+                </Parallax>
+            </div>
+        </div>
+        <div>
+            <div class="parallax-default__item">
+                <Parallax
+                    defaulAlign="center"
                     propierties="opacity"
-                    :opacityStart="80"
-                    :opacityEnd="20"
-                    oneDirection="toStop">
+                    :defaultOpacityStart="80"
+                    :defaultOpacityEnd="20"
+                    defaultStopBack="toStop">
                     <TestComponent/>
                 </Parallax>
             </div>
@@ -59,22 +89,22 @@
         <div>
             <div class="parallax-default__item">
                 <Parallax
-                    align="center"
-                    :distanceValue="9"
-                    :jsVelocityValue="8"
+                    defaulAlign="end"
+                    :defaultDistance="9.3"
+                    :jsDelta="9"
                     :reverse="true"
-                    oneDirection="toStop"
                     ease="smooth">
                     <TestComponent/>
                 </Parallax>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
 
-import Parallax from '@/components/ui/Parallax.vue'
+import Parallax from '@/components/ui/parallax/Parallax.vue'
 import TestComponent from '@/components/TestComponent.vue'
 
 export default {
@@ -88,7 +118,6 @@ export default {
 
 <style lang="scss" scoped>
     .parallax-default {
-        min-height: 2000px;
         text-align: center;
 
         &__item {

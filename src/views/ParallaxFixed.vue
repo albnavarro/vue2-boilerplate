@@ -4,63 +4,63 @@
             <div class="fixed__content container">
                 <Parallax
                     computationType = "fixed"
-                    :fixedRange = "50"
+                    :fixedDistance = "50"
                     :parentRef = "ref1"
                     :reverse = "true"
-                    :fromCalculatedValue = "true"
-                    :limiterOff = "true">
+                    :fixedStartFromEnd = "true"
+                    :renderAlways = "true">
                     <Parallax
                         computationType = "fixed"
-                        :fixedRange = "50"
-                        :scalable = "true"
+                        :fixedDistance = "50"
+                        :responsive = "true"
                         :parentRef = "ref2"
                         propierties = "horizontal"
-                        :limiterOff = "true">
+                        :renderAlways = "true">
                         <Parallax
                             computationType = "fixed"
-                            :fixedRange = "50"
-                            :scalable = "true"
+                            :fixedDistance = "50"
+                            :responsive = "true"
                             :parentRef = "ref3"
                             :reverse = "true"
                             propierties = "horizontal"
-                            :limiterOff = "true">
+                            :renderAlways = "true">
                             <Parallax
                                 computationType = "fixed"
-                                :fixedRange = "100"
+                                :fixedDistance = "100"
                                 :parentRef = "ref4"
                                 propierties = "scale"
-                                :limiterOff = "true">
+                                :renderAlways = "true">
                                 <Parallax
                                     computationType = "fixed"
                                     ease="smooth"
-                                    :fixedRange = "90"
+                                    :fixedDistance = "90"
                                     :parentRef = "ref5"
                                     propierties = "rotate"
-                                    :limiterOff = "true">
+                                    :renderAlways = "true">
                                     <Parallax
                                         computationType = "fixed"
-                                        :fixedRange = "90"
+                                        :fixedDistance = "90"
                                         :parentRef = "ref5"
                                         :targetRef = "target"
-                                        :applyEndOff = "true"
+                                        :fixedStopAfterEnd = "true"
                                         propierties = "border-width"
-                                        :limiterOff = "true">
+                                        :renderAlways = "true">
                                         <Parallax
                                             computationType = "fixed"
-                                            :fixedRange = "90"
-                                            :fixedRangeStatic = "true"
+                                            :fixedDistance = "90"
+                                            :fixedDistanceImmutable = "true"
                                             :parentRef = "ref6"
                                             :targetRef = "target"
-                                            :applyEndOff = "true"
-                                            :applyStartOff = "true"
+                                            :fixedStopAfterEnd = "true"
+                                            :fixedStopBeforeStart = "true"
                                             propierties = "border-width"
-                                            :limiterOff = "true">
+                                            :renderAlways = "true">
                                             <Parallax
                                                 computationType = "fixed"
-                                                :fixedRange = "90"
-                                                :applyStartOff = "true"
-                                                :fromCalculatedValue = "true"
-                                                :limiterOff = "true"
+                                                :fixedDistance = "90"
+                                                :fixedStopBeforeStart = "true"
+                                                :fixedStartFromEnd = "true"
+                                                :renderAlways = "true"
                                                 propierties = "border-width"
                                                 :parentRef = "ref7"
                                                 :delay = "1"
@@ -88,7 +88,7 @@
 
 <script>
 
-import Parallax from '@/components/ui/Parallax.vue'
+import Parallax from '@/components/ui/parallax/Parallax.vue'
 
 export default {
     name: 'ParallaxFixed',
@@ -157,7 +157,6 @@ export default {
         height: 200px;
         background-color: #ccc;
         border: 0 $black solid;
-        box-sizing: border-box;
     }
 }
 </style>

@@ -21,7 +21,7 @@
             </AnimationOnScroll>
         </div>
         <div class="animation__item">
-            <AnimationOnScroll>
+            <AnimationOnScroll :once="false">
                 <TestComponent/>
             </AnimationOnScroll>
         </div>

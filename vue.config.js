@@ -3,7 +3,7 @@ module.exports = {
     loaderOptions: {
       scss: {
           additionalData: `
-            @import "~@/scss/main.scss";
+            @import "~@/scss/abstrtact.scss";
           `
       }
     }

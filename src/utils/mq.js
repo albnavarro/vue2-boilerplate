@@ -6,7 +6,8 @@ export const mq = {
     'tablet':  '768',
     'desktop': '992',
     'large':   '1200',
-    'x-large':   '1400'
+    'x-large':   '1400',
+    'infitinte':   '9000'
   },
 
   max: function(breakpoint) {
