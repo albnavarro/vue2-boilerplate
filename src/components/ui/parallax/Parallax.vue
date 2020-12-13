@@ -92,7 +92,7 @@ export default {
         },
         responsiveBreackpoint: {
             type: String,
-            default: "xLarge"
+            default: "x-large"
         },
         reverse: {
             type: Boolean,

@@ -36,7 +36,7 @@ il calcolo verra slittato a 30vh partendo dalla base della viewport
 
 Il primo vale applicato non sarà il minimo ma il massimo
 
-#### fixedStartFromEnd / fixedStopBeforeStart
+#### fixedStopAfterEnd / fixedStopBeforeStart
 
 Di default al di sopra o al di sotto dello spazio attivo di calcolo vengono applicati i valori minimi e massimo.<br/>
 E' possibile non applicarli con queste due prop.<br/>
