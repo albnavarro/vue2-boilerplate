@@ -122,12 +122,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-    margin: auto;
-    max-width: map-get($breakpoints, 'x-large');
-}
-
-
 .fixed {
     &__content {
         position: sticky;

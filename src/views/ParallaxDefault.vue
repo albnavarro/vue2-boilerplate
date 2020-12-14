@@ -9,7 +9,7 @@
                     breackpoint="x-small"
                     responsiveBreackpoint = "infinite"
                     propierties = "horizontal"
-                    defaulAlign="start" >
+                    defaultAlign="start" >
                     <TestComponent/>
                 </Parallax>
             </div>
@@ -20,7 +20,7 @@
                     propierties = "rotate"
                     breackpointType="min"
                     breackpoint="x-small"
-                    defaulAlign="start"
+                    defaultAlign="start"
                     ease="smooth"
                     smoothType="css">
                     <TestComponent/>
@@ -31,7 +31,7 @@
             <div class="parallax-default__item">
                 <Parallax
                     propierties = "rotate"
-                    defaulAlign="start"
+                    defaultAlign="start"
                     :reverse="true">
                     <TestComponent/>
                 </Parallax>
@@ -41,7 +41,7 @@
             <div class="parallax-default__item">
                 <Parallax
                     propierties = "scale"
-                    defaulAlign="40"
+                    defaultAlign="40"
                     :defaultDistance="9.2"
                     defaultStopBack="toBack">
                     <TestComponent/>
@@ -66,8 +66,8 @@
                 <Parallax
                     computationType = "fixed"
                     propierties = "horizontal"
-                    defaulAlign="start"
                     :fixedDistance = "50"
+                    :fixedOffset = "40"
                     :parentRef = "dummy"
                     :reverse = "true"
                     :fixedStartFromEnd = "true">
@@ -90,7 +90,6 @@
         <div>
             <div class="parallax-default__item">
                 <Parallax
-                    defaulAlign="center"
                     propierties="opacity"
                     :defaultOpacityStart="80"
                     :defaultOpacityEnd="20"
@@ -102,7 +101,7 @@
         <div>
             <div class="parallax-default__item">
                 <Parallax
-                    defaulAlign="end"
+                    defaultAlign="end"
                     :defaultDistance="9.3"
                     :jsDelta="9"
                     :reverse="true"
