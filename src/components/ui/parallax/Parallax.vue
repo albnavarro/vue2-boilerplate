@@ -50,7 +50,7 @@ export default {
             type: Number,
             default: 8
         },
-        defaulAlign: {
+        defaultAlign: {
             type: String,
             default: "center"
         },
@@ -157,10 +157,12 @@ export default {
             vm.wheight = vm.$store.state.browser.height
             vm.documentHeight = vm.$store.state.browser.documentHeight
 
+            vm.selfWidth = parseInt(outerWidth(vm.$refs.item))
+
             if (vm.parentRef == null) {
                 vm.offset = parseInt(offset(vm.$refs.item).top)
                 vm.height = parseInt(outerHeight(vm.$refs.item))
-                vm.width = parseInt(outerWidth(vm.$refs.item))
+                vm.width = vm.selfWidth
             } else {
                 vm.offset = parseInt(offset(vm.parentRef).top)
                 vm.height = parseInt(outerHeight(vm.parentRef))
@@ -236,7 +238,7 @@ export default {
                 !vm.isInViewport() && !vm.renderAlways) return;
 
             let fixedResult = {}
-            const alignToNumber = parseInt(vm.defaulAlign)
+            const alignToNumber = parseInt(vm.defaultAlign)
 
             switch (vm.computationType) {
                 case 'fixed':
@@ -303,7 +305,7 @@ export default {
             const percent = (Math.abs(val) * 100) / vm.height;
             switch (vm.propierties) {
                 case 'horizontal':
-                    val = -((vm.width / 100) * percent);
+                    val = -((vm.width / 100) * percent) - ((vm.selfWidth / 100) * percent);
                     break;
 
                 case 'scale':
@@ -332,7 +334,7 @@ export default {
             const vhStart = vm.wheight - (vm.wheight / 100 * vm.defaultOpacityStart);
 
             let  opacityVal = 0;
-            if (vm.defaulAlign == 'start') {
+            if (vm.defaultAlign == 'start') {
                 opacityVal = -vm.scroll;
             } else {
                 opacityVal = (vm.scroll + vhLimit - vm.offset);
@@ -340,7 +342,7 @@ export default {
 
             opacityVal = opacityVal * -1;
 
-            if (vm.defaulAlign == 'start') {
+            if (vm.defaultAlign == 'start') {
                 opacityVal = 1 - opacityVal / vm.offset;
             } else {
                 opacityVal = 1 - opacityVal / (vm.wheight - vhStart - vhLimit);
@@ -353,7 +355,7 @@ export default {
             const vm = this
             let val = 0
 
-            switch (vm.defaulAlign) {
+            switch (vm.defaultAlign) {
                 case 'start':
                     val = (vm.scroll / vm.distance);
                     break;
@@ -499,6 +501,7 @@ export default {
         vm.height = 0
         vm.wheight = 0
         vm.width = 0
+        vm.selfWidth = 0
         vm.documentHeight = 0
         vm.distance = 0
         vm.jsVelocity = 0

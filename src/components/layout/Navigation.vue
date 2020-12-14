@@ -3,7 +3,8 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/Animation">Scroll animation</router-link> |
       <router-link to="/ParallaxDefault">Parrallax</router-link> |
-       <router-link to="/ParallaxFixed">Parrallax Fixed</router-link>
+      <router-link to="/ParallaxFixed">Parrallax Fixed</router-link> |
+      <router-link to="/Utils">Utils</router-link>
     </div>
 </template>
 
