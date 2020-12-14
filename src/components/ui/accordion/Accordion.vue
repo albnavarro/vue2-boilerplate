@@ -4,7 +4,7 @@
         v-for="(item, index) in items"
         :key = "index"
         :index = "index"
-        :activeIndex = "activeIndex"
+        :closeItem = "activeIndex !== index && !multiple"
         :content = "item"
         @onClick="onAccordionToggle"
     />
@@ -38,7 +38,7 @@ export default {
     methods: {
         onAccordionToggle(index) {
             const vm = this
-            if (!vm.multiple) vm.activeIndex = index
+            vm.activeIndex = index
         }
     }
 }

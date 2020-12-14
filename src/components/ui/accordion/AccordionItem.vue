@@ -33,8 +33,8 @@ export default {
             type: Object,
             required: true
         },
-        activeIndex: {
-            type: Number,
+        closeItem: {
+            type: Boolean,
             required: true
         }
     },
@@ -44,13 +44,13 @@ export default {
         }
     },
     watch: {
-        activeIndex() {
-            const vm = this
-            if(vm.activeIndex != vm.index ) vm.opened = false
-        },
         opened() {
             const vm = this;
             (vm.opened) ? vm.open() : vm.close()
+        },
+        closeItem() {
+            const vm = this
+            if(vm.closeItem) vm.opened = false
         }
     },
     methods: {
