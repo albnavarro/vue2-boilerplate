@@ -60,7 +60,7 @@ Prioprietà di default della prop `computationType`
 
 Il calcolo viene effettuato su un moltiplicatore da `1 a 10`
 
-#### defaulAlign
+#### defaultAlign
 
 E possibile fare in modo che il punto 0 sia allineato a :<br/><br/>
 `start`: cima del documento<br/>
