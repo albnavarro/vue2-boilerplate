@@ -85,10 +85,23 @@ la propietà `toBack` funziona correttamente come descritto nella prossima prop
 #### defaultOpacityStart / defaultOpacityEnd
 
 Nel caso di opacità è possibile definire separatamente il punto (percentuale) della viewport in cui l'opacità parte il corrispettivo punto di arrivo<br/><br/>
-Usando `defaultStopBack = "toBack"` un funzionamento corretto si ha solo impostando i valori a 0 e 100 ( da implementare. )
 
-`:defaultOpacityStart="100"
-:defaultOpacityEnd="0"`
+Es:<br/>
+`:defaultOpacityStart="100"`<br/>
+100 indica la base della viewport
+
+`:defaultOpacityEnd="0"`<br/>
+0 indica il top della viewport
+
+**tips**<br/>
+Usando `defaultStopBack = "toBack"` un funzionamento corretto si ha solo impostando i valori a 100 e 50 e senza la prop reverse attivata.<br/>
+( da cercare una solzione)
+
+`propierties="opacity"`<br/>
+`:defaultOpacityStart="100"`<br/>
+`:defaultOpacityEnd="50"`<br/>
+`:reverse = "false"`<br/>
+`defaultStopBack="toBack"`<br/>
 
 <br/><br/>
 

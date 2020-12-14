@@ -50,6 +50,18 @@
         </div>
         <div>
             <div class="parallax-default__item">
+                <Parallax
+                    propierties="opacity"
+                    :defaultOpacityStart="100"
+                    :defaultOpacityEnd="50"
+                    :reverse = "false"
+                    defaultStopBack="toBack">
+                    <TestComponent/>
+                </Parallax>
+            </div>
+        </div>
+        <div>
+            <div class="parallax-default__item">
                 <div class="dummy-item" ref="dummy"/>
                 <Parallax
                     computationType = "fixed"
@@ -128,6 +140,7 @@ export default {
 <style lang="scss" scoped>
     .parallax-default {
         text-align: center;
+        overflow: hidden;
 
         &__item {
             margin-bottom: 40px;
