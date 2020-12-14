@@ -33,13 +33,9 @@ export default {
             type: Object,
             required: true
         },
-		activeId: {
-			type: Number,
+        activeIndex: {
+            type: Number,
             required: true
-		},
-        multiple: {
-            type: Boolean,
-            default: false
         }
     },
     computed: {
@@ -48,11 +44,9 @@ export default {
         }
     },
     watch: {
-        activeId() {
+        activeIndex() {
             const vm = this
-            if(vm.activeId != vm.index && !vm.multiple) {
-                vm.opened = false
-            }
+            if(vm.activeIndex != vm.index ) vm.opened = false
         },
         opened() {
             const vm = this;

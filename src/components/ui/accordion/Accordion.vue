@@ -4,9 +4,8 @@
         v-for="(item, index) in items"
         :key = "index"
         :index = "index"
-        :activeId = "activeId"
+        :activeIndex = "activeIndex"
         :content = "item"
-        :multiple = "multiple"
         @onClick="onAccordionToggle"
     />
 </div>
@@ -23,13 +22,7 @@ export default {
     },
     data() {
         return {
-            activeId: -1
-        }
-    },
-    methods: {
-        onAccordionToggle(index) {
-            const vm = this
-            vm.activeId = index
+            activeIndex: -1
         }
     },
     props: {
@@ -40,6 +33,12 @@ export default {
         multiple: {
             type: Boolean,
             default: false
+        }
+    },
+    methods: {
+        onAccordionToggle(index) {
+            const vm = this
+            if (!vm.multiple) vm.activeIndex = index
         }
     }
 }
