@@ -72,6 +72,8 @@ export default {
 
         afterConstrain(state) {
             state.width = window.innerWidth
+            state.scroll = window.pageYOffset;
+            state.scrollThrottle = window.pageYOffset;
             state.documentHeight = document.documentElement.scrollHeight
         }
     },

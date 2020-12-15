@@ -3,16 +3,22 @@
     <div class="accordion__item__header" @click.prevent="onClick()">
         {{ content.title }}
     </div>
-    <div class="accordion__item__content" ref="content">
+    <div class="accordion__item__content" ref="content" :style="setHeight">
         <div class="accordion__item__inner">
-            {{ content.content }}
+            <template v-if="haveContent">
+                <div v-html="content.content"/>
+            </template>
+            <template v-if="haveComponent">
+                <component :is="haveComponent" @hook:mounted="componentMounted"/>
+            </template>
         </div>
     </div>
 </div>
 </template>
 
 <script>
-import { slideUpDownReset, slideUp, slideDown } from '@/utils/animation.js'
+import { outerHeight } from '@/utils/vanillaFunction.js'
+import { mapState } from 'vuex'
 
 export default {
     name: 'AccordionItem',
@@ -36,39 +42,95 @@ export default {
         }
     },
     computed: {
+        ...mapState('browser', {
+            wWidth: 'width'
+        }),
+        /*
+        utility class
+        */
         isOpen() {
             return this.active ? 'open' : '';
-        }
+        },
+        /*
+        Slide up/down
+        */
+        setHeight() {
+            const vm = this
+            return ( vm.active ) ? `height:${vm.height}` : 'height:0';
+        },
+        /*
+        Check if have simple content
+        */
+        haveContent() {
+            return 'content' in this.content
+        },
+        /*
+        Load async component
+        */
+        haveComponent() {
+            if('component' in this.content) {
+                return () => import(`@/${this.content.component.path}${this.content.component.name}.vue`)
+            } else {
+                return null
+            }
+		}
     },
     watch: {
-        active() {
-            const vm = this;
-            (vm.active) ? vm.open() : vm.close()
-        },
+        /*
+        Close item ( parent prop multiple = false)
+        */
         closed() {
             const vm = this
             if(vm.closed) vm.active = false
+        },
+        /*
+        Watch browser width
+        */
+        wWidth() {
+            this.getheight()
         }
     },
     methods: {
+        /*
+        Refresh height on content component loaded
+        */
+        componentMounted() {
+            this.getheight();
+        },
+        /*
+        Open close and send to parent index
+        */
         onClick() {
             const vm = this
             vm.active = !vm.active
-            vm.$emit('onClick', this.index)
+            vm.$emit('onClick', vm.index)
         },
-        open() {
-            slideDown(this.$refs.content).then(() => {
-                this.$store.commit('browser/afterConstrain');
-            })
-        },
-        close() {
-            slideUp(this.$refs.content).then(() => {
-                this.$store.commit('browser/afterConstrain');
-            })
+        /*
+        store item with on resize window or in mounted hook
+        */
+        getheight() {
+            const vm = this
+            const contentStyle = vm.$refs.content.style
+            contentStyle.height = 'auto'
+            vm.height = `${outerHeight(vm.$refs.content)}px`;
+            vm.active ? contentStyle.height = vm.height : contentStyle.height = 0
         }
     },
+    created() {
+        this.height = 'auto'
+    },
     mounted() {
-        slideUpDownReset(this.$refs.content)
+        const vm = this
+        vm.getheight()
+
+        /*
+        Refersh browser basic misure when accordion change layout
+        */
+        vm.$refs.content.addEventListener("transitionend", (e) => {
+			if ( e.propertyName === 'height') {
+				vm.$store.commit('browser/afterConstrain');
+			}
+		}, false)
     }
 }
 </script>
@@ -99,6 +161,11 @@ export default {
         &__header,
         &__inner {
             padding: 20px;
+        }
+
+        &__content {
+            overflow: hidden;
+            transition: height .55s;
         }
 
         &__inner {
