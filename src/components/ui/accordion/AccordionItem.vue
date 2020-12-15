@@ -1,10 +1,7 @@
 <template>
 <div class="accordion__item" :class="isOpen">
-    <div class="accordion__item__header">
+    <div class="accordion__item__header" @click.prevent="onClick()">
         {{ content.title }}
-        <button type="button" @click.prevent="onClick()">
-            open close
-        </button>
     </div>
     <div class="accordion__item__content" ref="content">
         <div class="accordion__item__inner">
@@ -21,7 +18,7 @@ export default {
     name: 'AccordionItem',
     data() {
         return {
-            opened: false
+            active: false
         }
     },
     props: {
@@ -33,42 +30,40 @@ export default {
             type: Object,
             required: true
         },
-        closeItem: {
+        closed: {
             type: Boolean,
             required: true
         }
     },
     computed: {
         isOpen() {
-            return this.opened ? 'open' : '';
+            return this.active ? 'open' : '';
         }
     },
     watch: {
-        opened() {
+        active() {
             const vm = this;
-            (vm.opened) ? vm.open() : vm.close()
+            (vm.active) ? vm.open() : vm.close()
         },
-        closeItem() {
+        closed() {
             const vm = this
-            if(vm.closeItem) vm.opened = false
+            if(vm.closed) vm.active = false
         }
     },
     methods: {
         onClick() {
             const vm = this
-            vm.opened = !vm.opened
+            vm.active = !vm.active
             vm.$emit('onClick', this.index)
         },
         open() {
             slideDown(this.$refs.content).then(() => {
-                const documentHeight = document.documentElement.scrollHeight
-                this.$store.commit('browser/setDocumentHeight', documentHeight);
+                this.$store.commit('browser/afterConstrain');
             })
         },
         close() {
             slideUp(this.$refs.content).then(() => {
-                const documentHeight = document.documentElement.scrollHeight
-                this.$store.commit('browser/setDocumentHeight', documentHeight);
+                this.$store.commit('browser/afterConstrain');
             })
         }
     },
@@ -81,14 +76,41 @@ export default {
 <style lang="scss" scoped>
 .accordion {
     &__item {
+        &__header {
+            background-color: $grey-light;
+            border-bottom: 1px $black solid;
+            cursor: pointer;
+            position: relative;
+
+            &:after {
+                content: '';
+                width: 10px;
+                height: 10px;
+                border-right: 3px $black solid;
+                border-bottom: 3px $black solid;
+                position: absolute;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%) rotate(45deg);
+                transition: transform .55s;
+            }
+        }
+
         &__header,
         &__inner {
             padding: 20px;
-            border: 1px $grey solid;
         }
 
         &__inner {
+            border: 1px $grey-light solid;
+        }
 
+        &.open {
+            .accordion__item__header {
+                &:after {
+                    transform: translateY(-50%) rotate(-135deg);
+                }
+            }
         }
     }
 }

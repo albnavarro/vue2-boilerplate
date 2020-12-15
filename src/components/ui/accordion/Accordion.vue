@@ -4,7 +4,7 @@
         v-for="(item, index) in items"
         :key = "index"
         :index = "index"
-        :closeItem = "activeIndex !== index && !multiple"
+        :closed = "activeIndex !== index && !multiple"
         :content = "item"
         @onClick="onAccordionToggle"
     />

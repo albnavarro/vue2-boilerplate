@@ -12,6 +12,6 @@ export default {
 <style lang="scss" scoped>
     #footer {
         height: 300px;
-        background-color: #f1f1f1;
+        background-color: $grey-light;
     }
 </style>

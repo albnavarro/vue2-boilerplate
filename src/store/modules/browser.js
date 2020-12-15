@@ -68,6 +68,11 @@ export default {
 
         setScrollEnd(state) {
             state.scrollEnd ++;
+        },
+
+        afterConstrain(state) {
+            state.width = window.innerWidth
+            state.documentHeight = document.documentElement.scrollHeight
         }
     },
 

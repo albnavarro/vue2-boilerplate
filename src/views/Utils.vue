@@ -52,6 +52,7 @@ export default {
 .utils {
     display: flex;
     flex-wrap: wrap;
+    margin-bottom: 100px;
 
     &__col {
         flex: span(6);
@@ -60,6 +61,7 @@ export default {
 
     .accordion-style {
         border: 2px transparent solid;
+        margin: 10px;
 
         &.selected {
             border: 2px $black solid;
