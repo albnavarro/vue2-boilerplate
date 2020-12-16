@@ -6,10 +6,10 @@
     <div class="accordion__item__content" ref="content" :style="setHeight">
         <div class="accordion__item__inner">
             <template v-if="haveContent">
-                <div v-html="content.content"/>
+                <div v-html="content.content" />
             </template>
             <template v-if="haveComponent">
-                <component :is="haveComponent" @hook:mounted="componentMounted"/>
+                <component :is="haveComponent" @hook:mounted="componentMounted" />
             </template>
         </div>
     </div>
@@ -19,6 +19,7 @@
 <script>
 import { outerHeight } from '@/utils/vanillaFunction.js'
 import { mapState } from 'vuex'
+import ErrorComponent from '@/components/ErrorComponent.vue'
 
 export default {
     name: 'AccordionItem',
@@ -56,7 +57,7 @@ export default {
         */
         setHeight() {
             const vm = this
-            return ( vm.active ) ? `height:${vm.height}` : 'height:0';
+            return (vm.active) ? `height:${vm.height}` : 'height:0';
         },
         /*
         Check if have simple content
@@ -68,12 +69,15 @@ export default {
         Load async component
         */
         haveComponent() {
-            if('component' in this.content) {
-                return () => import(`@/${this.content.component.path}${this.content.component.name}.vue`)
+            if ('component' in this.content) {
+                return () => ({
+                    component: import(`@/${this.content.component.path}${this.content.component.name}.vue`),
+                    error: ErrorComponent
+                })
             } else {
                 return null
             }
-		}
+        }
     },
     watch: {
         /*
@@ -81,7 +85,7 @@ export default {
         */
         closed() {
             const vm = this
-            if(vm.closed) vm.active = false
+            if (vm.closed) vm.active = false
         },
         /*
         Watch browser width
@@ -103,7 +107,7 @@ export default {
         onClick() {
             const vm = this
             vm.active = !vm.active
-            vm.$emit('onClick', vm.index)
+            vm.$emit('onClick')
         },
         /*
         store item with on resize window or in mounted hook
@@ -127,10 +131,10 @@ export default {
         Refersh browser basic misure when accordion change layout
         */
         vm.$refs.content.addEventListener("transitionend", (e) => {
-			if ( e.propertyName === 'height') {
-				vm.$store.commit('browser/afterConstrain');
-			}
-		}, false)
+            if (e.propertyName === 'height') {
+                vm.$store.commit('browser/afterConstrain');
+            }
+        }, false)
     }
 }
 </script>
@@ -154,7 +158,7 @@ export default {
                 right: 20px;
                 top: 50%;
                 transform: translateY(-50%) rotate(45deg);
-                transition: transform .55s;
+                transition: transform 0.55s;
             }
         }
 
@@ -165,7 +169,7 @@ export default {
 
         &__content {
             overflow: hidden;
-            transition: height .55s;
+            transition: height 0.55s;
         }
 
         &__inner {

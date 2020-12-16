@@ -16,7 +16,10 @@
         },
         {
             "title" : "title 2",
-            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel posuere arcu. Curabitur ligula urna, tempor quis dolor in, tempus dapibus felis. Fusce pulvinar ultrices est, facilisis euismod augue venenatis ut. Donec magna diam, auctor ut vulputate id, dignissim id metus. Vivamus eget ultrices nibh. Vestibulum purus mauris, ornare sit amet ullamcorper quis, luctus at eros. Pellentesque quis erat nec nisi ultricies condimentum."
+            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In vel posuere arcu. Curabitur ligula urna, tempor quis dolor in, tempus dapibus felis. Fusce pulvinar ultrices est, facilisis euismod augue venenatis ut. Donec magna diam, auctor ut vulputate id, dignissim id metus. Vivamus eget ultrices nibh. Vestibulum purus mauris, ornare sit amet ullamcorper quis, luctus at eros. Pellentesque quis erat nec nisi ultricies condimentum.",
+            "component": {
+
+            }
         },
         {
             "title" : "title 3",

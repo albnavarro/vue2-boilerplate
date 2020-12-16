@@ -6,7 +6,7 @@
         :index = "index"
         :closed = "activeIndex !== index && !multiple"
         :content = "item"
-        @onClick="onAccordionToggle"
+        @onClick="onAccordionToggle(index)"
     />
 </div>
 </template>
