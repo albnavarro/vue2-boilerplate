@@ -1,70 +1,72 @@
 import Vue from 'vue'
 import throttle from '@/utils/throttle.js'
 import debounce from '@/utils/debounce.js'
-import {loadImages} from '@/utils/loadImages.js'
+import {
+    loadImages
+} from '@/utils/loadImages.js'
 
 const WindowInstanceMap = new Vue({
-	data() {
-		return {
-			height: window.innerHeight,
-			width: window.innerWidth,
-			documentHeight: document.documentElement.scrollHeight,
-			scroll: 0,
-			scrollThrottle: 0,
-			scrollDirection: 'UP',
-			scrollStart: 0,
-			scrollEnd: 0
-		}
-	},
+    data() {
+        return {
+            height: window.innerHeight,
+            width: window.innerWidth,
+            documentHeight: document.documentElement.scrollHeight,
+            scroll: 0,
+            scrollThrottle: 0,
+            scrollDirection: 'UP',
+            scrollStart: 0,
+            scrollEnd: 0
+        }
+    },
     methods: {
         updateScroll() {
-			this.scroll = window.pageYOffset;
-			this.ticking = false;
-		},
+            this.scroll = window.pageYOffset;
+            this.ticking = false;
+        },
 
-		requestTick() {
-			if (!this.ticking) {
-				requestAnimationFrame(this.updateScroll)
-				this.ticking = true
-			}
-		},
+        requestTick() {
+            if (!this.ticking) {
+                requestAnimationFrame(this.updateScroll)
+                this.ticking = true
+            }
+        },
 
-		onScroll() {
-			if (this.lastScrollTop > this.scroll) {
-				this.scrollDirection = 'UP'
-			} else {
-				this.scrollDirection = 'DOWN'
-			}
+        onScroll() {
+            if (this.lastScrollTop > this.scroll) {
+                this.scrollDirection = 'UP'
+            } else {
+                this.scrollDirection = 'DOWN'
+            }
 
-			if (!this.isScrolling) {
-				this.scrollStart ++
-			}
+            if (!this.isScrolling) {
+                this.scrollStart++
+            }
 
-			this.isScrolling = true
-			this.lastScrollTop = this.scroll
+            this.isScrolling = true
+            this.lastScrollTop = this.scroll
 
-			this.requestTick()
-		},
+            this.requestTick()
+        },
 
-		onScrollThrottle() {
-			this.scrollThrottle = window.pageYOffset;
-		},
+        onScrollThrottle() {
+            this.scrollThrottle = window.pageYOffset;
+        },
 
-		onScrollEnd() {
-			this.isScrolling = false
-			this.scrollEnd ++;
-		},
+        onScrollEnd() {
+            this.isScrolling = false
+            this.scrollEnd++;
+        },
 
         refreshBasicSate() {
             this.width = window.innerWidth
             this.height = window.innerHeight
-            this.scroll =  window.pageYOffset
+            this.scroll = window.pageYOffset
             this.documentHeight = document.documentElement.scrollHeight
         },
 
         onRouteChange() {
             const imagesEl = document.querySelectorAll('img');
-            const images = [ ... imagesEl].map(el => {
+            const images = [...imagesEl].map(el => {
                 return el.getAttribute('src')
             });
 
@@ -79,22 +81,22 @@ const WindowInstanceMap = new Vue({
         }
     },
 
-	created() {
+    created() {
         this.ticking = false;
         this.lastScrollTop = 0;
         this.isScrolling = false;
 
-		window.addEventListener('scroll', this.onScroll, false);
-		window.addEventListener('resize', debounce(this.refreshBasicSate, 200), false);
-		window.addEventListener('scroll', throttle(this.onScrollThrottle, 200), false);
-		window.addEventListener('scroll', debounce(this.onScrollEnd, 200), false);
+        window.addEventListener('scroll', this.onScroll, false);
+        window.addEventListener('resize', debounce(this.refreshBasicSate, 200), false);
+        window.addEventListener('scroll', throttle(this.onScrollThrottle, 200), false);
+        window.addEventListener('scroll', debounce(this.onScrollEnd, 200), false);
 
-		document.onreadystatechange = () => {
-			if (document.readyState === "complete") {
-				this.refreshBasicSate()
-			}
-		}
-	}
+        document.onreadystatechange = () => {
+            if (document.readyState === "complete") {
+                this.refreshBasicSate()
+            }
+        }
+    }
 })
 
 export default WindowInstanceMap
