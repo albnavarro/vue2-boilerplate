@@ -18,8 +18,8 @@
 
 <script>
 import { outerHeight } from '@/utils/vanillaFunction.js'
-import { mapState } from 'vuex'
 import ErrorComponent from '@/components/ErrorComponent.vue'
+import WindowInstanceMap from '@/WindowInstanceMap.js'
 
 export default {
     name: 'AccordionItem',
@@ -43,9 +43,9 @@ export default {
         }
     },
     computed: {
-        ...mapState('browser', {
-            wWidth: 'width'
-        }),
+        wWidth() {
+            return WindowInstanceMap.width
+        },
         /*
         utility class
         */
@@ -132,7 +132,7 @@ export default {
         */
         vm.$refs.content.addEventListener("transitionend", (e) => {
             if (e.propertyName === 'height') {
-                vm.$store.commit('browser/afterConstrain');
+                WindowInstanceMap.refreshBasicSate()
             }
         }, false)
     }

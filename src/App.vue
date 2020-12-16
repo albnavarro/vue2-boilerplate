@@ -9,6 +9,7 @@
 <script>
 import Navigation from '@/components/layout/Navigation.vue'
 import Footer from '@/components/layout/Footer.vue'
+import WindowInstanceMap from '@/WindowInstanceMap.js'
 
 export default {
     components: {
@@ -18,14 +19,9 @@ export default {
     watch:{
         $route (){
             this.$nextTick(() => {
-                // Refresh browser module
-                this.$store.dispatch('browser/onRouteChange')
+                WindowInstanceMap.onRouteChange()
             });
         }
-    } ,
-    mounted() {
-        // Inizialize browser module
-        this.$store.dispatch('browser/inizialize')
     }
 }
 </script>

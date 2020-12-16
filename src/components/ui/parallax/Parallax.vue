@@ -6,9 +6,9 @@
 
 
 <script>
-import { mapState } from 'vuex'
 import { offset, outerHeight, outerWidth } from '@/utils/vanillaFunction.js'
 import { mq } from '@/utils/mq.js'
+import WindowInstanceMap from '@/WindowInstanceMap.js'
 
 export default {
     name: 'Parallax',
@@ -116,11 +116,15 @@ export default {
         }
     },
     computed: {
-        ...mapState('browser', {
-            scroll: 'scroll',
-            scrollThrottle: 'scrollThrottle',
-            wWidth: 'width'
-        }),
+        wWidth() {
+            return WindowInstanceMap.width
+        },
+        scroll() {
+            return WindowInstanceMap.scroll
+        },
+        scrollThrottle() {
+            return WindowInstanceMap.scrollThrottle
+        },
         smoothCss() {
             return this.smoothType == 'css' ? 'smooth-transition' : ''
         }
@@ -154,8 +158,8 @@ export default {
         calcSizes() {
             const vm = this;
 
-            vm.wheight = vm.$store.state.browser.height
-            vm.documentHeight = vm.$store.state.browser.documentHeight
+            vm.wheight = WindowInstanceMap.height
+            vm.documentHeight = WindowInstanceMap.documentHeight
 
             vm.selfWidth = parseInt(outerWidth(vm.$refs.item))
 

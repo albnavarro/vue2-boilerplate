@@ -6,7 +6,7 @@
 
 <script>
 import { offset } from '@/utils/vanillaFunction.js'
-import { mapState } from 'vuex'
+import WindowInstanceMap from '@/WindowInstanceMap.js'
 
 export default {
     name: 'AnimationOnScroll',
@@ -34,10 +34,12 @@ export default {
         }
     },
     computed: {
-        ...mapState('browser', {
-            scrollTop: 'scrollThrottle',
-            wWidth: 'width'
-        }),
+        wWidth() {
+            return WindowInstanceMap.width
+        },
+        scrollTop() {
+            return WindowInstanceMap.scroll
+        },
         visibleClass() {
             const vm = this;
             return vm.isVisible ? vm.classMap[vm.type].on : vm.classMap[vm.type].off
@@ -71,7 +73,7 @@ export default {
             let isDisabled = true;
             if (vm.once && vm.firstActive) isDisabled = false;
 
-            const wheight = this.$store.state.browser.height;
+            const wheight = WindowInstanceMap.height;
             const postion = this.offsetTop - wheight + this.gap
 
             if (postion < vm.scrollTop && vm.hide && isDisabled) {

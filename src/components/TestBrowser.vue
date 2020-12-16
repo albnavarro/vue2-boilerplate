@@ -40,9 +40,9 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import myData from '@/locales/data.json'
 import { mq } from '@/utils/mq.js'
+import WindowInstanceMap from '@/WindowInstanceMap.js'
 
 export default {
     name: 'TestBrowser',
@@ -53,16 +53,30 @@ export default {
         }
     },
     computed: {
-        ...mapState('browser', {
-            height: 'height',
-            width: 'width',
-            documentHeight: 'documentHeight',
-            scroll: 'scroll',
-            scrollThrottle: 'scrollThrottle',
-            scrollDirection: 'scrollDirection',
-            scrollStart: 'scrollStart',
-            scrollEnd: 'scrollEnd'
-        }),
+        height() {
+            return WindowInstanceMap.height
+        },
+        width() {
+            return WindowInstanceMap.width
+        },
+        documentHeight() {
+            return WindowInstanceMap.documentHeight
+        },
+        scroll() {
+            return WindowInstanceMap.scroll
+        },
+        scrollThrottle() {
+            return WindowInstanceMap.scrollThrottle
+        },
+        scrollDirection() {
+            return WindowInstanceMap.scrollDirection
+        },
+        scrollStart() {
+            return WindowInstanceMap.scrollStart
+        },
+        scrollEnd() {
+            return WindowInstanceMap.scrollEnd
+        }
     },
     watch: {
         width() {
