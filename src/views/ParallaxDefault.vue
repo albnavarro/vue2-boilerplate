@@ -41,7 +41,7 @@
             <div class="parallax-default__item">
                 <Parallax
                     propierties = "scale"
-                    defaultAlign="40"
+                    :defaultAlignVh="40"
                     :defaultDistance="9.2"
                     defaultStopBack="toBack">
                     <TestComponent/>
@@ -63,15 +63,24 @@
         <div>
             <div class="parallax-default__item">
                 <div class="dummy-item" ref="dummy"/>
+                <div class="dummy-item dummy-item-2" ref="dummy2"/>
                 <Parallax
                     computationType = "fixed"
                     propierties = "horizontal"
                     :fixedDistance = "50"
-                    :fixedOffset = "40"
+                    :fixedOffset = "0"
                     :parentRef = "dummy"
                     :reverse = "true"
                     :fixedStartFromEnd = "true">
-                    <TestComponent/>
+                    <Parallax
+                        computationType = "fixed"
+                        propierties = "horizontal"
+                        :fixedDistance = "50"
+                        :fixedOffset = "0"
+                        :parentRef = "dummy2"
+                        :fixedStartFromEnd = "true">
+                        <TestComponent/>
+                    </Parallax>
                 </Parallax>
             </div>
         </div>
@@ -123,7 +132,8 @@ export default {
     name: 'ParallaxDefault',
     data() {
         return {
-            dummy: null
+            dummy: null,
+            dummy2: null
         }
     },
     components: {
@@ -131,7 +141,8 @@ export default {
         TestComponent
     },
     mounted() {
-        this.dummy = this.$refs.dummy
+        this.dummy = this.$refs.dummy,
+        this.dummy2 = this.$refs.dummy2
     }
 }
 </script>
@@ -156,5 +167,10 @@ export default {
         left: 50%;
         transform: translateX(-50%);
         border: 1px $grey solid;
+
+        &-2 {
+            top: 50vh;
+            height: 30vh;
+        }
     }
 </style>

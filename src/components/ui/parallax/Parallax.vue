@@ -20,7 +20,13 @@ export default {
     props: {
         computationType: {
             type: String,
-            default: "default"
+            default: "default",
+            validator: function (value) {
+                return [
+                    'fixed',
+                    'default'
+                ].indexOf(value) !== -1
+            }
         },
         fixedDistance: {
             type: Number,
@@ -52,11 +58,30 @@ export default {
         },
         defaultAlign: {
             type: String,
-            default: "center"
+            default: "center",
+            validator: function (value) {
+                return [
+                    'start',
+                    'top',
+                    'center',
+                    'bottom',
+                    'end'
+                ].indexOf(value) !== -1
+            }
+        },
+        defaultAlignVh: {
+            type: Number,
+            default: null
         },
         defaultStopBack: {
             type: String,
-            default: ""
+            default: null,
+            validator: function (value) {
+                return [
+                    'toStop',
+                    'toBack'
+                ].indexOf(value) !== -1
+            }
         },
         defaultOpacityStart: {
             type: Number,
@@ -77,10 +102,17 @@ export default {
         breackpoint: {
             type: String,
             default: "desktop"
+            // reackpoint list -> src/utils/mq.js
         },
         breackpointType: {
             type: String,
-            default: "min"
+            default: "min",
+            validator: function (value) {
+                return [
+                    'min',
+                    'max'
+                ].indexOf(value) !== -1
+            }
         },
         renderAlways: {
             type: Boolean,
@@ -93,6 +125,7 @@ export default {
         responsiveBreackpoint: {
             type: String,
             default: "x-large"
+            // reackpoint list -> src/utils/mq.js
         },
         reverse: {
             type: Boolean,
@@ -100,11 +133,23 @@ export default {
         },
         ease: {
             type: String,
-            default: "linear"
+            default: "linear",
+            validator: function (value) {
+                return [
+                    'linear',
+                    'smooth'
+                ].indexOf(value) !== -1
+            }
         },
         smoothType: {
             type: String,
-            default: "js"
+            default: "js",
+            validator: function (value) {
+                return [
+                    'css',
+                    'js'
+                ].indexOf(value) !== -1
+            }
         },
         jsDelta: {
             type: Number,
@@ -112,7 +157,17 @@ export default {
         },
         propierties: {
             type: String,
-            default: "vertical"
+            default: "vertical",
+            validator: function (value) {
+                return [
+                    'vertical',
+                    'horizontal',
+                    'rotate',
+                    'scale',
+                    'opacity',
+                    'border-width'
+                ].indexOf(value) !== -1
+            }
         }
     },
     computed: {
@@ -122,7 +177,7 @@ export default {
             wWidth: 'width'
         }),
         smoothCss() {
-            return this.smoothType == 'css' ? 'smooth-transition' : ''
+            return (this.smoothType == 'css' && this.ease == "smooth") ? 'smooth-transition' : ''
         }
     },
     watch: {
@@ -238,7 +293,6 @@ export default {
                 !vm.isInViewport() && !vm.renderAlways) return;
 
             let fixedResult = {}
-            const alignToNumber = parseInt(vm.defaultAlign)
 
             switch (vm.computationType) {
                 case 'fixed':
@@ -254,10 +308,10 @@ export default {
                             break;
 
                         default:
-                            if (isNaN(alignToNumber)) {
-                                vm.endValue = this.getDefaultAlignIsNaN()
+                            if (this.defaultAlignVh) {
+                                vm.endValue = this.getDefaultAlignIsNumber()
                             } else {
-                                vm.endValue = this.getDefaultAlignIsNumber(alignToNumber)
+                                vm.endValue = this.getDefaultAlignIsNaN()
                             }
 
                             vm.endValue = vm.endValue.toFixed(1) / 2;
@@ -380,9 +434,9 @@ export default {
             return val
         },
 
-        getDefaultAlignIsNumber(alignVal) {
+        getDefaultAlignIsNumber() {
             const vm = this
-            return ((vm.scroll + (vm.wheight / 100 * alignVal))
+            return ((vm.scroll + (vm.wheight / 100 * this.defaultAlignVh))
                     - vm.offset) / vm.distance;
         },
 
@@ -401,7 +455,7 @@ export default {
                 }
             }
 
-            if (vm.fixedDistance == null) {
+            if (vm.computationType == 'default') {
                 if (vm.propierties != 'opacity') {
                     switch (vm.defaultStopBack) {
                         case 'toStop':

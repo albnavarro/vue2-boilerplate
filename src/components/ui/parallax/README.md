@@ -67,8 +67,17 @@ E possibile fare in modo che il punto 0 sia allineato a :<br/><br/>
 `top`: cima della viewport<br/>
 `center`: centro della viewport<br/>
 `bottom`:  base della viewport<br/>
-`end`: base del documento<br/>
-`NUMBER`: percentuale della viewport<br/>
+`end`: base del documento<br/><br/>
+
+
+#### defaultAlignVh
+
+Questa prop ha priorità sulla precendete<br/>
+Se impostata permette di allineare il punto 0 a un punto a scelta della viewport da 0 a 100.<br/>
+
+`0`: cima della viewport<br/>
+`100`: base della viewport<br/><br/>
+
 
 #### defaultStopBack
 
