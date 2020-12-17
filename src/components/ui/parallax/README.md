@@ -161,6 +161,7 @@ Il movimenti può essere lineare o `smooth`, di default è lineare.
 
 `ease="smooth"`
 
+
 #### smoothType
 lo `smooth` viene creato in css o in javascript.
 il comportamanto di default è in javascript

@@ -30,7 +30,7 @@ export default {
         },
         fixedDistance: {
             type: Number,
-            default: null
+            default: 50
         },
         fixedDistanceImmutable: {
             type: Boolean,
@@ -143,7 +143,7 @@ export default {
         },
         smoothType: {
             type: String,
-            default: "js",
+            default: "css",
             validator: function (value) {
                 return [
                     'css',
@@ -189,6 +189,17 @@ export default {
         parentRef() {
             const vm = this
             vm.calcSizes()
+        },
+        defaultDistance() {
+            const vm = this
+            vm.distance = vm.normalizeDistance(vm.defaultDistance)
+        },
+        jsDelta() {
+            const vm = this
+            vm.jsVelocity = vm.normalizeVelocity(vm.jsDelta)
+        },
+        ease() {
+            this.addWatcher()
         }
     },
     methods: {
@@ -241,6 +252,7 @@ export default {
 
         smoothParallaxJs() {
             const vm = this;
+            if (vm.ease == 'linear') return;
 
             vm.executeParallax(false)
             if (vm.raf) cancelAnimationFrame(vm.raf);
@@ -522,6 +534,36 @@ export default {
             return style
         },
 
+        addWatcher() {
+            const vm = this;
+            /*
+            Remove previous watcher if exist
+            */
+            if(vm.scrollWatcher != null) vm.scrollWatcher();
+
+            /*
+            Add new watcher dynamically
+            */
+            if (vm.ease == 'linear') {
+                vm.scrollWatcher = vm.$watch('scroll', () => {
+                    vm.executeParallax()
+                });
+            }
+
+            if (vm.ease == 'smooth') {
+                vm.scrollWatcher = vm.$watch('scrollThrottle', () => {
+                    switch (vm.smoothType) {
+                        case 'css':
+                            vm.executeParallax()
+                            break;
+                        case 'js':
+                            vm.smoothParallaxJs()
+                            break;
+                    }
+                });
+            }
+        },
+
         rereshParallax() {
             const vm = this;
 
@@ -561,6 +603,7 @@ export default {
         vm.jsVelocity = 0
         vm.firstTime = true
         vm.raf = null
+        vm.scrollWatcher = null
     },
 
     mounted() {
@@ -574,25 +617,7 @@ export default {
             if (vm.parentRef == null) vm.calcSizes()
             vm.rereshParallax()
 
-            // Add watcher dynamically
-            if (vm.ease == 'linear') {
-                vm.scrollWatcher = vm.$watch('scroll', () => {
-                    vm.executeParallax()
-                });
-            }
-
-            if (vm.ease == 'smooth') {
-                vm.scrollWatcher = vm.$watch('scrollThrottle', () => {
-                    switch (vm.smoothType) {
-                        case 'css':
-                            vm.executeParallax()
-                            break;
-                        case 'js':
-                            vm.smoothParallaxJs()
-                            break;
-                    }
-                });
-            }
+            vm.addWatcher();
         });
     },
 
