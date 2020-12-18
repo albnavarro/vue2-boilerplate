@@ -1,3 +1,6 @@
+# OUTDATED,
+# IL COMPONENTE E STATO DIVSO IN DUE SFRUTTANDO LO STESSO MIXIN. A BREVE IL NUOVO DOCUMETO
+
 # Parallax specs
 
 ## computationType
@@ -34,7 +37,7 @@ il calcolo comincerà a 30vh partendo dalla base della viewport
 
 #### fixedStartFromEnd
 
-Il primo vale applicato non sarà il minimo ma il massimo
+Il primo valore applicato non sarà il minimo ma il massimo
 
 #### fixedStopAfterEnd / fixedStopBeforeStart
 
@@ -87,8 +90,6 @@ Dopo il piunto è possibile:<br/><br/>
 
 nel caso in cui si usa la propietà `opacity`:<br/>
 la propietà `toStop` è inutile, oltre un valore opacità 1 il componente non può andare.<br/>
-la propietà `toBack` funziona correttamente come descritto nella prossima prop
-
 
 
 #### defaultOpacityStart / defaultOpacityEnd
@@ -101,16 +102,6 @@ Es:<br/>
 
 `:defaultOpacityEnd="0"`<br/>
 0 indica il top della viewport
-
-**tips**<br/>
-Usando `defaultStopBack = "toBack"` un funzionamento corretto si ha solo impostando i valori a 100 e 50 e senza la prop reverse attivata.<br/>
-( da cercare una solzione)
-
-`propierties="opacity"`<br/>
-`:defaultOpacityStart="100"`<br/>
-`:defaultOpacityEnd="50"`<br/>
-`:reverse = "false"`<br/>
-`defaultStopBack="toBack"`<br/>
 
 <br/><br/>
 
@@ -182,4 +173,4 @@ propietà base di spostamento predefinite:
 `<propierties = "rotate"`<br/>
 `<propierties = "scale"`<br/>
 `<propierties = "opacity"`<br/>
-`<propierties = "border-width"`<br/>
+`<propierties = "border-width"` ( available only for `computationType:'fixed'`)<br/>

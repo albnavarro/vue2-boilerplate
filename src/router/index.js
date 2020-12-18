@@ -19,20 +19,20 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/Animation.vue')
   },
   {
-    path: '/ParallaxDefault',
-    name: 'ParallaxDefault',
+    path: '/ParallaxExample',
+    name: 'ParallaxExample',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ParallaxDefault.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/ParallaxExample.vue')
   },
   {
-    path: '/ParallaxFixed',
-    name: 'ParallaxFixed',
+    path: '/ParallaxTimeline',
+    name: 'ParallaxTimeline',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/ParallaxFixed.vue')
+    component: () => import(/* webpackChunkName: "about" */ '../views/ParallaxTimeline.vue')
   },
   {
     path: '/Utils',

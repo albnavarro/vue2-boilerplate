@@ -2,78 +2,70 @@
     <div class="fixed container">
         <div class="fixed__container">
             <div class="fixed__content container">
-                <Parallax
-                    computationType = "fixed"
-                    :fixedDistance = "50"
+                <ParallaxStrict
+                    :range = "50"
                     :parentRef = "ref1"
                     :reverse = "true"
-                    :fixedStartFromEnd = "true"
+                    :inward = "true"
                     :renderAlways = "true">
-                    <Parallax
-                        computationType = "fixed"
-                        :fixedDistance = "50"
+                    <ParallaxStrict
+                        :range = "50"
                         :responsive = "true"
                         :parentRef = "ref2"
                         propierties = "horizontal"
                         :renderAlways = "true">
-                        <Parallax
-                            computationType = "fixed"
-                            :fixedDistance = "50"
+                        <ParallaxStrict
+                            propierties = "horizontal"
+                            :range = "50"
                             :responsive = "true"
                             :parentRef = "ref3"
                             :reverse = "true"
-                            propierties = "horizontal"
                             :renderAlways = "true">
-                            <Parallax
-                                computationType = "fixed"
-                                :fixedDistance = "100"
-                                :parentRef = "ref4"
+                            <ParallaxStrict
                                 propierties = "scale"
+                                :range = "100"
+                                :parentRef = "ref4"
                                 :renderAlways = "true">
-                                <Parallax
-                                    computationType = "fixed"
+                                <ParallaxStrict
                                     ease="smooth"
-                                    :fixedDistance = "90"
-                                    :parentRef = "ref5"
                                     propierties = "rotate"
+                                    :range = "90"
+                                    :parentRef = "ref5"
                                     :renderAlways = "true">
-                                    <Parallax
-                                        computationType = "fixed"
-                                        :fixedDistance = "90"
+                                    <ParallaxStrict
+                                        propierties = "border-width"
+                                        :range = "90"
                                         :parentRef = "ref5"
                                         :targetRef = "target"
-                                        :fixedStopAfterEnd = "true"
-                                        propierties = "border-width"
+                                        :disableEnd = "true"
                                         :renderAlways = "true">
-                                        <Parallax
-                                            computationType = "fixed"
-                                            :fixedDistance = "90"
-                                            :fixedDistanceImmutable = "true"
+                                        <ParallaxStrict
+                                            propierties = "border-width"
+                                            :range = "90"
+                                            :static = "true"
                                             :parentRef = "ref6"
                                             :targetRef = "target"
-                                            :fixedStopAfterEnd = "true"
-                                            :fixedStopBeforeStart = "true"
-                                            propierties = "border-width"
+                                            :disableEnd = "true"
+                                            :disableStart = "true"
                                             :renderAlways = "true">
-                                            <Parallax
-                                                computationType = "fixed"
-                                                :fixedDistance = "90"
-                                                :fixedStopBeforeStart = "true"
-                                                :fixedStartFromEnd = "true"
-                                                :renderAlways = "true"
+                                            <ParallaxStrict
                                                 propierties = "border-width"
+                                                :range = "90"
+                                                :disableStart = "true"
+                                                :inward = "true"
+                                                :renderAlways = "true"
                                                 :parentRef = "ref7"
                                                 :delay = "1"
                                                 :targetRef = "target">
                                                 <div class="target-container" ref="target"/>
-                                            </Parallax>
-                                        </Parallax>
-                                    </Parallax>
-                                </Parallax>
-                            </Parallax>
-                        </Parallax>
-                    </Parallax>
-                </Parallax>
+                                            </ParallaxStrict>
+                                        </ParallaxStrict>
+                                    </ParallaxStrict>
+                                </ParallaxStrict>
+                            </ParallaxStrict>
+                        </ParallaxStrict>
+                    </ParallaxStrict>
+                </ParallaxStrict>
             </div>
             <div class="fixed__dummy fixed__dummy--1" ref="ref1"/>
             <div class="fixed__dummy fixed__dummy--2" ref="ref2"/>
@@ -88,10 +80,10 @@
 
 <script>
 
-import Parallax from '@/components/ui/parallax/Parallax.vue'
+import ParallaxStrict from '@/components/ui/parallax/ParallaxStrict.vue'
 
 export default {
-    name: 'ParallaxFixed',
+    name: 'ParallaxTimeline',
     data() {
         return {
             ref1: null,
@@ -105,7 +97,7 @@ export default {
         }
     },
     components: {
-        Parallax
+        ParallaxStrict
     },
     mounted() {
         const vm = this

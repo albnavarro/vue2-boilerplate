@@ -217,6 +217,9 @@ export default {
             return (10 - n) * 10
         },
 
+        /*
+        Refresh stored size data each resize
+        */
         calcSizes() {
             const vm = this;
 
@@ -236,6 +239,9 @@ export default {
             }
         },
 
+        /*
+        Check if item is in viewport
+        */
         isInViewport() {
             const vm = this;
 
@@ -250,6 +256,9 @@ export default {
 
         },
 
+        /*
+        Instantiate a new ReuqestAnimation loop at each scrollThrootle change
+        */
         smoothParallaxJs() {
             const vm = this;
             if (vm.ease == 'linear') return;
@@ -259,6 +268,9 @@ export default {
             vm.raf = requestAnimationFrame(vm.onReuqestAnim.bind(vm))
         },
 
+        /*
+        ReuqestAnimation loop in smooth mode and js anabled
+        */
         onReuqestAnim() {
             const draw = () => {
                 const vm = this;
@@ -288,7 +300,9 @@ export default {
                     Object.assign(vm.targetRef.style, vm.setStyle(vm.startValue))
                 }
 
-                // La RAF viene "rigenerata" fino a quando tutti gli elementi rimangono fermi
+                /*
+                La RAF viene "rigenerata" fino a quando tutti gli elementi rimangono fermi
+                */
                 if (vm.prevValue == vm.startValue) return;
 
                 if (vm.raf) cancelAnimationFrame(vm.raf);
@@ -298,19 +312,21 @@ export default {
             draw()
         },
 
+        /*
+        Calculates the final value based on the options
+        */
         executeParallax(applyStyle = true) {
             const vm = this;
 
             if (!mq[vm.breackpointType](vm.breackpoint) ||
                 !vm.isInViewport() && !vm.renderAlways) return;
 
-            let fixedResult = {}
-
+            let fRes = {}
             switch (vm.computationType) {
                 case 'fixed':
-                    fixedResult = this.getFixedValue(applyStyle)
-                    vm.endValue = fixedResult.endvalue
-                    applyStyle = fixedResult.applyStyle
+                    fRes = this.getFixedValue(applyStyle)
+                    vm.endValue = fRes.endvalue
+                    applyStyle = fRes.applyStyle
                     break;
 
                 case 'default':
@@ -325,7 +341,6 @@ export default {
                             } else {
                                 vm.endValue = this.getDefaultAlignIsNaN()
                             }
-
                             vm.endValue = vm.endValue.toFixed(1) / 2;
                             break;
                     }
@@ -341,131 +356,170 @@ export default {
             }
         },
 
-        getFixedValue(_applyStyle) {
-            const vm = this
+        /*
+        Get motion val in fixed mode
+        */
+        getFixedValue(applyStyle) {
             let val = 0
 
-            const fixfedEntryOffset = ((vm.wheight / 100) * vm.fixedOffset)
-            const partials = -((vm.scroll + vm.wheight - fixfedEntryOffset)
-                             - ( vm.offset + vm.height));
-            const endPos = (vm.height / 100) * vm.fixedDistance;
-            const inMotion = (partials / 100) * vm.fixedDistance;
+            const vm = this
+            const s = vm.scroll
+            const wh = vm.wheight
+            const o = vm.offset
+            const h = vm.height
+            const w = vm.width
+            const sw = vm.selfWidth
+            const fd = vm.fixedDistance
+            const fo =  ((wh / 100) * vm.fixedOffset)
+            const partials = -((s + wh - fo) - ( o + h));
+            const fe = vm.fixedStartFromEnd
+            const bs = vm.fixedStopBeforeStart
+            const ae = vm.fixedStopAfterEnd
+            const fi = vm.fixedDistanceImmutable
 
+            /*
+            ep = Maximum value ( end position)
+            */
+            const ep = (h / 100) * fd;
 
-            if (vm.scroll + vm.wheight - fixfedEntryOffset <  vm.offset) {
-                val = (vm.fixedStartFromEnd) ? endPos : 0;
-                if (vm.fixedStopBeforeStart) _applyStyle = false;
+            /*
+            im = active value through motion
+            */
+            const im = (partials / 100) * fd;
 
-            } else if (vm.scroll + vm.wheight - fixfedEntryOffset >  vm.offset + vm.height) {
-                val = (vm.fixedStartFromEnd) ? 0 : -endPos;
-                if (vm.fixedStopAfterEnd) _applyStyle = false;
+            if (s + wh - fo <  o) {
+                val = (fe) ? ep : 0;
+                if (bs) applyStyle = false;
+
+            } else if (s + wh - fo >  o + h) {
+                val = (fe) ? 0 : - ep;
+                if (ae) applyStyle = false;
 
             } else {
-                val = (vm.fixedStartFromEnd) ? inMotion : inMotion - endPos;
+                val = (fe) ? im : im - ep;
             }
 
-            if(vm.fixedDistanceImmutable)  {
-                val = endPos;
-            }
+            if (fi) val = ep;
 
-            const percent = (Math.abs(val) * 100) / vm.height;
+            /*
+            p = percent value
+            */
+            const p = (Math.abs(val) * 100) / h;
+
             switch (vm.propierties) {
                 case 'horizontal':
-                    val = -((vm.width / 100) * percent) - ((vm.selfWidth / 100) * percent);
+                    val = -((w / 100) * p) - ((sw / 100) * p);
                     break;
 
                 case 'scale':
-                    val = percent * 10;
+                    val = p * 10;
                     break;
 
                 case 'opacity':
-                    val = percent / 100;
+                    val = p / 100;
                     break;
 
                 case 'rotate':
                 case 'border-width':
-                    val = percent;
+                    val = p;
                     break;
             }
 
             return {
                 endvalue: val,
-                applyStyle: _applyStyle
+                applyStyle
             }
         },
 
+        /*
+        Get opacity val in default mode
+        */
         getDefaultOpacity() {
             const vm = this;
-            const vhLimit = (vm.wheight / 100 * vm.defaultOpacityEnd);
-            const vhStart = vm.wheight - (vm.wheight / 100 * vm.defaultOpacityStart);
+            const wh = vm.wheight
+            const oe = vm.defaultOpacityEnd
+            const os = vm.defaultOpacityStart
+            const s = vm.scroll
+            const o = vm.offset
+            const vhLimit = (wh / 100 * oe);
+            const vhStart = wh - (wh / 100 * os);
 
-            let  opacityVal = 0;
+            let  val = 0;
             if (vm.defaultAlign == 'start') {
-                opacityVal = -vm.scroll;
+                val = -s;
             } else {
-                opacityVal = (vm.scroll + vhLimit - vm.offset);
+                val = (s + vhLimit - o);
             }
 
-            opacityVal = opacityVal * -1;
+            val = val * -1;
 
             if (vm.defaultAlign == 'start') {
-                opacityVal = 1 - opacityVal / vm.offset;
+                val = 1 - val / o;
             } else {
-                opacityVal = 1 - opacityVal / (vm.wheight - vhStart - vhLimit);
+                val = 1 - val / (wh - vhStart - vhLimit);
             }
 
-            return opacityVal.toFixed(2);
+            return val.toFixed(2);
         },
 
+        /*
+        Get motion val when use align like top, bottom etc... in default mode
+        */
         getDefaultAlignIsNaN() {
             const vm = this
+            const s = vm.scroll
+            const d = vm.distance
+            const o = vm.offset
+            const h = vm.height
+            const wh = vm.wheight
+            const dh = vm.documentHeight
             let val = 0
 
             switch (vm.defaultAlign) {
                 case 'start':
-                    val = (vm.scroll / vm.distance);
+                    val = s / d;
                     break;
 
                 case 'top':
-                    val = (((vm.scroll - vm.offset) / vm.distance));
+                    val = (s - o) / d;
                     break;
 
                 case 'center':
-                    val = ((((vm.scroll + (vm.wheight / 2 - vm.height / 2)) - vm.offset) / vm.distance));
+                    val = ((s + (wh / 2 - h / 2)) - o) / d;
                     break;
 
                 case 'bottom':
-                    val = ((((vm.scroll + (vm.wheight - vm.height)) - vm.offset) / vm.distance));
+                    val = ((s + (wh - h)) - o) / d;
                     break;
 
                 case 'end':
-                    val = -((vm.documentHeight - (vm.scroll + vm.wheight)) / vm.distance);
+                    val = -((dh - (s + wh)) / d);
                     break;
             }
 
             return val
         },
 
+        /*
+        Get motion val when use align in vh in default mode
+        */
         getDefaultAlignIsNumber() {
             const vm = this
-            return ((vm.scroll + (vm.wheight / 100 * this.defaultAlignVh))
-                    - vm.offset) / vm.distance;
+            const s = vm.scroll
+            const wh = vm.wheight
+            const da = this.defaultAlignVh
+            const o = vm.offset
+            const d = vm.distance
+
+            return ((s + (wh / 100 * da)) - o) / d;
         },
 
-        setStyle(val) {
+
+        /*
+        Switch between zero in default mode
+        */
+        switchAfterZero(val) {
             const vm = this;
-            let style = {};
-
-            if (vm.reverse) {
-                switch (vm.propierties) {
-                    case 'opacity':
-                        val = 1 - val;
-                        break;
-
-                    default:
-                        val = -val;
-                }
-            }
 
             if (vm.computationType == 'default') {
                 if (vm.propierties != 'opacity') {
@@ -486,12 +540,80 @@ export default {
                     }
                 } else {
                     if (vm.defaultStopBack == 'toBack') {
-                        if (val > 1.999) val = 1.999
-                        if (val < 0) val = -val;
-                        if (val > 1) val = 1 - (val % 1);
+                        const wh = vm.wheight
+                        const oe = vm.defaultOpacityEnd
+                        const os = vm.defaultOpacityStart
+
+                        /*
+                        start vale in wh percent
+                        */
+                        const t = (wh / 100 * os)
+
+                        /*
+                        end value in vh percent
+                        */
+                        const e = (wh / 100 * oe)
+
+                        /*
+                        Are the upper and lower limits where opacity should be applied
+                        */
+                        const limitTop = e - (t  - e)
+                        const limitBottom = wh - (wh - t)
+
+                        /*
+                        el relative offset in relation to the window
+                        */
+                        const relOffset = vm.offset - vm.scroll
+
+                        /*
+                        Invert opacity if should be applied
+                        */
+                        if(relOffset >= limitTop && relOffset <= limitBottom) {
+                            if (val > 1.999) val = 1.999
+                            if (val < 0) val = - val;
+                            if (val > 1) val = 1 - (val % 1);
+                        } else if ( relOffset < limitTop && !vm.reverse) {
+                            val = 0
+                        } else if ( relOffset < limitTop && vm.reverse) {
+                            val = val = - val
+                        }
                     }
                 }
             }
+
+            return val
+        },
+
+        /*
+        Revert value
+        */
+        setReverse(val) {
+            const vm = this;
+
+            if (vm.reverse) {
+                switch (vm.propierties) {
+                    case 'opacity':
+                        val = 1 - val;
+                        break;
+
+                    default:
+                        val = -val;
+                }
+            }
+
+            return val
+        },
+
+
+        /*
+        Get final style
+        */
+        setStyle(val) {
+            const vm = this;
+            let style = {};
+
+            val = this.setReverse(val)
+            val = this.switchAfterZero(val)
 
             let scaleVal = 0
             switch (vm.propierties) {
@@ -534,6 +656,10 @@ export default {
             return style
         },
 
+
+        /*
+        Add right scroll watcher
+        */
         addWatcher() {
             const vm = this;
             /*
@@ -564,6 +690,9 @@ export default {
             }
         },
 
+        /*
+        Refresh position
+        */
         rereshParallax() {
             const vm = this;
 
@@ -613,7 +742,6 @@ export default {
             vm.distance = vm.normalizeDistance(vm.defaultDistance)
             vm.jsVelocity = vm.normalizeVelocity(vm.jsDelta)
 
-            // if rerefer to other element computed function calc value
             if (vm.parentRef == null) vm.calcSizes()
             vm.rereshParallax()
 
