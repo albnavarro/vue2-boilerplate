@@ -157,6 +157,7 @@ propietà base di spostamento predefinite:
 Si può definire un numero da 1 a x.
 Il valore nel caso di spostamento `verticale o orizzontale` definisce una percentuale in rapporto all 'altezza/larghezza dell'elemento stesso. Es: <br/>
 `:range = "50"` Il componente si sposterà esattamente del 50% della sua altezza/larghezza ( o del parentRef )<br/>
+**La direzione viene gestita sfruttando la proprietà `reverse`.**<br/>
 Nel caso di `rotate/border-width` il valore massimo sarà quello indicato nella proprietà, es: con un valore pari a  `90` e una propieta `rotate` il componente ruoterà di **90deg**.
 Nel caso di `opacity` il valore tra **0 e 100** corrisponderà al corrispettivo di opacita tra **0 e 1**.
 Nel caso di `scale` il valore **100** corrisponderà ad uno scale di **2**, il valore **200** a uno scale di **3**, e cosi via.
@@ -177,7 +178,11 @@ il movimento comincerà a **30vh** partendo dalla base della viewport
 <br/><br/>
 
 #### inward
-Il primo valore applicato non sarà il minimo (  **0** ) ma il massimo ( **il valore di destinazione** )
+Il primo valore applicato non sarà il minimo (  **0** ) ma il massimo ( **il valore di destinazione** ).<br/>
+Nel caso di uso annidato ( **timeline** ), e di **proprietà di posizione** ( `horizontal` || `vertical` ) settare a **true** questa proprietà esclusivamente al primo elemento della serie, in questo caso serve esclusivamente per decidere il punto di entrata dell' intera animazione.<br/>
+**Se usato negli elementi figli influenzerà le posizioni di tutti gli altri elementi con effetti indesiderati.**<br/>
+Per gli elementi figli usare **reverse** per gestire la direzione ( xs-dx | up-down)
+
 <br/><br/>
 
 

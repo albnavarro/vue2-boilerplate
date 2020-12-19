@@ -71,14 +71,12 @@
                     :range = "50"
                     :shiftOffset = "20"
                     :parentRef = "dummy"
-                    :reverse = "true"
-                    :inward = "true"
                     propierties = "horizontal">
                     <ParallaxStrict
                         :range = "50"
                         :shiftOffset = "20"
                         :parentRef = "dummy2"
-                        :inward = "true"
+                        :reverse = "true"
                         propierties = "horizontal">
                         <TestComponent/>
                     </ParallaxStrict>

@@ -96,9 +96,9 @@ export default {
             const fo =  ((wh / 100) * vm.shiftOffset)
             const partials = -((s + wh - fo) - ( o + h));
             const iw = vm.inward
-            const bs = vm.disableStart
-            const ae = vm.disableEnd
-            const fi = vm.static
+            const ds = vm.disableStart
+            const de = vm.disableEnd
+            const st = vm.static
 
             /*
             ep = Maximum value ( end position)
@@ -112,17 +112,17 @@ export default {
 
             if (s + wh - fo <  o) {
                 val = (iw) ? ep : 0;
-                if (bs) applyStyle = false;
+                if (ds) applyStyle = false;
 
             } else if (s + wh - fo >  o + h) {
                 val = (iw) ? 0 : - ep;
-                if (ae) applyStyle = false;
+                if (de) applyStyle = false;
 
             } else {
                 val = (iw) ? im : im - ep;
             }
 
-            if (fi) val = ep;
+            if (st) val = ep;
 
             /*
             p = percent value
