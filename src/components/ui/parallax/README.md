@@ -1,12 +1,12 @@
-#PARALLAX
+# PARALLAX
 Il sistema di **parallax**  si divide in 3 componenti dipendenti dallo stesso **mixin** che ne definisce i comportamenti comuni.
 
 lo scroll e resize sono reattivi e vengono gestiti sfruttando **vuex**. In aletrnativa si può usare una seconda istanza di vue presente in:
 `src/wmap/WindowInstanceMap.js` andando semplicemente a cambiare i computed relativi per scroll, resize etc..
 
 
-##MIXIN:
-###src/mixin/ParallaxMixin.js
+## MIXIN:
+### src/mixin/ParallaxMixin.js
 In questo mixin sono definiti tutte le props computed etcc.. comuni.
 <br/><br/>
 
@@ -61,7 +61,7 @@ E' possibile applicare il calcolo a un elemento diverse da stesso passandogli la
 <br/><br/>
 
 
-##ParallaxClassic:
+## ParallaxClassic:
 #### propierties
 Le propietà gestite da questo componente sono:<br/>
 `propierties = "vertical"`
@@ -104,7 +104,7 @@ Dopo il **punto 0** è possibile:<br/>
 `back`: invertire il movimento
 <br/><br/>
 
-##ParallaxOpacity:
+## ParallaxOpacity:
 
 
 #### propierties
