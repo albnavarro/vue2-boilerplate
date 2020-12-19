@@ -138,7 +138,7 @@ Di defualt proprietà non è attiva
 <br/><br/>
 
 
-##ParallaxStrict:
+## ParallaxStrict:
 A differenza di `ParallaxClassic` questo componente gestisce movimenti precisi in realzione alle proprie misure di altezza e largezza o in realzione a misure di un altro elemento del DOM.
 Qui la props `parentRef` risultera molto utile permettendo di creare delle **timeline di animazioni**
 
