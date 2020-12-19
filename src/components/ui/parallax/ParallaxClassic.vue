@@ -7,7 +7,7 @@
 
 <script>
 import { mq } from '@/utils/mq.js'
-import { paralallaxMixin } from '@/components/ui/parallax/ParallaxMixin.js'
+import { paralallaxMixin } from '@/mixin/ParallaxMixin.js'
 
 export default {
     name: 'ParallaxClassic',
@@ -44,13 +44,18 @@ export default {
                 ].indexOf(value) !== -1
             }
         },
-        opacityStartAt: {
-            type: Number,
-            default: 100
-        },
-        opacityEndtAt: {
-            type: Number,
-            default: 0
+        propierties: {
+            type: String,
+            default: "vertical",
+            validator: function (value) {
+                return [
+                    'vertical',
+                    'horizontal',
+                    'rotate',
+                    'scale',
+                    'border-width'
+                ].indexOf(value) !== -1
+            }
         }
     },
     watch: {
@@ -76,20 +81,12 @@ export default {
             if (!mq[vm.breackpointType](vm.breackpoint) ||
                 !vm.isInViewport() && !vm.renderAlways) return;
 
-            switch (vm.propierties) {
-                case 'opacity':
-                    vm.endValue = this.getOpacity()
-                    break;
-
-                default:
-                    if (this.alignVh) {
-                        vm.endValue = this.getAlignIsNumber()
-                    } else {
-                        vm.endValue = this.getAlignIsNaN()
-                    }
-                    vm.endValue = vm.endValue.toFixed(1) / 2;
-                    break;
+            if (this.alignVh) {
+                vm.endValue = this.getAlignIsNumber()
+            } else {
+                vm.endValue = this.getAlignIsNaN()
             }
+            vm.endValue = vm.endValue.toFixed(1) / 2;
 
             if (!applyStyle) return;
 
@@ -98,37 +95,6 @@ export default {
             } else {
                 Object.assign(vm.targetRef.style, vm.setStyle(vm.endValue))
             }
-        },
-
-        /*
-        Get opacity val in default mode
-        */
-        getOpacity() {
-            const vm = this;
-            const wh = vm.wheight
-            const oe = vm.opacityEndtAt
-            const os = vm.opacityStartAt
-            const s = vm.scroll
-            const o = vm.offset
-            const vhLimit = (wh / 100 * oe);
-            const vhStart = wh - (wh / 100 * os);
-
-            let  val = 0;
-            if (vm.align == 'start') {
-                val = -s;
-            } else {
-                val = (s + vhLimit - o);
-            }
-
-            val = val * -1;
-
-            if (vm.align == 'start') {
-                val = 1 - val / o;
-            } else {
-                val = 1 - val / (wh - vhStart - vhLimit);
-            }
-
-            return val.toFixed(2);
         },
 
         /*
@@ -190,62 +156,20 @@ export default {
         switchAfterZero(val) {
             const vm = this;
 
-            if (vm.propierties != 'opacity') {
-                switch (vm.onSwitch) {
-                    case 'stop':
-                        if (!vm.reverse && val > 0 ||
-                            vm.reverse && val < 0) {
-                            val = 0;
-                        }
-                        break;
-
-                    case 'back':
-                        if (!vm.reverse && val > 0 ||
-                            vm.reverse && val < 0) {
-                            val = -val;
-                        }
-                        break;
-                }
-            } else {
-                if (vm.onSwitch == 'back') {
-                    const wh = vm.wheight
-                    const oe = vm.opacityEndtAt
-                    const os = vm.opacityStartAt
-
-                    /*
-                    start vale in wh percent
-                    */
-                    const t = (wh / 100 * os)
-
-                    /*
-                    end value in vh percent
-                    */
-                    const e = (wh / 100 * oe)
-
-                    /*
-                    Are the upper and lower limits where opacity should be applied
-                    */
-                    const limitTop = e - (t  - e)
-                    const limitBottom = wh - (wh - t)
-
-                    /*
-                    el relative offset in relation to the window
-                    */
-                    const relOffset = vm.offset - vm.scroll
-
-                    /*
-                    Invert opacity if should be applied
-                    */
-                    if(relOffset >= limitTop && relOffset <= limitBottom) {
-                        if (val > 1.999) val = 1.999
-                        if (val < 0) val = - val;
-                        if (val > 1) val = 1 - (val % 1);
-                    } else if ( relOffset < limitTop && !vm.reverse) {
-                        val = 0
-                    } else if ( relOffset < limitTop && vm.reverse) {
-                        val = val = - val
+            switch (vm.onSwitch) {
+                case 'stop':
+                    if (!vm.reverse && val > 0 ||
+                        vm.reverse && val < 0) {
+                        val = 0;
                     }
-                }
+                    break;
+
+                case 'back':
+                    if (!vm.reverse && val > 0 ||
+                        vm.reverse && val < 0) {
+                        val = -val;
+                    }
+                    break;
             }
 
             return val

@@ -7,7 +7,7 @@
 
 <script>
 import { mq } from '@/utils/mq.js'
-import { paralallaxMixin } from '@/components/ui/parallax/ParallaxMixin.js'
+import { paralallaxMixin } from '@/mixin/ParallaxMixin.js'
 
 export default {
     name: 'ParallaxStrict',
@@ -36,6 +36,20 @@ export default {
         disableStart: {
             type: Boolean,
             default: false
+        },
+        propierties: {
+            type: String,
+            default: "vertical",
+            validator: function (value) {
+                return [
+                    'vertical',
+                    'horizontal',
+                    'rotate',
+                    'scale',
+                    'opacity',
+                    'border-width'
+                ].indexOf(value) !== -1
+            }
         }
     },
     methods: {
@@ -74,10 +88,14 @@ export default {
             const h = vm.height
             const w = vm.width
             const sw = vm.selfWidth
-            const fd = vm.range
+            const rg = vm.range
+
+            /*
+            fo = Start point calculated in vh
+            */
             const fo =  ((wh / 100) * vm.shiftOffset)
             const partials = -((s + wh - fo) - ( o + h));
-            const fe = vm.inward
+            const iw = vm.inward
             const bs = vm.disableStart
             const ae = vm.disableEnd
             const fi = vm.static
@@ -85,23 +103,23 @@ export default {
             /*
             ep = Maximum value ( end position)
             */
-            const ep = (h / 100) * fd;
+            const ep = (h / 100) * rg;
 
             /*
             im = active value through motion
             */
-            const im = (partials / 100) * fd;
+            const im = (partials / 100) * rg;
 
             if (s + wh - fo <  o) {
-                val = (fe) ? ep : 0;
+                val = (iw) ? ep : 0;
                 if (bs) applyStyle = false;
 
             } else if (s + wh - fo >  o + h) {
-                val = (fe) ? 0 : - ep;
+                val = (iw) ? 0 : - ep;
                 if (ae) applyStyle = false;
 
             } else {
-                val = (fe) ? im : im - ep;
+                val = (iw) ? im : im - ep;
             }
 
             if (fi) val = ep;
@@ -134,13 +152,6 @@ export default {
                 endvalue: val,
                 applyStyle
             }
-        },
-
-        /*
-        Switch between zero in default mode
-        */
-        switchAfterZero(val) {
-            return val
         }
     },
 

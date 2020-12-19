@@ -1,6 +1,5 @@
 import { mapState } from 'vuex'
 import { offset, outerHeight, outerWidth } from '@/utils/vanillaFunction.js'
-import { mq } from '@/utils/mq.js'
 
 export const paralallaxMixin = {
     data() {
@@ -36,15 +35,6 @@ export const paralallaxMixin = {
             type: Boolean,
             default: false
         },
-        responsive: {
-            type: Boolean,
-            default: false
-        },
-        responsiveBreackpoint: {
-            type: String,
-            default: "x-large"
-            // reackpoint list -> src/utils/mq.js
-        },
         reverse: {
             type: Boolean,
             default: false
@@ -73,19 +63,12 @@ export const paralallaxMixin = {
             type: Number,
             default: 8
         },
+        /*
+        Propierties Override by component
+        */
         propierties: {
             type: String,
-            default: "vertical",
-            validator: function (value) {
-                return [
-                    'vertical',
-                    'horizontal',
-                    'rotate',
-                    'scale',
-                    'opacity',
-                    'border-width'
-                ].indexOf(value) !== -1
-            }
+            default: ""
         }
     },
     computed: {
@@ -107,9 +90,6 @@ export const paralallaxMixin = {
         parentRef() {
             const vm = this
             vm.calcSizes()
-        },
-        defaultDistance() {
-
         },
         jsDelta() {
             const vm = this
@@ -226,15 +206,15 @@ export const paralallaxMixin = {
         Calculates the final value based on the options
         */
         executeParallax() {
-        /*
-        Override by component
-        */
+            /*
+            Override by component
+            */
         },
 
 
         /*
-        Switch between zero in default mode
-        Override by component
+        Switch between zero
+        Override by component if needed
         */
         switchAfterZero(val) {
             /*
@@ -277,21 +257,11 @@ export const paralallaxMixin = {
             let scaleVal = 0
             switch (vm.propierties) {
                 case 'vertical':
-                    if (vm.responsive && !mq.min(vm.responsiveBreackpoint)) {
-                        const value = (val * 100) / vm.height;
-                        style['transform'] = `translate3d(0,0,0) translateY(${value}vh)`;
-                    } else {
-                        style['transform'] = `translate3d(0,0,0) translateY(${val}px)`;
-                    }
+                    style['transform'] = `translate3d(0,0,0) translateY(${val}px)`;
                     break;
 
                 case 'horizontal':
-                    if (vm.responsive && !mq.min(vm.responsiveBreackpoint)) {
-                        const value = (val * 100) / vm.width;
-                        style['transform'] = `translate3d(0,0,0) translateX(${value}vw)`;
-                    } else {
-                        style['transform'] = `translate3d(0,0,0) translateX(${val}px)`;
-                    }
+                    style['transform'] = `translate3d(0,0,0) translateX(${val}px)`;
                     break;
 
                 case 'rotate':
@@ -392,6 +362,12 @@ export const paralallaxMixin = {
         vm.firstTime = true
         vm.raf = null
         vm.scrollWatcher = null
+    },
+
+    mounted() {
+        /*
+        Override by component
+        */
     },
 
     beforeDestroy() {

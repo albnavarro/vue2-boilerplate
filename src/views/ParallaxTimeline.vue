@@ -10,14 +10,12 @@
                     :renderAlways = "true">
                     <ParallaxStrict
                         :range = "50"
-                        :responsive = "true"
                         :parentRef = "ref2"
                         propierties = "horizontal"
                         :renderAlways = "true">
                         <ParallaxStrict
                             propierties = "horizontal"
                             :range = "50"
-                            :responsive = "true"
                             :parentRef = "ref3"
                             :reverse = "true"
                             :renderAlways = "true">

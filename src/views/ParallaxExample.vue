@@ -3,11 +3,9 @@
         <div>
             <div class="parallax-default__item">
                 <ParallaxClassic
-                    :range = "3"
-                    :responsive = "true"
+                    :range = "9"
                     breackpointType="min"
                     breackpoint="x-small"
-                    responsiveBreackpoint = "infinite"
                     propierties = "horizontal"
                     align="start" >
                     <TestComponent/>
@@ -49,14 +47,20 @@
         </div>
         <div>
             <div class="parallax-default__item">
-                <ParallaxClassic
-                    :opacityStartAt="80"
-                    :opacityEndtAt="30"
+                <ParallaxOpacity
+                    :startPoint="80"
+                    :endPoint="30"
                     :reverse = "false"
-                    propierties="opacity"
                     onSwitch="back">
                     <TestComponent/>
-                </ParallaxClassic>
+                </ParallaxOpacity>
+            </div>
+        </div>
+        <div>
+            <div class="parallax-default__item">
+                <ParallaxOpacity>
+                    <TestComponent/>
+                </ParallaxOpacity>
             </div>
         </div>
         <div>
@@ -94,12 +98,11 @@
         </div>
         <div>
             <div class="parallax-default__item">
-                <ParallaxClassic
-                    :opacityStartAt="80"
-                    :opacityEndtAt="20"
-                    propierties="opacity">
+                <ParallaxOpacity
+                    :startPoint="80"
+                    :endPoint="20">
                     <TestComponent/>
-                </ParallaxClassic>
+                </ParallaxOpacity>
             </div>
         </div>
         <div>
@@ -122,6 +125,7 @@
 <script>
 
 import ParallaxClassic from '@/components/ui/parallax/ParallaxClassic.vue'
+import ParallaxOpacity from '@/components/ui/parallax/ParallaxOpacity.vue'
 import ParallaxStrict from '@/components/ui/parallax/ParallaxStrict.vue'
 import TestComponent from '@/components/TestComponent.vue'
 
@@ -135,6 +139,7 @@ export default {
     },
     components: {
         ParallaxClassic,
+        ParallaxOpacity,
         ParallaxStrict,
         TestComponent
     },
