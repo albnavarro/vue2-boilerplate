@@ -6,7 +6,6 @@
 
 
 <script>
-import { mq } from '@/utils/mq.js'
 import { paralallaxMixin } from '@/mixin/ParallaxMixin.js'
 
 export default {
@@ -53,32 +52,7 @@ export default {
         }
     },
     methods: {
-        /*
-        Calculates the final value based on the options
-        */
-        executeParallax(applyStyle = true) {
-            const vm = this;
-
-            if (!mq[vm.breackpointType](vm.breackpoint) ||
-                !vm.isInViewport() && !vm.renderAlways) return;
-
-            const res = this.getFixedValue(applyStyle)
-            vm.endValue = res.endvalue
-            applyStyle = res.applyStyle
-
-            if (!applyStyle) return;
-
-            if (vm.targetRef == null) {
-                vm.style = vm.setStyle(vm.endValue)
-            } else {
-                Object.assign(vm.targetRef.style, vm.setStyle(vm.endValue))
-            }
-        },
-
-        /*
-        Get motion val in fixed mode
-        */
-        getFixedValue(applyStyle) {
+        setValByContext(applyStyle) {
             let val = 0
 
             const vm = this
@@ -91,10 +65,10 @@ export default {
             const rg = vm.range
 
             /*
-            fo = Start point calculated in vh
+            sp = Start point calculated in vh
             */
-            const fo =  ((wh / 100) * vm.shiftOffset)
-            const partials = -((s + wh - fo) - ( o + h));
+            const sp =  ((wh / 100) * vm.shiftOffset)
+            const partials = -((s + wh - sp) - ( o + h));
             const iw = vm.inward
             const ds = vm.disableStart
             const de = vm.disableEnd
@@ -103,26 +77,26 @@ export default {
             /*
             ep = Maximum value ( end position)
             */
-            const ep = (h / 100) * rg;
+            const max = (h / 100) * rg;
 
             /*
             im = active value through motion
             */
-            const im = (partials / 100) * rg;
+            const v = (partials / 100) * rg;
 
-            if (s + wh - fo <  o) {
-                val = (iw) ? ep : 0;
+            if (s + wh - sp <  o) {
+                val = (iw) ? max : 0;
                 if (ds) applyStyle = false;
 
-            } else if (s + wh - fo >  o + h) {
-                val = (iw) ? 0 : - ep;
+            } else if (s + wh - sp >  o + h) {
+                val = (iw) ? 0 : - max;
                 if (de) applyStyle = false;
 
             } else {
-                val = (iw) ? im : im - ep;
+                val = (iw) ? v : v - max;
             }
 
-            if (st) val = ep;
+            if (st) val = max;
 
             /*
             p = percent value
@@ -149,7 +123,7 @@ export default {
             }
 
             return {
-                endvalue: val,
+                val: val,
                 applyStyle
             }
         }

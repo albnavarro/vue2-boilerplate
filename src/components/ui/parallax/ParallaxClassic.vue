@@ -6,7 +6,6 @@
 
 
 <script>
-import { mq } from '@/utils/mq.js'
 import { paralallaxMixin } from '@/mixin/ParallaxMixin.js'
 
 export default {
@@ -72,28 +71,20 @@ export default {
             return 10 - n
         },
 
-        /*
-        Calculates the final value based on the options
-        */
-        executeParallax(applyStyle = true) {
-            const vm = this;
 
-            if (!mq[vm.breackpointType](vm.breackpoint) ||
-                !vm.isInViewport() && !vm.renderAlways) return;
+        setValByContext(applyStyle) {
+            let val = 0
 
             if (this.alignVh) {
-                vm.endValue = this.getAlignIsNumber()
+                val = this.getAlignIsNumber()
             } else {
-                vm.endValue = this.getAlignIsNaN()
+                val = this.getAlignIsNaN()
             }
-            vm.endValue = vm.endValue.toFixed(1) / 2;
+            val = val.toFixed(1) / 2;
 
-            if (!applyStyle) return;
-
-            if (vm.targetRef == null) {
-                vm.style = vm.setStyle(vm.endValue)
-            } else {
-                Object.assign(vm.targetRef.style, vm.setStyle(vm.endValue))
+            return {
+                val,
+                applyStyle
             }
         },
 
@@ -142,11 +133,11 @@ export default {
             const vm = this
             const s = vm.scroll
             const wh = vm.wheight
-            const da = this.alignVh
+            const ah = this.alignVh
             const o = vm.offset
             const d = vm.distance
 
-            return ((s + (wh / 100 * da)) - o) / d;
+            return ((s + (wh / 100 * ah)) - o) / d;
         },
 
 

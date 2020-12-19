@@ -1,5 +1,6 @@
 import { mapState } from 'vuex'
 import { offset, outerHeight, outerWidth } from '@/utils/vanillaFunction.js'
+import { mq } from '@/utils/mq.js'
 
 export const paralallaxMixin = {
     data() {
@@ -205,12 +206,31 @@ export const paralallaxMixin = {
         /*
         Calculates the final value based on the options
         */
-        executeParallax() {
+        executeParallax(applyStyle = true) {
+            const vm = this;
+
+            if (!mq[vm.breackpointType](vm.breackpoint) ||
+                !vm.isInViewport() && !vm.renderAlways) return;
+
+            const res = this.setValByContext(applyStyle)
+            vm.endValue = res.val
+            applyStyle = res.applyStyle
+
+            if (!applyStyle) return;
+
+            if (vm.targetRef == null) {
+                vm.style = vm.setStyle(vm.endValue)
+            } else {
+                Object.assign(vm.targetRef.style, vm.setStyle(vm.endValue))
+            }
+        },
+
+        setValByContext() {
             /*
+            Specific calculation for each component
             Override by component
             */
         },
-
 
         /*
         Switch between zero
