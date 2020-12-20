@@ -90,7 +90,10 @@ export const paralallaxMixin = {
         },
         parentRef() {
             const vm = this
-            vm.calcSizes()
+            this.$nextTick(() => {
+                vm.calcSizes()
+                vm.rereshParallax()
+            });
         },
         jsDelta() {
             const vm = this
