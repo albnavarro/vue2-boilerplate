@@ -4,6 +4,7 @@
       <router-link to="/Animation">Scroll animation</router-link> |
       <router-link to="/ParallaxExample">Parallax Example</router-link> |
       <router-link to="/ParallaxTimeline">Parallax Timeline</router-link> |
+      <router-link to="/Mouse">Mouse animation</router-link> |
       <router-link to="/Utils">Utils</router-link>
     </div>
 </template>
