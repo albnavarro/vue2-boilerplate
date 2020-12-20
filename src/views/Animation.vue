@@ -35,7 +35,7 @@
 
 <script>
 
-import AnimationOnScroll from '@/components/ui/AnimationOnScroll.vue'
+import AnimationOnScroll from '@/components/ui/animationOnScroll/AnimationOnScroll.vue'
 import TestComponent from '@/components/TestComponent.vue'
 
 export default {
