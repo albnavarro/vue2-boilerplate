@@ -99,7 +99,11 @@ export default {
         Refresh height on content component loaded
         */
         componentMounted() {
-            this.getheight();
+            const vm = this
+
+            this.$nextTick(() => {
+                vm.getheight();
+            });
         },
         /*
         Open close and send to parent index
