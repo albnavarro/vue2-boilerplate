@@ -303,6 +303,14 @@ export const paralallaxMixin = {
                     scaleVal = 1 + (val / 1000);
                     style['transform'] = `translate3d(0,0,0) scale(${scaleVal})`;
                     break;
+
+                case 'rotate3dY':
+                    style['transform'] = `translate3d(0,0,0) rotateY(${val}deg)`;
+                    break;
+
+                case 'rotate3dX':
+                    style['transform'] = `translate3d(0,0,0) rotateX(${val}deg)`;
+                    break;
             }
 
             return style

@@ -37,6 +37,28 @@
         <div>
             <div class="parallax-default__item">
                 <ParallaxClassic
+                    :reverse="true"
+                    :range = "6"
+                    propierties = "rotate3dY"
+                    align="center">
+                    <TestComponent/>
+                </ParallaxClassic>
+            </div>
+        </div>
+        <div>
+            <div class="parallax-default__item">
+                <ParallaxClassic
+                    :reverse="true"
+                    :range = "6"
+                    propierties = "rotate3dX"
+                    align="top">
+                    <TestComponent/>
+                </ParallaxClassic>
+            </div>
+        </div>
+        <div>
+            <div class="parallax-default__item">
+                <ParallaxClassic
                     :alignVh="40"
                     :range="9.2"
                     propierties = "scale"
