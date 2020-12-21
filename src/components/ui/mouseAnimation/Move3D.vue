@@ -2,7 +2,7 @@
 <div class="move3D" :style="getPerspective">
     <div class="move3D__container" :style="style">
         <div class="move3D__content">
-            <slot></slot>
+            <slot :delta="delta" :limit="limit"></slot>
         </div>
     </div>
 </div>
@@ -16,7 +16,9 @@ export default {
     name: 'Move3D',
     data() {
         return {
-            style: { }
+            style: {},
+            delta: 0,
+            limit: 0
         }
     },
     props: {
@@ -24,13 +26,21 @@ export default {
             type: Number,
             default: 1000
         },
-        xDelta: {
+        xDepth: {
             type: Number,
             default: 20
         },
-        yDelta: {
+        yDepth: {
             type: Number,
             default: 10
+        },
+        xLimit: {
+            type: Number,
+            default: 35
+        },
+        yLimit: {
+            type: Number,
+            default: 35
         }
     },
     computed: {
@@ -57,8 +67,27 @@ export default {
             const x = vm.$store.state.mouse.pointer.x
             const y = vm.$store.state.mouse.pointer.y
 
-            const ax = - ( vw / 2- x ) / vm.xDelta;
-            const ay = ( vh / 2- y ) / vm.yDelta;
+            /*
+            ax = grado di rotazione sull'asse X
+            ay = grado di rotazione sull'asse Y
+            */
+            let ax = - ( vw / 2- x ) / vm.xDepth;
+            let ay = ( vh / 2- y ) / vm.yDepth;
+
+            if (Math.abs(ax) > vm.xLimit) {
+                (ax > 0) ? ax = vm.xLimit : ax = -vm.xLimit
+            }
+
+            if (Math.abs(ay) > vm.yLimit) {
+                (ay > 0) ? ay = vm.yLimit : ay = -vm.yLimit
+            }
+
+            /*
+            Calcolo il valore da passare ai componenti figli per animarre l'asse Z.
+            Il delta sarà l'ipotenusa del triangolo formato dai volri ax e ay
+            */
+            vm.delta = Math.sqrt(Math.pow(Math.abs(ay), 2) +  Math.pow(Math.abs(ax), 2));
+            vm.limit = Math.sqrt(Math.pow(Math.abs(vm.xLimit), 2) +  Math.pow(Math.abs(vm.yLimit), 2));
 
             vm.style = {
                 'transform': `rotateY(${ax}deg) rotateX(${ay}deg) translateZ(0)`
@@ -74,7 +103,6 @@ export default {
 
 <style lang="scss" scoped>
 .move3D {
-    transform-style: preserve-3d;
 
     &__container {
         transform-style: preserve-3d;
@@ -82,7 +110,7 @@ export default {
     }
 
     &__content {
-        transform-style: preserve-3d;
+        transform-style: inherit;
     }
 }
 </style>
