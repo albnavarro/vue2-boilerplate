@@ -46,7 +46,11 @@ export default {
                     'rotate',
                     'scale',
                     'opacity',
-                    'border-width'
+                    'depth',
+                    'border-width',
+                    'rotateY',
+                    'rotateX',
+                    'rotateZ'
                 ].indexOf(value) !== -1
             }
         }
@@ -117,6 +121,10 @@ export default {
                     break;
 
                 case 'rotate':
+                case 'rotateX':
+                case 'rotateY':
+                case 'rotateZ':
+                case 'depth':
                 case 'border-width':
                     val = p;
                     break;
@@ -148,6 +156,7 @@ export default {
 .parallax {
     &__item {
         position: relative;
+        transform-style: inherit;
 
         &.smooth-transition {
             transition: transform 1s cubic-bezier(0.305, 0.550, 0.470, 1.015);

@@ -36,24 +36,35 @@
         </div>
         <div>
             <div class="parallax-default__item">
-                <ParallaxClassic
-                    :reverse="true"
-                    :range = "6"
-                    propierties = "rotate3dY"
-                    align="center">
-                    <TestComponent/>
-                </ParallaxClassic>
+                <Context3D :depth="400">
+                    <ParallaxClassic
+                        :reverse="true"
+                        :range = "6"
+                        ease="smooth"
+                        propierties = "rotateY"
+                        align="center">
+                        <ParallaxClassic
+                            :range = "4"
+                            ease="smooth"
+                            propierties = "rotateZ"
+                            align="center">
+                            <TestComponent color="#000"/>
+                        </ParallaxClassic>
+                    </ParallaxClassic>
+                </Context3D>
             </div>
         </div>
         <div>
             <div class="parallax-default__item">
-                <ParallaxClassic
-                    :reverse="true"
-                    :range = "6"
-                    propierties = "rotate3dX"
-                    align="top">
-                    <TestComponent/>
-                </ParallaxClassic>
+                <Context3D :depth="400">
+                    <ParallaxClassic
+                        :reverse="true"
+                        :range = "6"
+                        propierties = "rotateX"
+                        align="top">
+                        <TestComponent/>
+                    </ParallaxClassic>
+                </Context3D>
             </div>
         </div>
         <div>
@@ -144,6 +155,7 @@
 
 <script>
 
+import Context3D from '@/components/ui/3D/Context3D.vue'
 import ParallaxClassic from '@/components/ui/parallax/ParallaxClassic.vue'
 import ParallaxOpacity from '@/components/ui/parallax/ParallaxOpacity.vue'
 import ParallaxStrict from '@/components/ui/parallax/ParallaxStrict.vue'
@@ -158,6 +170,7 @@ export default {
         }
     },
     components: {
+        Context3D,
         ParallaxClassic,
         ParallaxOpacity,
         ParallaxStrict,

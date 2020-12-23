@@ -14,61 +14,65 @@
             :delta="slotProps.delta" -> :delta="delta"
             :delta="slotProps.limit" -> :limit="limit"
             -->
-            <Move3D
-                :xDepth="20"
-                :yDepth="20"
-                :xLimit="50"
-                v-slot="{delta,limit}">
-                <Move3DItem
-                    :depth="0"
-                    :isContainer="true"
-                    :delta="delta"
-                    :limit="limit">
-                    <TestComponent
-                        :width="300"
-                        :height="300"/>
-                </Move3DItem>
-                <Move3DItem
-                    :depth="500"
-                    :x="20"
-                    :y="80"
-                    :delta="delta"
-                    :limit="limit">
-                    <TestComponent
-                        :width="100"
-                        :height="100"
-                        color="#000"/>
-                </Move3DItem>
-                <Move3DItem
-                    :depth="200"
-                    :x="40"
-                    :y="50"
-                    :delta="delta"
-                    :limit="limit">
-                    <TestComponent
-                        :width="100"
-                        :height="100"
-                        color="#eee"/>
-                </Move3DItem>
-                <Move3DItem
-                    :depth="250"
-                    :x="-40"
-                    :y="-10"
-                    :delta="delta"
-                    :limit="limit">
-                    <TestComponent
-                        :width="150"
-                        :height="150"
-                        color="#999"/>
-                </Move3DItem>
-            </Move3D>
+            <Context3D>
+                <Move3D
+                    :xDepth="20"
+                    :yDepth="20"
+                    :xLimit="50"
+                    v-slot="{delta,limit}">
+                    <Move3DItem
+                        :depth="0"
+                        :isContainer="true"
+                        :delta="delta"
+                        :limit="limit">
+                        <TestComponent
+                            :width="300"
+                            :height="300"/>
+                    </Move3DItem>
+                    <Move3DItem
+                        :depth="500"
+                        :x="20"
+                        :y="80"
+                        :delta="delta"
+                        :limit="limit">
+                        <h1>title</h1>
+                        <TestComponent
+                            :width="100"
+                            :height="100"
+                            color="#000"/>
+                    </Move3DItem>
+                    <Move3DItem
+                        :depth="200"
+                        :x="40"
+                        :y="50"
+                        :delta="delta"
+                        :limit="limit">
+                        <TestComponent
+                            :width="100"
+                            :height="100"
+                            color="#eee"/>
+                        <p>Lorem ipsum</p>
+                    </Move3DItem>
+                    <Move3DItem
+                        :depth="250"
+                        :x="-40"
+                        :y="-10"
+                        :delta="delta"
+                        :limit="limit">
+                        <TestComponent
+                            :width="150"
+                            :height="150"
+                            color="#999"/>
+                    </Move3DItem>
+                </Move3D>
+            </Context3D>
         </div>
     </div>
 </template>
 
 <script>
 
-
+import Context3D from '@/components/ui/3D/Context3D.vue'
 import Move3D from '@/components/ui/mouseAnimation/Move3D.vue'
 import Move3DItem from '@/components/ui/mouseAnimation/Move3DItem.vue'
 import TestComponent from '@/components/TestComponent.vue'
@@ -76,6 +80,7 @@ import TestComponent from '@/components/TestComponent.vue'
 export default {
     name: 'Mouse',
     components: {
+        Context3D,
         Move3D,
         Move3DItem,
         TestComponent

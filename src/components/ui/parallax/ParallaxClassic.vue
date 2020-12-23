@@ -1,14 +1,9 @@
 <template>
-<div>
-    <div v-if="is3D" class="parallax__3d">
-        <div class="parallax__item" :class="smoothCss" :style="style" ref="item">
-            <slot></slot>
-        </div>
-    </div>
-    <div v-else class="parallax__item" :class="smoothCss" :style="style" ref="item">
-        <slot></slot>
-    </div>
+
+<div class="parallax__item" :class="smoothCss" :style="style" ref="item">
+    <slot></slot>
 </div>
+
 </template>
 
 
@@ -57,19 +52,15 @@ export default {
                 return [
                     'vertical',
                     'horizontal',
+                    'depth',
                     'rotate',
                     'scale',
                     'border-width',
-                    'rotate3dY',
-                    'rotate3dX'
+                    'rotateY',
+                    'rotateX',
+                    'rotateZ'
                 ].indexOf(value) !== -1
             }
-        }
-    },
-    computed: {
-        is3D() {
-            return (this.propierties == 'rotate3dY'
-                    || this.propierties == 'rotate3dX') ? true : false
         }
     },
     watch: {
@@ -200,17 +191,9 @@ export default {
 
 <style lang="scss" scoped>
 .parallax {
-    &__3d {
-        perspective: 1000px;
-
-        * {
-            transform-style: preserve-3d;
-            // backface-visibility: hidden;
-        }
-    }
-
     &__item {
         position: relative;
+        transform-style: inherit;
 
         &.smooth-transition {
             transition: transform 1s cubic-bezier(0.305, 0.550, 0.470, 1.015);

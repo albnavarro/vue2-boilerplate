@@ -1,9 +1,7 @@
 <template>
-<div class="move3D" :style="getPerspective">
-    <div class="move3D__container" :style="style">
-        <div class="move3D__content">
-            <slot :delta="delta" :limit="limit"></slot>
-        </div>
+<div class="move3D__container" :style="style">
+    <div class="move3D__content">
+        <slot :delta="delta" :limit="limit"></slot>
     </div>
 </div>
 </template>

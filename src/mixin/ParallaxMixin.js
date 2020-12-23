@@ -180,6 +180,10 @@ export const paralallaxMixin = {
                 switch (vm.propierties) {
                     case 'opacity':
                     case 'rotate':
+                    case 'rotateX':
+                    case 'rotateY':
+                    case 'rotateZ':
+                    case 'depth':
                     case 'border-width':
                         vm.startValue = val.toFixed(4);
                         break;
@@ -287,8 +291,24 @@ export const paralallaxMixin = {
                     style['transform'] = `translate3d(0,0,0) translateX(${val}px)`;
                     break;
 
+                case 'depth':
+                    style['transform'] = `translate3d(0,0,0) translateZ(${val}px)`;
+                    break;
+
                 case 'rotate':
                     style['transform'] = `translate3d(0,0,0) rotate(${val}deg)`;
+                    break;
+
+                case 'rotateY':
+                    style['transform'] = `translate3d(0,0,0) rotateY(${val}deg)`;
+                    break;
+
+                case 'rotateX':
+                    style['transform'] = `translate3d(0,0,0) rotateX(${val}deg)`;
+                    break;
+
+                case 'rotateZ':
+                    style['transform'] = `translate3d(0,0,0) rotateZ(${val}deg)`;
                     break;
 
                 case 'border-width':
@@ -302,14 +322,6 @@ export const paralallaxMixin = {
                 case 'scale':
                     scaleVal = 1 + (val / 1000);
                     style['transform'] = `translate3d(0,0,0) scale(${scaleVal})`;
-                    break;
-
-                case 'rotate3dY':
-                    style['transform'] = `translate3d(0,0,0) rotateY(${val}deg)`;
-                    break;
-
-                case 'rotate3dX':
-                    style['transform'] = `translate3d(0,0,0) rotateX(${val}deg)`;
                     break;
             }
 

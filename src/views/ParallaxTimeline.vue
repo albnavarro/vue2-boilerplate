@@ -1,5 +1,5 @@
 <template>
-    <div class="fixed container">
+    <div class="fixed">
         <div class="fixed__container">
             <div class="fixed__content container">
                 <ParallaxStrict
@@ -113,6 +113,9 @@ export default {
 
 <style lang="scss" scoped>
 .fixed {
+    max-width: map-get($breakpoints, 'tablet');
+    margin: auto;
+
     &__content {
         position: sticky;
         top: 0;
@@ -125,7 +128,7 @@ export default {
 
     &__dummy {
         height: 60vh;
-        border: 1px $black solid;
+        border: 1px $grey solid;
 
         &--3 {
             height: 30vh;
