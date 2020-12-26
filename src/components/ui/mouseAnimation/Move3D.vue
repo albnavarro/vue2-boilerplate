@@ -20,10 +20,6 @@ export default {
         }
     },
     props: {
-        perspective: {
-            type: Number,
-            default: 1000
-        },
         xDepth: {
             type: Number,
             default: 20
@@ -44,12 +40,7 @@ export default {
     computed: {
         ...mapState('mouse', {
             move: 'move'
-        }),
-        getPerspective() {
-            return {
-                'perspective': `${this.perspective}px`
-            }
-        }
+        })
     },
     watch: {
         move() {
