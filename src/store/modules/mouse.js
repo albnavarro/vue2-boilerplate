@@ -1,9 +1,7 @@
 import Vue from 'vue'
-import throttle from '@/utils/throttle.js'
 
 // Add linstener once
 let init = false
-let initThottle = false
 
 export default {
     namespaced: true,
@@ -13,7 +11,10 @@ export default {
             y: 0
         },
         move: 0,
-        moveThrottle: 0
+        touchStart: 0,
+        touchEnd: 0,
+        isTouch: false
+
     }),
 
     mutations: {
@@ -27,8 +28,16 @@ export default {
             state.move ++;
         },
 
-        setMoveThrottle(state) {
-            state.moveThrottle ++;
+        setTouchStart(state) {
+            state.touchStart ++;
+        },
+
+        setTouchEnd(state) {
+            state.touchEnd ++;
+        },
+
+        setisTouch(state) {
+            state.isTouch = true;
         }
     },
 
@@ -42,17 +51,50 @@ export default {
                 context.commit('setMove')
                 context.commit('setPointer', { x, y })
             })
-        },
 
-        inizializeThottle(context) {
-            if (initThottle) return;
-            initThottle = true
+            window.addEventListener('touchmove', (e) => {
+                const { clientX, clientY } = e.touches[0]
+                let x = clientX
+                let y = clientY
 
-            window.addEventListener('mousemove', throttle((e) => {
-                context.commit('setMoveThrottle')
-                const { x, y } = e
+                context.commit('setMove')
                 context.commit('setPointer', { x, y })
-            }, 150), false);
-        },
+
+
+            })
+
+            window.addEventListener('mosuemove', (e) => {
+                const { pageX, pageY } = e.touches[0]
+                let x = pageX
+                let y = pageY
+
+                context.commit('setMove')
+                context.commit('setPointer', { x, y })
+
+
+            })
+
+            window.addEventListener('touchstart', () => {
+                context.commit('setTouchStart')
+            });
+
+            window.addEventListener('mousedown', () => {
+                context.commit('setTouchStart')
+            });
+
+            window.addEventListener('touchend', () => {
+                context.commit('setTouchEnd')
+            });
+
+            window.addEventListener('mouseup', () => {
+                context.commit('setTouchEnd')
+            });
+
+            if (('ontouchstart' in window)
+              || (navigator.MaxTouchPoints > 0)
+              || (navigator.msMaxTouchPoints > 0)) {
+                context.commit('setisTouch')
+            }
+        }
     }
 }
