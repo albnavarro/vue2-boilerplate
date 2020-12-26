@@ -4,21 +4,25 @@
         <div class="wire wire--2" :style="[getBorderColor,getColor]"></div>
         <div class="wire wire--3" :style="[getBorderColor,getColor]"></div>
         <div class="wire wire--4" :style="[getBorderColor,getColor]"></div>
-        <!-- <div class="face" v-for="(item, index) in rings" :key="index" :data-id="index"
-            :style="[{'transform': `translate(-50%, -50%)  translateZ(${(((size/2)/rings) * (index + 1))}px)`,
-            'height': `50px`,
-            'width':  `50px`},
+
+        <!-- back -->
+        <div class="face" v-for="(item, i) in rings" :key="'back' + i"
+            :style="[{'transform': `translate(-50%, -50%)  translateZ(${-(((size/2)/rings) * (i + 1))}px)`,
+            'height': `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`,
+            'width':  `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`},
             getBorderColor,getColor]">
-        </div> -->
-        <div class="face face--1" :style="[getBorderColor,getColor]"></div>
-        <div class="face face--2" :style="[getDepth25back,getBorderColor,getColor]"></div>
-        <div class="face face--3" :style="[getDepth50back,getBorderColor,getColor]"></div>
-        <div class="face face--4" :style="[getDepth80back,getBorderColor,getColor]"></div>
-        <div class="face face--5" :style="[getDepth100back,getBorderColor,getColor]"></div>
-        <div class="face face--2" :style="[getDepth25,getBorderColor,getColor]"></div>
-        <div class="face face--3" :style="[getDepth50,getBorderColor,getColor]"></div>
-        <div class="face face--4" :style="[getDepth80,getBorderColor,getColor]"></div>
-        <div class="face face--5" :style="[getDepth100,getBorderColor,getColor]"></div>
+        </div>
+
+        <!-- middle -->
+        <div class="face face--1" :style="[getBorderColor,getColor]"/>
+
+        <!-- front -->
+        <div class="face" v-for="(item, i) in rings" :key="'front' + i"
+            :style="[{'transform': `translate(-50%, -50%)  translateZ(${(((size/2)/rings) * (i + 1))}px)`,
+            'height': `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`,
+            'width':  `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`},
+            getBorderColor,getColor]">
+        </div>
     </div>
 </template>
 
@@ -33,10 +37,10 @@ export default {
             type: Number,
             default: 200
         },
-        // rings: {
-        //     type: Number,
-        //     default: 5
-        // },
+        rings: {
+            type: Number,
+            default: 5
+        },
         edgeColor: {
             type: String,
             default: '#000',
@@ -60,46 +64,6 @@ export default {
             const rgba = this.hexToRGBA(this.color)
             console.log(rgba)
             return {'background-color': `${rgba}`}
-        },
-        getDepth25back() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(-${this.size/6}px)`
-            }
-        },
-        getDepth50back() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(-${this.size/3.5}px)`
-            }
-        },
-        getDepth80back() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(-${this.size/2.5}px)`
-            }
-        },
-        getDepth100back() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(-${this.size/2.1}px)`
-            }
-        },
-        getDepth25() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(${this.size/6}px)`
-            }
-        },
-        getDepth50() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(${this.size/3.5}px)`
-            }
-        },
-        getDepth80() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(${this.size/2.5}px)`
-            }
-        },
-        getDepth100() {
-            return {
-                'transform': `translate(-50%, -50%)  translateZ(${this.size/2.1}px)`
-            }
         }
     },
     methods: {
@@ -175,26 +139,6 @@ export default {
         width: 100%;
         height: 100%;
         transform: translate(-50%, -50%) translateZ(0);
-    }
-
-    &--2 {
-        width: 95%;
-        height: 95%;
-    }
-
-    &--3 {
-        width: 80%;
-        height: 80%;
-    }
-
-    &--4 {
-        width: 60%;
-        height: 60%;
-    }
-
-    &--5 {
-        width: 25%;
-        height: 25%;
     }
 }
 

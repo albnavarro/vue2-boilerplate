@@ -80,6 +80,7 @@
                         <Sphere3D
                             edgeColor="#ad8af3"
                             :size="300"
+                            :rings="1"
                             :isContainer="true"
                             :delta="delta"
                             :limit="limit">
@@ -87,9 +88,10 @@
                         <Sphere3D
                             edgeColor="#ad8af3"
                             :size="120"
+                            :rings="3"
                             :depth="340"
                             :animate="true"
-                            :x="30"
+                            :x="-50"
                             :y="30"
                             :delta="delta"
                             :limit="limit">
@@ -98,10 +100,11 @@
                             edgeColor="#ad8af3"
                             color="#BFCDE0"
                             :size="80"
-                            :depth="630"
+                            :rings="3"
+                            :depth="340"
                             :animate="true"
-                            :x="37"
-                            :y="37"
+                            :x="110"
+                            :y="30"
                             :delta="delta"
                             :limit="limit">
                         </Sphere3D>
