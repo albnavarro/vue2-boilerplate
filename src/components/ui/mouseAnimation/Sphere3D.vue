@@ -1,27 +1,27 @@
 <template>
     <div class="shpere" :style="[setSize,style,setContainer,setX,setY]" ref="item">
-        <div class="wire wire--1" :style="[getBorderColor,getColor]"></div>
-        <div class="wire wire--2" :style="[getBorderColor,getColor]"></div>
-        <div class="wire wire--3" :style="[getBorderColor,getColor]"></div>
-        <div class="wire wire--4" :style="[getBorderColor,getColor]"></div>
+        <div class="wire" v-for="(item, i) in wire" :key="'wireFront' + i"
+            :style="[{'transform': `translate(-50%, -50%)  rotateX(90deg) rotateY(${((180)/((wire)) * (i + 1))}deg)`},
+            getBorderColor,getWireRadius]">
+        </div>
 
         <!-- back -->
         <div class="face" v-for="(item, i) in rings" :key="'back' + i"
             :style="[{'transform': `translate(-50%, -50%)  translateZ(${-(((size/2)/rings) * (i + 1))}px)`,
             'height': `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`,
             'width':  `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`},
-            getBorderColor,getColor]">
+            getBorderColor,getColor,getRingsRadius]">
         </div>
 
         <!-- middle -->
-        <div class="face face--1" :style="[getBorderColor,getColor]"/>
+        <div class="face face--1" :style="[getBorderColor,getColor,getRingsRadius]"/>
 
         <!-- front -->
         <div class="face" v-for="(item, i) in rings" :key="'front' + i"
             :style="[{'transform': `translate(-50%, -50%)  translateZ(${(((size/2)/rings) * (i + 1))}px)`,
             'height': `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`,
             'width':  `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`},
-            getBorderColor,getColor]">
+            getBorderColor,getColor,getRingsRadius]">
         </div>
     </div>
 </template>
@@ -41,13 +41,25 @@ export default {
             type: Number,
             default: 5
         },
+        ringsRadius: {
+            type: Number,
+            default: 50
+        },
+        wire: {
+            type: Number,
+            default: 4
+        },
+        wireRadius: {
+            type: Number,
+            default: 50
+        },
         edgeColor: {
             type: String,
             default: '#000',
         },
         color: {
             type: String,
-            default: '#fff',
+            default: null,
         }
     },
     computed: {
@@ -62,12 +74,19 @@ export default {
         },
         getColor() {
             const rgba = this.hexToRGBA(this.color)
-            console.log(rgba)
-            return {'background-color': `${rgba}`}
+            return rgba != null ? {'background-color': `${rgba}`} : ''
+        },
+        getRingsRadius() {
+            return {'border-radius': `${this.ringsRadius}%`}
+        },
+        getWireRadius() {
+            return {'border-radius': `${this.wireRadius}%`}
         }
     },
     methods: {
         hexToRGBA(h) {
+          if(h == null) return '';
+
           let r = 0, g = 0, b = 0;
 
           // 3 digits
@@ -107,24 +126,6 @@ export default {
     top: 50%;
     left: 50%;
     transform-style: preserve-3d;
-    border-radius: 100%;
-
-
-    &--1 {
-        transform: translate(-50%, -50%) rotateX(90deg);
-    }
-
-    &--2 {
-        transform: translate(-50%, -50%) rotateX(90deg) rotateY(135deg)
-    }
-
-    &--3 {
-        transform: translate(-50%, -50%) rotateX(-90deg) rotateY(135deg)
-    }
-
-    &--4 {
-        transform: translate(-50%, -50%) rotateY(90deg);
-    }
 }
 
 .face {
@@ -132,7 +133,6 @@ export default {
     top: 50%;
     left: 50%;
     border: 1px $black solid;
-    border-radius: 100%;
     transform-style: preserve-3d;
 
     &--1 {

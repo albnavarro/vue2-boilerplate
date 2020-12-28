@@ -80,13 +80,16 @@
                         <Sphere3D
                             edgeColor="#ad8af3"
                             :size="300"
-                            :rings="1"
+                            color="#ff0"
+                            :rings="3"
+                            :wire="4"
                             :isContainer="true"
                             :delta="delta"
                             :limit="limit">
                         </Sphere3D>
                         <Sphere3D
                             edgeColor="#ad8af3"
+                            color="#fff"
                             :size="120"
                             :rings="3"
                             :depth="340"
