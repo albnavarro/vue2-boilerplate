@@ -90,6 +90,10 @@ export default {
                 context.commit('setTouchEnd')
             });
 
+            window.addEventListener('mouseleave', () => {
+                context.commit('setTouchEnd')
+            });
+
             if (('ontouchstart' in window)
               || (navigator.MaxTouchPoints > 0)
               || (navigator.msMaxTouchPoints > 0)) {

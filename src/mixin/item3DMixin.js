@@ -15,6 +15,10 @@ export const item3DMixin = {
             type: Number,
             default: 15
         },
+        isDragging: {
+            type: Boolean,
+            default: true
+        },
         depth: {
             type: Number,
             default: 100
@@ -38,7 +42,9 @@ export const item3DMixin = {
     },
     computed: {
         ...mapState('mouse', {
-            move: 'move'
+            move: 'move',
+            touchStart: 'touchStart',
+            touchEnd: 'touchEnd'
         }),
         setContainer() {
             return this.isContainer ? { 'position': 'relative' } : { 'position': 'absolute' }
@@ -59,7 +65,7 @@ export const item3DMixin = {
         }
     },
     methods: {
-        setStyle() {
+        setStyle(force = false) {
             const vm = this;
             let d = this.depth
 
@@ -67,12 +73,28 @@ export const item3DMixin = {
                 d = Math.abs(( vm.depth * vm.delta ) / vm.limit)
             }
 
-            this.style = {
-                'transform': `translateZ(${d}px)`
+            let apply = false;
+            if( (vm.isDragging && vm.onDrag) || !vm.isDragging || force) apply = true
+
+            if (apply) {
+                this.style = {
+                    'transform': `translateZ(${d}px)`
+                }
             }
         }
     },
     mounted() {
-        this.setStyle()
+        const vm = this;
+        vm.setStyle(true)
+
+        if( vm.isDragging ) {
+            vm.$watch('touchStart', () => {
+                vm.onDrag = true
+            })
+
+            vm.$watch('touchEnd', () => {
+                vm.onDrag = false
+            })
+        }
     }
 }

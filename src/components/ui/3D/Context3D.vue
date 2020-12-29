@@ -27,6 +27,7 @@ export default {
 
 .context3D {
     transform-style: preserve-3d;
+    user-select: none;
 
     * {
         transform-style: inherit;

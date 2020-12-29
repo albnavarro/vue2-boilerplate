@@ -20,12 +20,13 @@
                         :xDepth="20"
                         :yDepth="20"
                         :xLimit="50"
-                        v-slot="{delta,limit}">
+                        v-slot="{delta,limit,isDragging}">
                         <Move3DItem
                             :depth="0"
                             :isContainer="true"
                             :delta="delta"
-                            :limit="limit">
+                            :limit="limit"
+                            :isDragging="isDragging">
                             <TestComponent
                                 :width="300"
                                 :height="300"/>
@@ -35,7 +36,8 @@
                             :x="20"
                             :y="80"
                             :delta="delta"
-                            :limit="limit">
+                            :limit="limit"
+                            :isDragging="isDragging">
                             <h1>title</h1>
                             <TestComponent
                                 :width="100"
@@ -47,7 +49,8 @@
                             :x="40"
                             :y="50"
                             :delta="delta"
-                            :limit="limit">
+                            :limit="limit"
+                            :isDragging="isDragging">
                             <TestComponent
                                 :width="100"
                                 :height="100"
@@ -59,7 +62,8 @@
                             :x="-40"
                             :y="-10"
                             :delta="delta"
-                            :limit="limit">
+                            :limit="limit"
+                            :isDragging="isDragging">
                             <TestComponent
                                 :width="150"
                                 :height="150"
@@ -75,21 +79,22 @@
                     <Move3D
                         :xDepth="20"
                         :yDepth="20"
-                        :xLimit="50"
-                        v-slot="{delta,limit}">
+                        :xLimit="40"
+                        :isDragging="true"
+                        v-slot="{delta,limit,isDragging}">
                         <Sphere3D
                             edgeColor="#ad8af3"
+                            ringColor="#ff0"
                             :size="300"
-                            color="#ff0"
                             :rings="3"
                             :wire="4"
                             :isContainer="true"
                             :delta="delta"
-                            :limit="limit">
+                            :limit="limit"
+                            :isDragging="isDragging">
                         </Sphere3D>
                         <Sphere3D
-                            edgeColor="#ad8af3"
-                            color="#fff"
+                            ringColor="#fff"
                             :size="120"
                             :rings="3"
                             :depth="340"
@@ -97,11 +102,12 @@
                             :x="-50"
                             :y="30"
                             :delta="delta"
-                            :limit="limit">
+                            :limit="limit"
+                            :isDragging="isDragging">
                         </Sphere3D>
                         <Sphere3D
                             edgeColor="#ad8af3"
-                            color="#BFCDE0"
+                            ringColor="#BFCDE0"
                             :size="80"
                             :rings="3"
                             :depth="340"
@@ -109,7 +115,8 @@
                             :x="110"
                             :y="30"
                             :delta="delta"
-                            :limit="limit">
+                            :limit="limit"
+                            :isDragging="isDragging">
                         </Sphere3D>
                     </Move3D>
                 </Context3D>
@@ -121,10 +128,10 @@
 <script>
 
 import Context3D from '@/components/ui/3D/Context3D.vue'
-import Move3D from '@/components/ui/mouseAnimation/Move3D.vue'
-import Move3DItem from '@/components/ui/mouseAnimation/Move3DItem.vue'
+import Move3D from '@/components/ui/3D/Move3D.vue'
+import Move3DItem from '@/components/ui/3D/Move3DItem.vue'
 import TestComponent from '@/components/TestComponent.vue'
-import Sphere3D from '@/components/ui/mouseAnimation/Sphere3D.vue'
+import Sphere3D from '@/components/ui/3D/Sphere3D.vue'
 
 export default {
     name: 'Mouse',

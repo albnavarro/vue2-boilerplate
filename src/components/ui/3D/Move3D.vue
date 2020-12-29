@@ -1,7 +1,7 @@
 <template>
 <div class="move3D__container" :style="style">
     <div class="move3D__content">
-        <slot :delta="delta" :limit="limit"></slot>
+        <slot :delta="delta" :limit="limit" :isDragging="isDragging"></slot>
     </div>
 </div>
 </template>
@@ -35,11 +35,17 @@ export default {
         yLimit: {
             type: Number,
             default: 35
+        },
+        isDragging: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
         ...mapState('mouse', {
-            move: 'move'
+            move: 'move',
+            touchStart: 'touchStart',
+            touchEnd: 'touchEnd'
         })
     },
     watch: {
@@ -53,15 +59,26 @@ export default {
 
             const vw = vm.$store.state.browser.width
             const vh = vm.$store.state.browser.height
-            const x = vm.$store.state.mouse.pointer.x
-            const y = vm.$store.state.mouse.pointer.y
+            let x = vm.$store.state.mouse.pointer.x
+            let y = vm.$store.state.mouse.pointer.y
+
+            if( vm.isDragging && vm.onDrag ) {
+                const xgap = x - vm.lastX
+                const ygap = y - vm.lastY;
+
+                vm.dragX += xgap
+                x =  vm.dragX;
+
+                vm.dragY += ygap
+                y =  vm.dragY
+            }
 
             /*
             ax = grado di rotazione sull'asse X
             ay = grado di rotazione sull'asse Y
             */
-            let ax = - ( vw / 2- x ) / vm.xDepth;
-            let ay = ( vh / 2- y ) / vm.yDepth;
+            let ax = - ( vw / 2 - x ) / vm.xDepth;
+            let ay = ( vh / 2 - y ) / vm.yDepth;
 
             if (Math.abs(ax) > vm.xLimit) {
                 (ax > 0) ? ax = vm.xLimit : ax = -vm.xLimit
@@ -71,6 +88,9 @@ export default {
                 (ay > 0) ? ay = vm.yLimit : ay = -vm.yLimit
             }
 
+            vm.lastX = vm.$store.state.mouse.pointer.x
+            vm.lastY = vm.$store.state.mouse.pointer.y
+
             /*
             Calcolo il valore da passare ai componenti figli per animarre l'asse Z.
             Il delta sarà l'ipotenusa del triangolo formato dai volri ax e ay
@@ -78,12 +98,34 @@ export default {
             vm.delta = Math.sqrt(Math.pow(Math.abs(ay), 2) +  Math.pow(Math.abs(ax), 2));
             vm.limit = Math.sqrt(Math.pow(Math.abs(vm.xLimit), 2) +  Math.pow(Math.abs(vm.yLimit), 2));
 
-            vm.style = {
-                'transform': `rotateY(${ax}deg) rotateX(${ay}deg) translateZ(0)`
+            let apply = false;
+            if( (vm.isDragging && vm.onDrag) || !vm.isDragging) apply = true
+
+            if (apply) {
+                vm.style = {
+                    'transform': `rotateY(${ax}deg) rotateX(${ay}deg) translateZ(0)`
+                }
             }
         }
     },
     mounted() {
+        const vm = this
+        vm.lastX = 0
+        vm.dragX = vm.$store.state.browser.width/2
+        vm.lastY = 0
+        vm.dragY = vm.$store.state.browser.height/2
+        vm.onDrag = false
+
+        if( vm.isDragging ) {
+            vm.$watch('touchStart', () => {
+                vm.onDrag = true
+            })
+
+            vm.$watch('touchEnd', () => {
+                vm.onDrag = false
+            })
+        }
+
         this.$store.dispatch('mouse/inizialize')
     }
 
@@ -96,10 +138,12 @@ export default {
     &__container {
         transform-style: preserve-3d;
         backface-visibility: hidden;
+        user-select: none;
     }
 
     &__content {
         transform-style: inherit;
+        user-select: none;
     }
 }
 </style>

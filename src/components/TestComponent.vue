@@ -55,5 +55,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .test-component {
+        outline: 1px solid transparent;
+    }
 </style>
