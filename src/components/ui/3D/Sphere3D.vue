@@ -1,58 +1,59 @@
 <template>
     <div class="shpere" :style="[setSize,style,setContainer,setX,setY]" ref="item">
 
-        <div class="wire" v-for="(item, i) in wire" :key="'wireFront' + i">
-            <svg height="100%" width="100%" preserveAspectRatio="xMinYMin meet"
-                :style="[{'transform': `translate(-50%, -50%)  rotateX(90deg) rotateY(${((180)/((wire)) * (i + 1))}deg)`}]">
-                <circle cx="50%" cy="50%" r="49%"
-                    fill="transparent"
-                    :stroke="edgeColor"/>
-            </svg>
-        </div>
+        <!-- wire -->
+        <ShpereCircle3D
+            v-for="(item, i) in wire"
+            :key="'wireFront' + i"
+            :isWire = "true"
+            :rings = "wire"
+            :index = "i + 1"
+            fill = "transparent"
+            :stroke="edgeColor"/>
 
         <!-- back -->
-        <div class="face" v-for="(item, i) in rings" :key="'back' + i">
-            <svg preserveAspectRatio="xMinYMin meet"
-                :style="[{'transform': `translate(-50%, -50%)  translateZ(${-(((size/2)/rings) * (i + 1))}px)`,
-                'height': `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`,
-                'width':  `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`},
-                ]">
-                <circle cx="50%" cy="50%" r="49%"
-                    :fill="getRingColor"
-                    :stroke="edgeColor"/>
-            </svg>
-        </div>
+        <ShpereCircle3D
+            v-for="(item, i) in rings"
+            :key="'back' + i"
+            :size = "size"
+            :rings = "rings"
+            :index = "i + 1"
+            :zNegative="true"
+            :fill = "getRingColor"
+            :stroke="edgeColor"/>
 
         <!-- middle -->
-        <div class="face face--1" v-if="rings > 0">
-            <svg height="100%" width="100%" preserveAspectRatio="xMinYMin meet">
-                <circle cx="50%" cy="50%" r="49%"
-                    :fill="getRingColor"
-                    :stroke="edgeColor"/>
-            </svg>
-        </div>
+        <ShpereCircle3D
+            v-if="rings > 0"
+            :size = "size"
+            :rings = "rings"
+            :index = "0"
+            :fill = "getRingColor"
+            :stroke="edgeColor"/>
 
         <!-- front -->
-        <div class="face" v-for="(item, i) in rings" :key="'front' + i">
-            <svg preserveAspectRatio="xMinYMin meet"
-                :style="[{'transform': `translate(-50%, -50%)  translateZ(${(((size/2)/rings) * (i + 1))}px)`,
-                'height': `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`,
-                'width':  `${ Math.sqrt(Math.pow(((size/2)), 2) - Math.pow(((((size/2)/rings) * (i + 1))), 2)) * 2}px`},
-                ]">
-                <circle cx="50%" cy="50%" r="49%"
-                    :fill="getRingColor"
-                    :stroke="edgeColor"/>
-            </svg>
-        </div>
+        <ShpereCircle3D
+            v-for="(item, i) in rings"
+            :key="'front' + i"
+            :size = "size"
+            :rings = "rings"
+            :index = "i + 1"
+            :fill = "getRingColor"
+            :stroke="edgeColor"/>
+
     </div>
 </template>
 
 <script>
 import { item3DMixin } from '@/mixin/item3DMixin.js'
+import ShpereCircle3D from '@/components/ui/3D/ShpereCircle3D.vue'
 
 export default {
     name: 'Sphere3D',
     mixins: [item3DMixin],
+    components: {
+        ShpereCircle3D
+    },
     props: {
         size: {
             type: Number,
@@ -93,7 +94,6 @@ export default {
     },
     methods: {
         hexToRGBA(h) {
-          console.log(h)
           if(h == null) return "rgba(255, 255, 255, 0)";
 
           let r = 0, g = 0, b = 0;
@@ -119,6 +119,7 @@ export default {
 
 
 <style lang="scss" scoped>
+
 .shpere {
     position: relative;
     top: -1px;
@@ -127,37 +128,5 @@ export default {
     transform: rotateY(-180deg) rotateX(180deg);
     user-select: none;
 }
-
-.wire {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 50%;
-    left: 50%;
-    transform-style: preserve-3d;
-    user-select: none;
-}
-
-.face {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-style: preserve-3d;
-    user-select: none;
-
-    svg {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    &--1 {
-        width: 100%;
-        height: 100%;
-        transform: translate(-50%, -50%) translateZ(0);
-    }
-}
-
 
 </style>

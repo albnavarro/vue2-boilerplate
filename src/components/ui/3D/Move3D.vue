@@ -62,9 +62,11 @@ export default {
             let x = vm.$store.state.mouse.pointer.x
             let y = vm.$store.state.mouse.pointer.y
 
+            let xgap = 0
+            let ygap = 0
             if( vm.isDragging && vm.onDrag ) {
-                const xgap = x - vm.lastX
-                const ygap = y - vm.lastY;
+                xgap = x - vm.lastX
+                ygap = y - vm.lastY;
 
                 vm.dragX += xgap
                 x =  vm.dragX;
@@ -77,15 +79,23 @@ export default {
             ax = grado di rotazione sull'asse X
             ay = grado di rotazione sull'asse Y
             */
-            let ax = - ( vw / 2 - x ) / vm.xDepth;
-            let ay = ( vh / 2 - y ) / vm.yDepth;
+            let ax = - ( (vw / 2) - x ) / vm.xDepth;
+            let ay = ( (vh / 2) - y ) / vm.yDepth;
 
             if (Math.abs(ax) > vm.xLimit) {
                 (ax > 0) ? ax = vm.xLimit : ax = -vm.xLimit
+                /*
+                prevent stall when angle reaches the limit
+                */
+                vm.dragX -= xgap
             }
 
             if (Math.abs(ay) > vm.yLimit) {
                 (ay > 0) ? ay = vm.yLimit : ay = -vm.yLimit
+                /*
+                prevent stall when angle reaches the limit
+                */
+                vm.dragY -= ygap
             }
 
             vm.lastX = vm.$store.state.mouse.pointer.x
@@ -99,7 +109,7 @@ export default {
             vm.limit = Math.sqrt(Math.pow(Math.abs(vm.xLimit), 2) +  Math.pow(Math.abs(vm.yLimit), 2));
 
             let apply = false;
-            if( (vm.isDragging && vm.onDrag) || !vm.isDragging) apply = true
+            if( (vm.isDragging && vm.onDrag ) || !vm.isDragging) apply = true
 
             if (apply) {
                 vm.style = {
