@@ -86,7 +86,7 @@
                 </Context3D>
             </div>
         </div>
-        <div class="container container--mouse">
+        <div class="container container--mouse cursor-move">
             <div class="item">
                 <Context3D>
                     <Move3D
@@ -176,6 +176,10 @@ export default {
 .container--mouse {
     display: flex;
     justify-content: center;
+}
+
+.cursor-move {
+    cursor: move;
 }
 
 .item {
