@@ -19,14 +19,14 @@
                     <Move3D
                         :xDepth="20"
                         :yDepth="20"
-                        :xLimit="50"
-                        v-slot="{delta,limit,isDragging}">
+                        :xLimit="30"
+                        v-slot="{delta,limit,drag}">
                         <Move3DItem
                             :depth="0"
                             :isContainer="true"
                             :delta="delta"
                             :limit="limit"
-                            :isDragging="isDragging">
+                            :drag="drag">
                             <TestComponent
                                 :width="300"
                                 :height="300"/>
@@ -37,7 +37,7 @@
                             :y="80"
                             :delta="delta"
                             :limit="limit"
-                            :isDragging="isDragging">
+                            :drag="drag">
                             <h1>title</h1>
                             <TestComponent
                                 :width="100"
@@ -50,20 +50,33 @@
                             :y="50"
                             :delta="delta"
                             :limit="limit"
-                            :isDragging="isDragging">
+                            :drag="drag">
                             <TestComponent
                                 :width="100"
                                 :height="100"
                                 color="#eee"/>
                             <p>Lorem ipsum</p>
                         </Move3DItem>
+                        <Sphere3D
+                            stroke="#fff"
+                            :size="120"
+                            :rings="5"
+                            :wireFill="false"
+                            :depth="240"
+                            :animate="true"
+                            :x="-35"
+                            :y="-5"
+                            :delta="delta"
+                            :limit="limit"
+                            :drag="drag">
+                        </Sphere3D>
                         <Move3DItem
                             :depth="250"
                             :x="-40"
                             :y="-10"
                             :delta="delta"
                             :limit="limit"
-                            :isDragging="isDragging">
+                            :drag="drag">
                             <TestComponent
                                 :width="150"
                                 :height="150"
@@ -79,44 +92,58 @@
                     <Move3D
                         :xDepth="20"
                         :yDepth="20"
-                        :xLimit="40"
-                        :isDragging="true"
-                        v-slot="{delta,limit,isDragging}">
+                        :xLimit="90"
+                        :drag="true"
+                        v-slot="{delta,limit,drag}">
                         <Sphere3D
-                            edgeColor="#ad8af3"
-                            ringColor="#ff0"
+                            stroke="#ad8af3"
+                            fill="#ff0"
                             :size="300"
-                            :rings="3"
+                            :rings="8"
                             :wire="4"
+                            :strokeDasharray="3"
                             :isContainer="true"
                             :delta="delta"
                             :limit="limit"
-                            :isDragging="isDragging">
+                            :drag="drag">
                         </Sphere3D>
                         <Sphere3D
-                            ringColor="#fff"
+                            fill="#fff"
                             :size="120"
-                            :rings="3"
+                            :rings="5"
                             :depth="340"
+                            :distorsion="true"
                             :animate="true"
                             :x="-50"
                             :y="30"
                             :delta="delta"
                             :limit="limit"
-                            :isDragging="isDragging">
+                            :drag="drag">
                         </Sphere3D>
                         <Sphere3D
-                            edgeColor="#ad8af3"
-                            ringColor="#BFCDE0"
+                            fill="#fff"
+                            :size="120"
+                            :rings="5"
+                            :depth="240"
+                            :animate="true"
+                            :x="-20"
+                            :y="-30"
+                            :delta="delta"
+                            :limit="limit"
+                            :drag="drag">
+                        </Sphere3D>
+                        <Sphere3D
+                            stroke="#ad8af3"
+                            fill="#BFCDE0"
                             :size="80"
-                            :rings="3"
+                            :rings="5"
                             :depth="340"
                             :animate="true"
                             :x="110"
                             :y="30"
                             :delta="delta"
                             :limit="limit"
-                            :isDragging="isDragging">
+                            :drag="drag">
                         </Sphere3D>
                     </Move3D>
                 </Context3D>

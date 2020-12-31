@@ -1,51 +1,34 @@
 <template>
     <div class="shpere" :style="[setSize,style,setContainer,setX,setY]" ref="item">
 
-        <!-- wire -->
         <ShpereCircle3D
             v-for="(item, i) in wire"
             :key="'wireFront' + i"
+            :size = "size"
             :isWire = "true"
             :rings = "wire"
-            :index = "i + 1"
-            fill = "transparent"
-            :stroke="edgeColor"/>
+            :index = "i"
+            :distorsion = "distorsion"
+            :fill = "wireFill ? getfill : 'transparent'"
+            :strokeDasharray = "strokeDasharray"
+            :stroke="stroke"/>
 
-        <!-- back -->
-        <ShpereCircle3D
-            v-for="(item, i) in rings"
-            :key="'back' + i"
-            :size = "size"
-            :rings = "rings"
-            :index = "i + 1"
-            :zNegative="true"
-            :fill = "getRingColor"
-            :stroke="edgeColor"/>
-
-        <!-- middle -->
-        <ShpereCircle3D
-            v-if="rings > 0"
-            :size = "size"
-            :rings = "rings"
-            :index = "0"
-            :fill = "getRingColor"
-            :stroke="edgeColor"/>
-
-        <!-- front -->
         <ShpereCircle3D
             v-for="(item, i) in rings"
             :key="'front' + i"
             :size = "size"
             :rings = "rings"
-            :index = "i + 1"
-            :fill = "getRingColor"
-            :stroke="edgeColor"/>
+            :index = "i"
+            :distorsion = "distorsion"
+            :strokeDasharray = "strokeDasharray"
+            :fill = "getfill"
+            :stroke="stroke"/>
 
     </div>
 </template>
 
 <script>
-import { item3DMixin } from '@/mixin/item3DMixin.js'
+import { item3DMixin } from '@/components/ui/3D/mixin/item3DMixin.js'
 import ShpereCircle3D from '@/components/ui/3D/ShpereCircle3D.vue'
 
 export default {
@@ -67,13 +50,25 @@ export default {
             type: Number,
             default: 4
         },
-        edgeColor: {
+        stroke: {
             type: String,
             default: '#000',
         },
-        ringColor: {
+        fill: {
             type: String,
             default: null,
+        },
+        wireFill: {
+            type: Boolean,
+            default: true
+        },
+        strokeDasharray: {
+            type: Number,
+            default: 0
+        },
+        distorsion: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -83,8 +78,8 @@ export default {
                 'height': `${this.size}px`
             }
         },
-        getRingColor() {
-            const rgba = this.hexToRGBA(this.ringColor)
+        getfill() {
+            const rgba = this.hexToRGBA(this.fill)
             return rgba
         },
         getWireColor() {

@@ -15,13 +15,13 @@ export const item3DMixin = {
             type: Number,
             default: 15
         },
-        isDragging: {
+        drag: {
             type: Boolean,
             default: true
         },
         depth: {
             type: Number,
-            default: 100
+            default: 0
         },
         animate: {
             type: Boolean,
@@ -74,7 +74,7 @@ export const item3DMixin = {
             }
 
             let apply = false;
-            if( (vm.isDragging && vm.onDrag) || !vm.isDragging || force) apply = true
+            if( (vm.drag && vm.onDrag) || !vm.drag || force) apply = true
 
             if (apply) {
                 this.style = {
@@ -87,7 +87,7 @@ export const item3DMixin = {
         const vm = this;
         vm.setStyle(true)
 
-        if( vm.isDragging ) {
+        if( vm.drag ) {
             vm.$watch('touchStart', () => {
                 vm.onDrag = true
             })

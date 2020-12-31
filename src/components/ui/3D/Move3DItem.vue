@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { item3DMixin } from '@/mixin/item3DMixin.js'
+import { item3DMixin } from '@/components/ui/3D/mixin/item3DMixin.js'
 
 export default {
     name: 'Move3DItem',

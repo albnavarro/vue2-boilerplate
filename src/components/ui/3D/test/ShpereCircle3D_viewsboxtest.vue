@@ -1,5 +1,5 @@
 <template>
-    <svg :width="size" :heigth="size" :viewbox="'0 0 ' + size  + ' ' + size" class="item" :style="setStyle">
+    <svg :width="getSize" :heigth="getSize" :viewbox="'0 0 ' + size  + ' ' + size" class="item" :style="setStyle">
 
         <filter v-if="distorsion" :id="'distortion' + random">
             <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="turbulence"/>

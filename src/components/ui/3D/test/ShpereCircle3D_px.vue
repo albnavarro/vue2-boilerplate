@@ -1,12 +1,12 @@
 <template>
-    <svg :width="size" :heigth="size" :viewbox="'0 0 ' + size  + ' ' + size" class="item" :style="setStyle">
+    <svg height="100%" width="100%" class="item" :style="setStyle">
 
         <filter v-if="distorsion" :id="'distortion' + random">
             <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="turbulence"/>
             <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="10" xChannelSelector="R" yChannelSelector="G"/>
         </filter>
 
-        <circle cx="50%" cy="50%" :r="getSize/2"
+        <circle cx="50%" cy="50%" r="49%"
             :filter="distorsion ? 'url(#distortion' + random +')' : null"
             :stroke-dasharray="strokeDasharray"
             :fill="fill"
@@ -63,31 +63,21 @@ export default {
         }
     },
     computed: {
-        getSize() {
-            const vm = this
-            let index = 0;
-            (vm.index < vm.rings/2) ? index = vm.rings - vm.index : index = vm.index
-            index = index - (vm.rings - index)
-
-            let val = 0
-            if(vm.isWire) {
-                val = this.size
-            } else {
-                val = Math.sqrt(Math.pow(((vm.size/2)), 2) - Math.pow(((((vm.size/2)/vm.rings) * (index))), 2)) * 2
-            }
-
-            return Math.floor(val)
-
-        },
         setStyle() {
             const vm = this
             if(vm.isWire) {
                 return {
-                    'transform': `rotateX(90deg) rotateY(${((180)/((vm.rings)) * (vm.index))}deg)`
+                    'transform': `translate(-50%, -50%)  rotateX(90deg) rotateY(${((180)/((vm.rings)) * (vm.index))}deg)`
                 }
             } else {
+                let index = 0;
+                (vm.index < vm.rings/2) ? index = vm.rings - vm.index : index = vm.index
+                index = index - (vm.rings - index)
+
                 return {
-                    'transform': `translateZ(${(((vm.size)/vm.rings) * (vm.index)) - vm.size/2}px)`
+                    'transform': `translate(-50%, -50%)  translateZ(${(((vm.size)/vm.rings) * (vm.index)) - vm.size/2}px)`,
+                    'height': `${ Math.sqrt(Math.pow(((vm.size/2)), 2) - Math.pow(((((vm.size/2)/(vm.rings)) * (index))), 2)) * 2}px`,
+                    'width':  `${ Math.sqrt(Math.pow(((vm.size/2)), 2) - Math.pow(((((vm.size/2)/vm.rings) * (index))), 2)) * 2}px`
                 }
             }
         }
@@ -98,9 +88,8 @@ export default {
 <style lang="scss" scoped>
     .item {
         position: absolute;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
 <div class="move3D__container" :style="style">
     <div class="move3D__content">
-        <slot :delta="delta" :limit="limit" :isDragging="isDragging"></slot>
+        <slot :delta="delta" :limit="limit" :drag="drag"></slot>
     </div>
 </div>
 </template>
@@ -36,7 +36,7 @@ export default {
             type: Number,
             default: 35
         },
-        isDragging: {
+        drag: {
             type: Boolean,
             default: false
         }
@@ -64,7 +64,7 @@ export default {
 
             let xgap = 0
             let ygap = 0
-            if( vm.isDragging && vm.onDrag ) {
+            if( vm.drag && vm.onDrag ) {
                 xgap = x - vm.lastX
                 ygap = y - vm.lastY;
 
@@ -109,7 +109,7 @@ export default {
             vm.limit = Math.sqrt(Math.pow(Math.abs(vm.xLimit), 2) +  Math.pow(Math.abs(vm.yLimit), 2));
 
             let apply = false;
-            if( (vm.isDragging && vm.onDrag ) || !vm.isDragging) apply = true
+            if( (vm.drag && vm.onDrag ) || !vm.drag) apply = true
 
             if (apply) {
                 vm.style = {
@@ -126,7 +126,7 @@ export default {
         vm.dragY = vm.$store.state.browser.height/2
         vm.onDrag = false
 
-        if( vm.isDragging ) {
+        if( vm.drag ) {
             vm.$watch('touchStart', () => {
                 vm.onDrag = true
             })

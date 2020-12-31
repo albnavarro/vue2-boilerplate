@@ -8,7 +8,7 @@
 
 
 <script>
-import { paralallaxMixin } from '@/mixin/ParallaxMixin.js'
+import { paralallaxMixin } from '@/components/ui/parallax/mixin/ParallaxMixin.js'
 
 export default {
     name: 'ParallaxClassic',
