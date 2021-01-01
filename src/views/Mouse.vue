@@ -59,9 +59,8 @@
                         </Move3DItem>
                         <Sphere3D
                             stroke="#fff"
-                            :size="120"
+                            :diameter="120"
                             :rings="5"
-                            :wireFill="false"
                             :depth="240"
                             :animate="true"
                             :x="-43"
@@ -96,57 +95,43 @@
                         :drag="true"
                         v-slot="{delta,limit,drag}">
                         <Sphere3D
-                            stroke="#ad8af3"
                             fill="#ff0"
-                            :size="300"
+                            stroke="#FF7400"
+                            :diameter="300"
                             :rings="8"
-                            :wire="4"
-                            :strokeDasharray="3"
+                            :diagonal="4"
+                            :strokeDasharray="5"
                             :isContainer="true"
                             :delta="delta"
                             :limit="limit"
-                            :drag="drag">
-                        </Sphere3D>
-                        <Sphere3D
-                            fill="#fff"
-                            :size="120"
-                            :rings="5"
-                            :depth="340"
-                            :animate="true"
-                            :x="-40"
-                            :y="20"
-                            filterId="distortion"
-                            :delta="delta"
-                            :limit="limit"
+                            filterId="distort"
                             :drag="drag">
                             <template slot="filter">
-                                <filter id="distortion">
-                                    <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="turbulence"/>
-                                    <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+                                <filter id="distort">
+                                    <feTurbulence type="turbulence" baseFrequency="0.15" numOctaves="10" result="fractalNoise"/>
+                                    <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="20" xChannelSelector="R" yChannelSelector="G"/>
                                 </filter>
                             </template>
                         </Sphere3D>
                         <Sphere3D
                             fill="#fff"
-                            :size="120"
-                            :rings="5"
-                            :depth="240"
+                            stroke="#949cdf"
+                            :diameter="180"
+                            :depth="340"
                             :animate="true"
-                            :x="-15"
-                            :y="-25"
+                            :x="-60"
+                            :y="20"
                             :delta="delta"
                             :limit="limit"
                             :drag="drag">
                         </Sphere3D>
                         <Sphere3D
-                            fill="#ff0"
-                            :size="220"
-                            :rings="5"
-                            :wire="4"
-                            :depth="340"
+                            fill="#fff"
+                            :diameter="120"
+                            :depth="240"
                             :animate="true"
-                            :x="100"
-                            :y="30"
+                            :x="95"
+                            :y="25"
                             :delta="delta"
                             :limit="limit"
                             :drag="drag">

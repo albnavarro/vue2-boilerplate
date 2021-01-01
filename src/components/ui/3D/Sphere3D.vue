@@ -1,14 +1,15 @@
 <template>
-    <div class="shpere" :style="[setSize,style,setContainer,setX,setY]" ref="item">
+    <div class="shpere" :style="[setdiameter,style,setContainer,setX,setY]" ref="item">
 
         <ShpereCircle3D
-            v-for="(item, i) in wire"
-            :key="'wireFront' + i"
-            :size = "size"
-            :isWire = "true"
-            :rings = "wire"
+            v-for="(item, i) in diagonal"
+            :key="'diagonalFront' + i"
+            :diameter = "diameter"
+            :isDiagonal = "true"
+            :rings = "diagonal"
             :index = "i"
-            :fill = "wireFill ? getfill : 'transparent'"
+            :fill = "getfill"
+            :strokeWidth="strokeWidth"
             :strokeDasharray = "strokeDasharray"
             :filterId="filterId"
             :stroke="stroke">
@@ -22,11 +23,12 @@
         <ShpereCircle3D
             v-for="(item, i) in rings"
             :key="'front' + i"
-            :size = "size"
+            :diameter = "diameter"
             :rings = "rings"
             :index = "i"
             :strokeDasharray = "strokeDasharray"
             :fill = "getfill"
+            :strokeWidth="strokeWidth"
             :filterId="filterId"
             :stroke="stroke">
 
@@ -50,7 +52,7 @@ export default {
         ShpereCircle3D
     },
     props: {
-        size: {
+        diameter: {
             type: Number,
             default: 200
         },
@@ -58,7 +60,7 @@ export default {
             type: Number,
             default: 5
         },
-        wire: {
+        diagonal: {
             type: Number,
             default: 4
         },
@@ -66,13 +68,17 @@ export default {
             type: String,
             default: '#000',
         },
+        strokeWidth: {
+            type: String,
+            default: '1'
+        },
         fill: {
             type: String,
             default: null,
         },
-        wireFill: {
-            type: Boolean,
-            default: true
+        opacity: {
+            type: Number,
+            default: .5
         },
         strokeDasharray: {
             type: Number,
@@ -84,18 +90,18 @@ export default {
         }
     },
     computed: {
-        setSize() {
+        setdiameter() {
             return {
-                'width': `${this.size + 50}px`,
-                'height': `${this.size + 50}px`
+                'width': `${this.diameter + 50}px`,
+                'height': `${this.diameter + 50}px`
             }
         },
         getfill() {
             const rgba = this.hexToRGBA(this.fill)
             return rgba
         },
-        getWireColor() {
-            const rgba = this.hexToRGBA(this.wireColor)
+        getdiagonalColor() {
+            const rgba = this.hexToRGBA(this.diagonalColor)
             return rgba
         }
     },
@@ -118,7 +124,7 @@ export default {
             b = "0x" + h[5] + h[6];
           }
 
-          return "rgba("+ +r + "," + +g + "," + +b + ", .5)";
+          return "rgba("+ +r + "," + +g + "," + +b + ", " + this.opacity + ")";
         }
     }
 }
