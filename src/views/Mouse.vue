@@ -64,8 +64,8 @@
                             :wireFill="false"
                             :depth="240"
                             :animate="true"
-                            :x="-35"
-                            :y="-5"
+                            :x="-43"
+                            :y="-13"
                             :delta="delta"
                             :limit="limit"
                             :drag="drag">
@@ -112,13 +112,19 @@
                             :size="120"
                             :rings="5"
                             :depth="340"
-                            :distorsion="true"
                             :animate="true"
-                            :x="-50"
-                            :y="30"
+                            :x="-40"
+                            :y="20"
+                            filterId="distortion"
                             :delta="delta"
                             :limit="limit"
                             :drag="drag">
+                            <template slot="filter">
+                                <filter id="distortion">
+                                    <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="turbulence"/>
+                                    <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="10" xChannelSelector="R" yChannelSelector="G"/>
+                                </filter>
+                            </template>
                         </Sphere3D>
                         <Sphere3D
                             fill="#fff"
@@ -126,20 +132,20 @@
                             :rings="5"
                             :depth="240"
                             :animate="true"
-                            :x="-20"
-                            :y="-30"
+                            :x="-15"
+                            :y="-25"
                             :delta="delta"
                             :limit="limit"
                             :drag="drag">
                         </Sphere3D>
                         <Sphere3D
-                            stroke="#ad8af3"
-                            fill="#BFCDE0"
-                            :size="80"
+                            fill="#ff0"
+                            :size="220"
                             :rings="5"
+                            :wire="4"
                             :depth="340"
                             :animate="true"
-                            :x="110"
+                            :x="100"
                             :y="30"
                             :delta="delta"
                             :limit="limit"

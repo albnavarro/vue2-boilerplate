@@ -8,10 +8,16 @@
             :isWire = "true"
             :rings = "wire"
             :index = "i"
-            :distorsion = "distorsion"
             :fill = "wireFill ? getfill : 'transparent'"
             :strokeDasharray = "strokeDasharray"
-            :stroke="stroke"/>
+            :filterId="filterId"
+            :stroke="stroke">
+
+            <!-- use filter slot once, id is univoque -->
+            <template v-if="i == 0" slot="filter">
+              <slot name="filter"></slot>
+            </template>
+        </ShpereCircle3D>
 
         <ShpereCircle3D
             v-for="(item, i) in rings"
@@ -19,10 +25,16 @@
             :size = "size"
             :rings = "rings"
             :index = "i"
-            :distorsion = "distorsion"
             :strokeDasharray = "strokeDasharray"
             :fill = "getfill"
-            :stroke="stroke"/>
+            :filterId="filterId"
+            :stroke="stroke">
+
+            <!-- use filter slot once, id is univoque -->
+            <template v-if="i == 0" slot="filter">
+              <slot name="filter"></slot>
+            </template>
+        </ShpereCircle3D>
 
     </div>
 </template>
@@ -66,16 +78,16 @@ export default {
             type: Number,
             default: 0
         },
-        distorsion: {
-            type: Boolean,
-            default: false
+        filterId: {
+            type: String,
+            default: null
         }
     },
     computed: {
         setSize() {
             return {
-                'width': `${this.size}px`,
-                'height': `${this.size}px`
+                'width': `${this.size + 50}px`,
+                'height': `${this.size + 50}px`
             }
         },
         getfill() {

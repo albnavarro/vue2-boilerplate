@@ -1,13 +1,10 @@
 <template>
-    <svg :width="size" :heigth="size" :viewbox="'0 0 ' + size  + ' ' + size" class="item" :style="setStyle">
+    <svg :width="size" :heigth="size" :viewbox="'0 0 ' + size * 2  + ' ' + size * 2" class="item" :style="setStyle">
 
-        <filter v-if="distorsion" :id="'distortion' + random">
-            <feTurbulence type="turbulence" baseFrequency="0.05" numOctaves="2" result="turbulence"/>
-            <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="10" xChannelSelector="R" yChannelSelector="G"/>
-        </filter>
+        <slot name="filter"></slot>
 
         <circle cx="50%" cy="50%" :r="getSize/2"
-            :filter="distorsion ? 'url(#distortion' + random +')' : null"
+            :filter="filterId ? 'url(#' + filterId +')' : null"
             :stroke-dasharray="strokeDasharray"
             :fill="fill"
             :stroke="stroke"/>
@@ -41,10 +38,6 @@ export default {
             type: Number,
             required: true
         },
-        zNegative: {
-            type: Boolean,
-            default: false
-        },
         fill: {
             type: String,
             default: 'transparent'
@@ -57,9 +50,9 @@ export default {
             type: Number,
             default: 0
         },
-        distorsion: {
-            type: Boolean,
-            default: false
+        filterId: {
+            type: String,
+            default: null
         }
     },
     computed: {
@@ -73,7 +66,7 @@ export default {
             if(vm.isWire) {
                 val = this.size
             } else {
-                val = Math.sqrt(Math.pow(((vm.size/2)), 2) - Math.pow(((((vm.size/2)/vm.rings) * (index))), 2)) * 2
+                val = Math.sqrt(Math.pow(((vm.size/2)), 2) - Math.pow((((vm.size/2)/vm.rings) * (index)), 2)) * 2
             }
 
             return Math.floor(val)
