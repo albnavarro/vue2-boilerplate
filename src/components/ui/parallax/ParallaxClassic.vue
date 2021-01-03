@@ -1,7 +1,8 @@
 <template>
-
-<div class="parallax__item" :class="smoothCss" :style="style" ref="item">
-    <slot></slot>
+<div ref="item">
+    <div class="parallax__item" :class="smoothCss" :style="style" ref="item">
+        <slot></slot>
+    </div>
 </div>
 
 </template>
