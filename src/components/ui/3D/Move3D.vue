@@ -1,8 +1,6 @@
 <template>
 <div class="move3D__container" :style="style">
-    <div class="move3D__content">
-        <slot :delta="delta" :limit="limit" :drag="drag"></slot>
-    </div>
+    <slot :delta="delta" :limit="limit" :drag="drag"></slot>
 </div>
 </template>
 
@@ -149,10 +147,6 @@ export default {
         transform-style: preserve-3d;
         backface-visibility: hidden;
         user-select: none;
-    }
-
-    &__content {
-        transform-style: inherit;
         user-select: none;
     }
 }

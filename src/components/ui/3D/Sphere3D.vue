@@ -1,5 +1,5 @@
 <template>
-    <div class="shpere" :style="[setdiameter,style,setContainer,setX,setY]" ref="item">
+    <div class="shpere" ref="item" :style="setdiameter">
 
         <ShpereCircle3D
             v-for="(item, i) in diagonal"
@@ -42,12 +42,10 @@
 </template>
 
 <script>
-import { item3DMixin } from '@/components/ui/3D/mixin/item3DMixin.js'
 import ShpereCircle3D from '@/components/ui/3D/ShpereCircle3D.vue'
 
 export default {
     name: 'Sphere3D',
-    mixins: [item3DMixin],
     components: {
         ShpereCircle3D
     },

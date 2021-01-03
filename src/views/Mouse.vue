@@ -57,18 +57,6 @@
                                 color="#eee"/>
                             <p>Lorem ipsum</p>
                         </Move3DItem>
-                        <Sphere3D
-                            stroke="#fff"
-                            :diameter="120"
-                            :rings="5"
-                            :depth="240"
-                            :animate="true"
-                            :x="-43"
-                            :y="-13"
-                            :delta="delta"
-                            :limit="limit"
-                            :drag="drag">
-                        </Sphere3D>
                         <Move3DItem
                             :depth="250"
                             :x="-40"
@@ -80,6 +68,11 @@
                                 :width="150"
                                 :height="150"
                                 color="#999"/>
+                            <Sphere3D
+                                class="test-sphere"
+                                stroke="#fff"
+                                :diameter="120"
+                                :rings="5"/>
                         </Move3DItem>
                     </Move3D>
                 </Context3D>
@@ -94,51 +87,66 @@
                         :xLimit="90"
                         :drag="true"
                         v-slot="{delta,limit,drag}">
-                        <Sphere3D
-                            fill="#ff0"
-                            stroke="#FF7400"
-                            :diameter="300"
-                            :rings="8"
-                            :diagonal="4"
-                            :strokeDasharray="5"
+                        <Move3DItem
                             :isContainer="true"
                             :delta="delta"
                             :limit="limit"
-                            filterId="distort"
                             :drag="drag">
-                            <template slot="filter">
-                                <filter id="distort">
-                                    <feTurbulence type="turbulence" baseFrequency="0.15" numOctaves="10" result="fractalNoise"/>
-                                    <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="20" xChannelSelector="R" yChannelSelector="G"/>
-                                </filter>
-                            </template>
-                        </Sphere3D>
-                        <Sphere3D
-                            fill="#fff"
-                            stroke="#949cdf"
-                            :diameter="180"
-                            :depth="340"
-                            :animate="true"
+                            <Sphere3D
+                                fill="#ff0"
+                                stroke="#FF7400"
+                                :diameter="500"
+                                :rings="8"
+                                :diagonal="4"
+                                :strokeDasharray="5">
+                            </Sphere3D>
+                        </Move3DItem>
+                        <Move3DItem
                             :x="-60"
                             :y="20"
+                            :depth="340"
                             :delta="delta"
                             :limit="limit"
                             :drag="drag">
-                        </Sphere3D>
-                        <Sphere3D
-                            fill="#fff"
-                            :diameter="120"
-                            :depth="240"
-                            :animate="true"
+                            <Sphere3D
+                                fill="#fff"
+                                stroke="#949cdf"
+                                :diameter="280">
+                            </Sphere3D>
+                        </Move3DItem>
+                        <Move3DItem
                             :x="95"
                             :y="25"
+                            :depth="240"
                             :delta="delta"
                             :limit="limit"
                             :drag="drag">
-                        </Sphere3D>
+                            <Sphere3D
+                                fill="#fff"
+                                :diameter="220">
+                            </Sphere3D>
+                        </Move3DItem>
                     </Move3D>
                 </Context3D>
             </div>
+        </div>
+        <div class="container container--mouse">
+            <Context3D>
+                <Sphere3D
+                    class="sfere-static"
+                    fill="#fff"
+                    :diameter="500"
+                    :rings="5"
+                    filterId="distort"
+                    :diagonal="2">
+                    <template slot="filter">
+                        <filter id="distort">
+                            <feTurbulence type="turbulence" baseFrequency="0.15" numOctaves="10" result="fractalNoise"/>
+                            <feDisplacementMap in2="turbulence" in="SourceGraphic" scale="20" xChannelSelector="R" yChannelSelector="G"/>
+                        </filter>
+                    </template>
+                </Sphere3D>
+            </Context3D>
         </div>
     </div>
 </template>
@@ -175,5 +183,17 @@ export default {
 
 .item {
     margin: 200px 0;
+}
+
+.test-sphere {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3D(-50%, -50%, -10px);
+}
+
+.sfere-static {
+    margin-bottom: 200px;
+    transform: rotate3d(1, 1, 1, 45deg);
 }
 </style>
